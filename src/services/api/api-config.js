@@ -19,15 +19,15 @@ const isElectron = () => {
 
 /**
  * 检测是否为开发环境
- * 优先使用 Electron 的 isDev，其次使用 Vite 的 import.meta.env.DEV
+ * 对于 Web 环境，直接使用 import.meta.env.MODE 判断
  */
 const isDevelopment = () => {
   // 在 Electron 环境中，优先使用 preload 暴露的 isDev
   if (typeof window !== 'undefined' && window.electronAPI && typeof window.electronAPI.isDev === 'boolean') {
     return window.electronAPI.isDev;
   }
-  // 否则使用 Vite 的环境变量（Web 环境）
-  return import.meta.env.DEV;
+  // Web 环境：使用 MODE 判断而不是 DEV
+  return import.meta.env.MODE === 'development';
 };
 
 /**
