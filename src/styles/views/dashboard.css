@@ -4,7 +4,7 @@
 
 .dashboard-container {
   padding: var(--spacing-4);
-  max-width: 1400px;
+  max-width: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -42,10 +42,12 @@
 }
 
 @keyframes skeleton-loading {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -134,18 +136,23 @@
 /* 今日要闻板块：控制整体高度，包含padding在内 */
 .today-news-section {
   min-height: 100px;
-  box-sizing: border-box; /* min-height包含padding */
-  padding: var(--spacing-4); /* 重新声明padding确保优先级 */
+  box-sizing: border-box;
+  /* min-height包含padding */
+  padding: var(--spacing-4);
+  /* 重新声明padding确保优先级 */
   display: flex;
-  align-items: center; /* 内容垂直居中 */
+  align-items: center;
+  /* 内容垂直居中 */
 }
 
 /* 今日要闻整体布局：左侧日期徽章 + 右侧新闻列表 */
 .today-news-section .dashboard-news-list {
   display: flex;
   gap: var(--spacing-4);
-  align-items: center; /* 垂直居中 */
-  width: 100%; /* 占满宽度 */
+  align-items: center;
+  /* 垂直居中 */
+  width: 100%;
+  /* 占满宽度 */
 }
 
 /* 当新闻列表为空时，日期header居中显示 */
@@ -181,7 +188,8 @@
   text-align: center;
   width: 40px;
   line-height: 1.2;
-  white-space: pre-line; /* 支持 \n 换行 */
+  white-space: pre-line;
+  /* 支持 \n 换行 */
 }
 
 /* 日期文本 */
@@ -260,8 +268,10 @@
   border-radius: var(--border-radius-lg);
   cursor: pointer;
   transition: all var(--duration-200) var(--ease-out);
-  height: 52px; /* 固定高度 */
-  align-items: center; /* 垂直居中 */
+  height: 52px;
+  /* 固定高度 */
+  align-items: center;
+  /* 垂直居中 */
 }
 
 .vertical-list .news-item:hover {
@@ -281,11 +291,9 @@
   color: var(--color-text-primary);
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-xs);
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-light),
-    var(--color-primary-hover)
-  );
+  background: linear-gradient(135deg,
+      var(--color-primary-light),
+      var(--color-primary-hover));
   border-radius: var(--border-radius-md);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }

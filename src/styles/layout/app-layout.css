@@ -37,7 +37,11 @@
   flex-direction: column;
   background-color: var(--color-surface);
   overflow: hidden;
-  position: relative; /* 为 header 提供定位上下文 */
+  position: relative;
+  /* 为 header 提供定位上下文 */
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .app-header {
@@ -50,26 +54,29 @@
   z-index: 90;
   transition: all var(--duration-200) var(--ease-in-out);
   width: 100%;
-  pointer-events: none; /* 默认不拦截鼠标事件 */
+  pointer-events: none;
+  /* 默认不拦截鼠标事件 */
   display: flex;
 }
 
 /* 通用的 header 包装层布局 - 自动检测包含 header-left 或 header-right 的容器 */
-.app-header > * {
+.app-header>* {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  pointer-events: auto; /* 恢复子元素的鼠标事件 */
+  pointer-events: auto;
+  /* 恢复子元素的鼠标事件 */
   height: 100%;
 }
 
-.app-header > * > .header-left,
-.app-header > * > .header-right {
+.app-header>*>.header-left,
+.app-header>*>.header-right {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--spacing-3);
-  pointer-events: auto; /* 恢复子元素的鼠标事件 */
+  pointer-events: auto;
+  /* 恢复子元素的鼠标事件 */
   height: 100%;
   gap: var(--spacing-3);
 }
@@ -346,10 +353,12 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -459,8 +468,8 @@
   }
 
   /* 响应式调整 header 包装层的内边距 */
-  .app-header > div:has(.header-left),
-  .app-header > div:has(.header-right) {
+  .app-header>div:has(.header-left),
+  .app-header>div:has(.header-right) {
     padding: 0 var(--spacing-3);
   }
 
@@ -481,9 +490,10 @@
 }
 
 @media (max-width: 480px) {
+
   /* 响应式调整 header 包装层的内边距 */
-  .app-header > div:has(.header-left),
-  .app-header > div:has(.header-right) {
+  .app-header>div:has(.header-left),
+  .app-header>div:has(.header-right) {
     padding: 0 var(--spacing-2);
   }
 
@@ -677,11 +687,11 @@
 }
 
 /* 下拉箭头样式 */
-.agent-category-button > .agent-category-icon {
+.agent-category-button>.agent-category-icon {
   transition: transform 0.2s ease;
 }
 
-.agent-category-button[aria-expanded="true"] > .agent-category-icon {
+.agent-category-button[aria-expanded="true"]>.agent-category-icon {
   transform: rotate(180deg);
 }
 
@@ -886,6 +896,7 @@
 
 /* 减少动画模式支持 */
 @media (prefers-reduced-motion: reduce) {
+
   .app-sidebar,
   .app-main,
   .app-header,

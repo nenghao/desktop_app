@@ -152,7 +152,7 @@ export class AppLayout {
 
     // 初始化侧边栏（已优化为骨架屏+异步加载）
     const agentDataService = window.agentDataService ||
-                            (window.app?.getService ? window.app.getService('agentDataService') : null);
+      (window.app?.getService ? window.app.getService('agentDataService') : null);
 
     this.sidebar = new Sidebar({
       eventBus: this.eventBus,
@@ -443,10 +443,10 @@ export class AppLayout {
   applyInitialState() {
     console.log('🔍 开始应用初始状态...');
     let sidebarState = false; // 默认展开
-    
+
     try {
       // 首先尝试从ConfigCacheService加载
-      sidebarState = this.configCacheService.getCachedSetting(SIDEBAR_COLLAPSED_KEY, false);      
+      sidebarState = this.configCacheService.getCachedSetting(SIDEBAR_COLLAPSED_KEY, false);
       // 如果ConfigCacheService没有返回有效的值，尝试从localStorage备用存储加载
       const localStorageValue = localStorage.getItem(`Questech_${SIDEBAR_COLLAPSED_KEY}`);
       if (localStorageValue !== null) {
@@ -459,7 +459,7 @@ export class AppLayout {
     } catch (error) {
       console.error('❌ 加载侧边栏状态时发生错误:', error);
     }
-    
+
     // 设置侧边栏状态
     this.sidebarCollapsed = sidebarState;
     this.setSidebarCollapsed(sidebarState);
