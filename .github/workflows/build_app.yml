@@ -30,6 +30,7 @@ jobs:
         run: npm run build
 
       - name: Package Electron
+        shell: bash
         run: |
           if [[ "${{ runner.os }}" == "Linux" ]]; then
             npm run electron:dist -- --linux
