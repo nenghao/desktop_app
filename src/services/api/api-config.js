@@ -41,16 +41,16 @@ const getApiBaseURL = () => {
       return 'http://192.168.0.103:10089';
     }
     // Electron 生产环境（打包后）：使用线上地址
-    return 'https://api.baizesz.com';
+    return 'https://api.baizesz.com/';
   }
-  
+
   // Web 环境
   if (isDevelopment()) {
     // Web 开发环境：使用 /api 前缀，由 Vite 代理处理
     return '/api/';
   } else {
-    // Web 生产环境：线上地址
-    return 'https://api.baizesz.com';
+    // Web 生产环境：线上地址（必须包含完整的协议和域名）
+    return 'https://api.baizesz.com/';
   }
 };
 
