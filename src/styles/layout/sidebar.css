@@ -286,7 +286,7 @@
   display: flex;
   flex-direction: column;
   margin: 10px var(--spacing-3) var(--spacing-4) var(--spacing-3);
-  height: calc(100% - var(--spacing-3) * 2);
+  height: calc(100% - 26px);
   border-radius: var(--border-radius-xl);
   /* border: 1px solid rgba(255, 255, 255, 0.1); */
 
@@ -302,8 +302,9 @@
 
 /* 侧边栏收起状态 */
 .app-sidebar.collapsed {
-  width: 44px;
-  /* icon左边距10px + icon宽度24px + 右边距10px */
+  width: var(--sidebar-width-collapsed);
+  /* 统一的折叠宽度60px */
+  min-width: var(--sidebar-width-collapsed);
   overflow: hidden;
 }
 
@@ -554,7 +555,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     z-index: 1000;
     transform: translateX(-100%);
     transition: transform var(--duration-300) var(--ease-in-out);
@@ -574,6 +575,7 @@
 
   .app-layout:not(.mobile) .app-sidebar.collapsed {
     width: var(--sidebar-width-collapsed);
+    min-width: var(--sidebar-width-collapsed);
   }
 
   .sidebar-toggle {
@@ -588,6 +590,25 @@
 
   .sidebar-nav {
     padding: var(--spacing-3);
+  }
+}
+
+/* iPad mini和平板设备特殊处理 - 确保侧边栏正常显示 */
+@media (max-width: 768px) and (min-width: 481px) {
+  /* 对于没有mobile类的小屏幕设备（如iPad mini），确保侧边栏正常显示 */
+  .app-layout:not(.mobile) .app-sidebar {
+    display: flex;
+    position: relative;
+    transform: none;
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    height: calc(100% - 26px);
+    margin: 10px var(--spacing-3) var(--spacing-4) var(--spacing-3);
+  }
+
+  .app-layout:not(.mobile) .app-sidebar.collapsed {
+    width: var(--sidebar-width-collapsed);
+    min-width: var(--sidebar-width-collapsed);
   }
 }
 
