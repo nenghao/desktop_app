@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奇境探索</title>
+
+    <!-- Apple Sign In 配置 -->
+    <meta name="appleid-signin-client-id" content="com.questech.signin.web">
+    <meta name="appleid-signin-scope" content="name email">
+    <meta name="appleid-signin-redirect-uri" content="https://baizesz.com/auth/apple/callback">
+    <meta name="appleid-signin-state" content="">
+    <meta name="appleid-signin-use-popup" content="false">
+
+    <!-- Content Security Policy - 开发环境暂时禁用 -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="..."> -->
+
+    <!-- 主样式文件 - 统一管理所有样式导入 -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="src/assets/icons/app-icons/favicon.svg">
+  <script type="module" crossorigin src="./js/main-DmeZ5K25.js"></script>
+  <link rel="modulepreload" crossorigin href="./js/core-C2MSAdgn.js">
+  <link rel="modulepreload" crossorigin href="./js/services-iqXDlXJ-.js">
+  <link rel="modulepreload" crossorigin href="./js/components-BsHVTKmc.js">
+  <link rel="modulepreload" crossorigin href="./js/layout-BontqRIH.js">
+  <link rel="stylesheet" crossorigin href="./css/main-BGQJJ0kK.css">
+</head>
+
+<body class="theme-auto">
+
+    <!-- 应用根容器 -->
+    <div id="app">
+        <!-- 应用内容将在这里动态渲染 -->
+    </div>
+
+
+
+    <!-- 错误边界 -->
+    <div id="error-boundary" class="error-boundary" style="display: none;">
+        <div class="error-content">
+            <div class="error-icon">⚠️</div>
+            <h2>应用出现错误</h2>
+            <p id="error-message">应用遇到了意外错误，请刷新页面重试。</p>
+            <div class="error-actions">
+                <button id="reload-app" class="btn btn-primary">重新加载</button>
+                <button id="report-error" class="btn btn-secondary">报告错误</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知容器 -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- 模态框容器 -->
+    <div id="modal-container" class="modal-container"></div>
+
+    <!-- Apple Sign In SDK - 必须在 body 底部加载 -->
+    <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+
+    <!-- 应用脚本 -->
+</body>
+
+</html>

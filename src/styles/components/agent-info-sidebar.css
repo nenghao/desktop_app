@@ -1,0 +1,343 @@
+/**
+ * 智能体信息侧边栏样式
+ */
+
+.agent-info-sidebar {
+  position: fixed;
+  top: 40px;
+  right: 1px;
+  bottom: var(--spacing-1);
+  width: 360px;
+  background: var(--color-surface);
+  border-radius: var(--border-radius-xl);
+  box-shadow: 0 0 20px var(--color-shadow), 0 0 15px var(--color-shadow);
+  z-index: var(--z-index-sticky);
+  transform: translateX(calc(100% + var(--spacing-4)));
+  transition: transform var(--duration-300) var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.agent-info-sidebar.show {
+  transform: translateX(0);
+}
+
+/* 头部区域 */
+.agent-info-sidebar-header {
+  position: absolute;
+  height: var(--header-height);
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-2) var(--spacing-3);
+  padding-left: var(--spacing-4);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+  z-index: 20;
+  background: var(--color-surface);
+}
+
+.agent-info-sidebar-header h3 {
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.agent-info-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+/* 内容区域 */
+.agent-info-content {
+  position: absolute;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  padding: var(--spacing-3);
+}
+
+.agent-info-main {
+  position: relative; /* 为固定按钮提供定位上下文 */
+}
+
+.agent-info-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* 基本信息区域 */
+.agent-basic-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding-bottom: var(--spacing-3);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+}
+
+.agent-icon-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-2);
+}
+
+.agent-icon-large {
+  font-size: 4rem;
+  line-height: 1;
+  text-align: center;
+}
+
+/* 图片图标样式（支持 URL 加载的 SVG/PNG） */
+.agent-icon-large .icon-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.agent-details-section {
+  text-align: center;
+}
+
+.agent-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.agent-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0 0 var(--spacing-3) 0;
+}
+
+.agent-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-xs);
+}
+
+.agent-meta span {
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-tertiary);
+}
+
+.agent-meta .agent-type.python {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.agent-meta .agent-type.web {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.agent-meta .agent-type.api {
+  background: #e8f5e8;
+  color: #388e3c;
+}
+
+/* 功能区域 */
+.agent-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.section-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  padding-bottom: var(--spacing-1);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+}
+
+/* 功能特性列表 */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.feature-list li {
+  padding: var(--spacing-2);
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.feature-list li::before {
+  content: "✓";
+  color: var(--color-success);
+  font-weight: bold;
+  margin-right: var(--spacing-2);
+}
+
+/* 使用示例 */
+.examples-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.example-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2);
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-sm);
+}
+
+.example-code {
+  flex: 1;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+  background: var(--color-background-tertiary);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius-xs);
+}
+
+.example-try-btn {
+  flex-shrink: 0;
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: background-color var(--duration-200) var(--ease-in-out);
+}
+
+.example-try-btn:hover {
+  background: var(--color-primary-hover);
+}
+
+/* 智能体操作 */
+.agent-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+/* 固定按钮 - 悬浮在右上角 */
+.pin-agent-button {
+  position: absolute;
+  top: var(--spacing-4);
+  right: var(--spacing-4);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: var(--spacing-2);
+  background: var(--color-background-secondary);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--border-radius-full);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-in-out);
+  box-shadow: var(--shadow-sm);
+}
+
+.pin-agent-button:hover {
+  background: var(--color-background-tertiary);
+  border-color: var(--color-border-hover);
+  color: var(--color-text-primary);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.pin-agent-button.pinned {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pin-agent-button.pinned:hover {
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
+/* 图标旋转效果 */
+.pin-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--duration-200) var(--ease-in-out);
+}
+
+.pin-icon.rotated {
+  transform: rotate(45deg);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .agent-info-sidebar {
+    width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .agent-info-sidebar {
+    width: calc(100vw - var(--spacing-4));
+    right: var(--spacing-2);
+  }
+}
+
+/* 滚动条样式 */
+.agent-info-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.agent-info-content::-webkit-scrollbar-track {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-sm);
+}
+
+.agent-info-content::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--border-radius-sm);
+}
+
+.agent-info-content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
+}
+
+/* 动画效果 */
+.agent-info-sidebar * {
+  transition: all var(--duration-200) var(--ease-in-out);
+}
+
+/* 减少动画的用户偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .agent-info-sidebar,
+  .agent-info-sidebar * {
+    transition: none;
+  }
+}

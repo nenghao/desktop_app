@@ -1,0 +1,436 @@
+/**
+ * 用户资料模态框专用样式
+ * 只包含用户资料界面特有的样式，基础模态框样式由 modal.css 提供
+ */
+
+/* 主容器 */
+.profile-container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.profile-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-primary, #1a1a1a);
+  margin: 0;
+}
+
+/* 头像区域 */
+.avatar-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.avatar-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: var(--color-text-inverse, white);
+  transition: all 0.2s ease;
+}
+
+.profile-avatar img {
+  background: white;
+  border-radius: 50%;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.profile-avatar i {
+  font-size: 32px;
+}
+
+.avatar-edit-btn {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 28px;
+  height: 28px;
+  background: var(--color-surface, #ffffff);
+  border: 2px solid var(--color-primary, #6366f1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px var(--color-shadow, rgba(0, 0, 0, 0.1));
+}
+
+.avatar-edit-btn:hover {
+  background: var(--color-primary, #6366f1);
+  transform: scale(1.1);
+}
+
+.avatar-edit-btn:hover svg {
+  color: white;
+}
+
+.avatar-edit-btn svg {
+  width: 12px;
+  height: 12px;
+  color: var(--color-primary, #6366f1);
+  transition: color 0.2s ease;
+}
+
+.user-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-success, #10b981);
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.online {
+  background: var(--color-success, #10b981);
+}
+
+.status-text {
+  font-size: 12px;
+  color: var(--color-text-secondary, #666666);
+  font-weight: 500;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* 详细信息 */
+.profile-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-tertiary, #9ca3af);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  font-size: 14px;
+  color: var(--color-text-primary, #1a1a1a);
+  font-weight: 500;
+  padding: 12px 16px;
+  background: var(--color-surface-secondary, #f8f9fa);
+  border-radius: 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  transition: all 0.2s ease;
+}
+
+.detail-value.readonly {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.detail-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.detail-input {
+  width: 100%;
+  font-size: 14px;
+  color: var(--color-text-primary, #1a1a1a);
+  font-weight: 500;
+  padding: 12px 50px 12px 16px;
+  background: var(--color-surface-secondary, #f8f9fa);
+  border-radius: 12px;
+  border: 2px solid var(--color-border, #e5e7eb);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.detail-input:focus {
+  outline: none;
+  border-color: var(--color-primary, #6366f1);
+  box-shadow: 0 0 0 3px var(--color-shadow-focus, rgba(99, 102, 241, 0.1));
+  background: var(--color-surface, #ffffff);
+}
+
+.detail-input:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+  background: var(--color-surface-secondary, #f8f9fa);
+}
+
+.edit-btn {
+  position: absolute;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+  background: var(--color-primary, #6366f1);
+}
+
+.edit-btn:hover svg {
+  color: white;
+}
+
+.edit-btn.editing {
+  background: var(--color-primary, #6366f1);
+}
+
+.edit-btn.editing svg {
+  color: white;
+}
+
+.edit-btn svg {
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-secondary, #666666);
+  transition: color 0.2s ease;
+}
+
+.detail-id {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  color: var(--color-text-secondary, #666666);
+}
+
+/* 操作按钮区域 */
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* 账户操作按钮组 */
+.account-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 60px;
+}
+
+/* 确保所有按钮使用相同的样式类 */
+.profile-actions .action-btn,
+.account-actions .action-btn {
+  width: 100%;
+  height: 44px;
+  border: none;
+  /* border-radius: 12px; */
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.profile-actions .action-btn.secondary,
+.account-actions .action-btn.secondary {
+  /* background: var(--color-surface-secondary, #f8f9fa); */
+  color: var(--color-text-secondary, #666666);
+  /* border: 1px solid var(--color-border, #e5e7eb); */
+}
+
+.profile-actions .action-btn.secondary:hover:not(:disabled),
+.account-actions .action-btn.secondary:hover:not(:disabled) {
+  background: var(--color-surface-hover, #f1f3f4);
+  border-color: var(--color-border-hover, #d1d5db);
+  color: var(--color-text-primary, #1a1a1a);
+}
+
+.profile-actions .action-btn.danger,
+.account-actions .action-btn.danger {
+  /* background: var(--color-surface-secondary); */
+  color: var(--color-text-tertiary);
+  /* border: 1px solid var(--color-border); */
+  opacity: 0.9;
+  cursor: default;
+  transition: none;
+}
+
+.profile-actions .action-btn.danger:hover:not(:disabled),
+.account-actions .action-btn.danger:hover:not(:disabled) {
+  background: var(--color-surface-secondary);
+  border-color: var(--color-border);
+  color: var(--color-text-tertiary);
+  opacity: 1;
+  transform: none;
+}
+
+.profile-actions .action-btn:disabled,
+.account-actions .action-btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  transform: none !important;
+}
+
+.profile-btn {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.profile-btn.primary {
+  background: var(--color-primary, #6366f1);
+  color: var(--color-text-inverse, white);
+  box-shadow: 0 4px 12px var(--color-shadow-modal, rgba(99, 102, 241, 0.3));
+}
+
+.profile-btn.primary:hover:not(:disabled) {
+  background: var(--color-primary-hover, #5855eb);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px
+    var(--color-shadow-modal-hover, rgba(99, 102, 241, 0.4));
+}
+
+.profile-btn.secondary {
+  background: var(--color-surface-secondary, #f8f9fa);
+  color: var(--color-text-secondary, #666666);
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.profile-btn.secondary:hover:not(:disabled) {
+  background: var(--color-surface-hover, #f1f3f4);
+  border-color: var(--color-border-hover, #d1d5db);
+  color: var(--color-text-primary, #1a1a1a);
+}
+
+.profile-btn.danger {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-tertiary);
+  border: 1px solid var(--color-border);
+  opacity: 0.6;
+  cursor: default;
+  transition: none;
+}
+
+.profile-btn.danger:hover:not(:disabled) {
+  background: var(--color-surface-secondary);
+  border-color: var(--color-border);
+  color: var(--color-text-tertiary);
+  opacity: 0.6;
+  transform: none;
+}
+
+.profile-btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  transform: none !important;
+}
+
+.btn-icon {
+  font-size: 16px;
+}
+
+.btn-text {
+  font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 30px 20px;
+  }
+
+  .profile-header h2 {
+    font-size: 20px;
+  }
+
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+  }
+
+  .avatar-edit-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .avatar-edit-btn svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .profile-details {
+    gap: 16px;
+  }
+}
+
+/* 积分相关样式 */
+.credits-value {
+  color: var(--color-success, #4caf50);
+  font-weight: 600;
+}
+
+/* 邮箱输入框样式 */
+.detail-item.editable input[type="email"] {
+  font-family: inherit;
+}
+
+/* 暗色主题支持已移除 - 使用CSS变量系统自动处理 */

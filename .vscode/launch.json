@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Electron Dev",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "args": ["."],
+            "outputCapture": "std",
+            "env": {
+                "NODE_ENV": "development",
+                "ELECTRON_ENABLE_LOGGING": "1"
+            },
+            "console": "integratedTerminal",
+            "preLaunchTask": "npm: dev"
+        },
+        {
+            "name": "Launch Electron Dev (NPM)",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "electron:dev"],
+            "outputCapture": "std",
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "console": "integratedTerminal",
+            "skipFiles": ["<node_internals>/**"]
+        }
+    ]
+}

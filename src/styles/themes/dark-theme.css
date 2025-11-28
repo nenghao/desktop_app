@@ -1,0 +1,90 @@
+/**
+ * 深色主题
+ * 仅包含深色主题特有的颜色映射，引用基础调色板中的颜色
+ */
+
+.theme-dark {
+  /* 主要颜色 */
+  --color-primary: var(--blue-400);
+  --color-primary-hover: var(--blue-300);
+  --color-primary-active: var(--blue-200);
+  --color-primary-light: var(--blue-900);
+  --color-primary-dark: var(--blue-600);
+
+  /* 次要颜色 */
+  --color-secondary: var(--gray-400);
+  --color-secondary-hover: var(--gray-300);
+  --color-secondary-active: var(--gray-200);
+  --color-secondary-light: var(--gray-800);
+
+  /* 背景颜色 */
+  --color-background: #121212;
+  --color-background-secondary: #1e1e1e;
+  --color-background-tertiary: #2d2d2d;
+  --color-background-elevated: #1e1e1e;
+  --color-background-overlay: rgba(0, 0, 0, 0.7);
+  --color-background-pure: #000000; /* 纯黑色 */
+  --color-backdrop-filter: rgba(255, 255, 255, 0.2);
+  --color-background-chat: #2d2d2d;
+
+  /* 表面颜色 */
+  --color-surface: #1e1e1e;
+  --color-surface-secondary: #2d2d2d;
+  --color-surface-tertiary: #3d3d3d;
+  --color-surface-hover: var(--gray-600);
+  --color-surface-active: var(--gray-700);
+
+  /* 文本颜色 */
+  --color-text-primary: var(--white);
+  --color-text-secondary: var(--gray-300);
+  --color-text-tertiary: var(--gray-500);
+  --color-text-quaternary: var(--gray-600);
+  --color-text-inverse: var(--gray-900);
+  --color-text-disabled: var(--gray-600);
+  --color-text-placeholder: var(--gray-500);
+
+  /* 边框颜色 */
+  --color-border: var(--gray-700);
+  --color-border-hover: var(--gray-600);
+  --color-border-focus: var(--blue-400);
+  --color-border-active: var(--blue-300);
+  --color-border-disabled: var(--gray-700);
+
+  /* 状态颜色 */
+  --color-success: var(--green-400);
+  --color-success-hover: var(--green-300);
+  --color-success-light: var(--green-900);
+  --color-success-dark: var(--green-500);
+
+  --color-warning: var(--orange-400);
+  --color-warning-hover: var(--orange-300);
+  --color-warning-light: var(--orange-900);
+  --color-warning-dark: var(--orange-500);
+
+  --color-error: var(--red-600);
+  --color-error-hover: var(--red-300);
+  --color-error-light: var(--red-900);
+  --color-error-dark: var(--red-500);
+
+  --color-info: var(--cyan-400);
+  --color-info-hover: var(--cyan-300);
+  --color-info-light: var(--cyan-900);
+  --color-info-dark: var(--cyan-500);
+
+  /* 阴影颜色 */
+  --color-shadow: rgba(0, 0, 0, 0.3);
+  --color-shadow-hover: rgba(0, 0, 0, 0.4);
+  --color-shadow-focus: rgba(66, 165, 245, 0.25);
+  --color-shadow-modal: rgba(0, 0, 0, 0.4);
+  --color-shadow-modal-hover: rgba(0, 0, 0, 0.5);
+  --color-box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
+  
+  /* 分割线颜色 */
+  --color-divider: var(--gray-700);
+  --color-divider-light: var(--gray-800);
+
+  /* 链接颜色 */
+  --color-link: var(--blue-400);
+  --color-link-hover: var(--blue-300);
+  --color-link-visited: var(--purple-400);
+}

@@ -1,0 +1,853 @@
+/**
+ * AgentStore 视图样式
+ */
+
+.agent-store-agent-store {
+  /* width: 100%; */
+  height: 100%;
+  padding: var(--agent-list-padding);
+  padding-top: var(--header-height);
+  padding-bottom: 0;
+  overflow-y: auto;
+}
+
+/* 头部样式 */
+.agent-store-header {
+  margin-bottom: var(--spacing-6);
+  text-align: center;
+}
+
+.agent-store-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.agent-store-header p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* 智能体网格 */
+.agent-store-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--agent-list-padding);
+  padding: var(--agent-list-padding) 0;
+}
+
+/* 卡片内容区域 */
+.agent-store-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* 智能体卡片样式 - 深浅模式适配 */
+.agent-store-card {
+  background: var(--color-surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: var(--spacing-3);
+  transition: all var(--duration-200) var(--ease-out);
+  cursor: pointer;
+  position: relative;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--color-shadow);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  text-align: center;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  max-width: 400px;
+}
+
+.agent-store-card:hover {
+  color: var(--color-text-primary);
+  box-shadow: var(--color-shadow-hover);
+  border-color: var(--color-text-secondary);
+}
+
+.agent-store-card.featured {
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary-light);
+}
+
+.agent-store-card.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.agent-store-card.disabled:hover {
+  transform: none;
+}
+
+.agent-store-card h3 {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.agent-store-card p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-4);
+}
+
+/* 推荐标签和火爆标识 */
+.agent-store-badge {
+  position: absolute;
+  top: var(--spacing-3);
+  right: var(--spacing-3);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  z-index: 10;
+  background: var(--color-surface-secondary);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--color-shadow);
+}
+
+/* 火爆标识 */
+.agent-store-hot-badge {
+  position: absolute;
+  top: var(--spacing-2);
+  right: var(--spacing-2);
+  font-size: var(--font-size-xs);
+  z-index: 2;
+  font-size: 20px;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+}
+
+/* 更新标识 */
+.agent-store-update-badge {
+  position: absolute;
+  top: var(--spacing-2);
+  left: var(--spacing-2);
+  font-size: var(--font-size-xs);
+  z-index: 2;
+  font-size: 20px;
+  width: 18px;
+  height: 18px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* 卡片标题区域 */
+.agent-store-title {
+  margin-bottom: var(--spacing-4);
+  flex-shrink: 0;
+}
+
+.agent-store-title h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 卡片描述区域 */
+.agent-store-description {
+  margin-bottom: var(--spacing-4);
+  flex: 1;
+}
+
+.agent-store-description p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* 标签区域 */
+.agent-store-tags {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+  flex-shrink: 0;
+}
+
+.agent-store-tags-left {
+  display: flex;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+}
+
+.agent-store-tags-right {
+  margin-left: auto;
+}
+
+.agent-store-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-xs);
+  line-height: 1;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  height: 20px;
+}
+
+.agent-store-tag-subject {
+  background: var(--color-background-tertiary);
+}
+
+.agent-store-tag-version {
+  background: var(--color-surface-tertiary);
+  color: var(--color-text-tertiary);
+}
+
+.agent-store-tag-local {
+  background: var(--color-success);
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 统计信息区域 */
+.agent-store-stats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-2);
+  margin-top: auto;
+  padding-top: var(--spacing-2);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.agent-store-stats-right {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.agent-store-stat-item {
+  display: flex;
+  padding: var(--spacing-2) var(--spacing-3);
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--spacing-1);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+  background: var(--color-background-tertiary);
+  width: fit-content;
+  flex-shrink: 0;
+  height: 25px;
+}
+
+.agent-store-stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.agent-store-stat-icon svg {
+  display: block;
+  width: 13px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.agent-store-stat-value {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.agent-store-install-status {
+  align-items: center;
+  min-width: 60px;
+  padding: var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.agent-store-install-status:hover {
+  background: var(--color-primary-light);
+}
+
+.agent-store-install-status.disabled {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-disabled);
+  pointer-events: none;
+}
+
+.agent-store-install-status.disabled:hover {
+  transform: none;
+}
+
+.agent-store-install-status.disabled:hover {
+  background: var(--color-surface-secondary);
+}
+
+.agent-store-install-status.available {
+  background: var(--color-success);
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-medium);
+}
+
+.agent-store-install-status.available:hover {
+  background: var(--color-success-hover);
+}
+
+/* 更新按钮样式 */
+.agent-store-install-status.agent-store-update {
+  background: var(--color-warning);
+  color: white;
+  font-weight: var(--font-weight-bold);
+  animation: glow 2s ease-in-out infinite;
+}
+
+.agent-store-install-status.agent-store-update:hover {
+  background: var(--color-warning-hover);
+  box-shadow: 0 0 10px var(--color-warning);
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px var(--color-warning);
+  }
+  50% {
+    box-shadow: 0 0 15px var(--color-warning);
+  }
+}
+
+/* 智能体操作按钮 */
+.agent-store-actions {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.agent-store-btn {
+  padding: var(--spacing-2) var(--spacing-4);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-in-out);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.agent-store-btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.agent-store-btn-primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.agent-store-btn-secondary {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.agent-store-btn-secondary:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.agent-store-btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  transform: none !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .agent-store-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .agent-store-agent-store {
+    padding-left: var(--spacing-6);
+    padding-right: var(--spacing-6);
+  }
+
+  .agent-store-search-container {
+    top: var(--spacing-4);
+    right: var(--spacing-4);
+  }
+
+  .agent-store-search-box.active {
+    width: 250px;
+  }
+
+  .agent-store-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+    padding: var(--spacing-6) 0;
+  }
+
+  .agent-store-card {
+    padding: var(--spacing-5);
+    min-height: 260px;
+  }
+
+  .agent-store-stats {
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+  }
+
+  .agent-store-stat-action {
+    margin-left: 0;
+    width: 100%;
+    margin-top: var(--spacing-2);
+  }
+
+  .agent-store-install-status {
+    width: 100%;
+    justify-content: center;
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .agent-store-agent-store {
+    padding-left: var(--spacing-4);
+    padding-right: var(--spacing-4);
+  }
+
+  .agent-store-search-box.active {
+    width: 200px;
+  }
+
+  .agent-store-header h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  .agent-store-header p {
+    font-size: var(--font-size-md);
+  }
+
+  .agent-store-card {
+    padding: var(--spacing-4);
+    min-height: 240px;
+  }
+
+  .agent-store-title h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  .agent-store-description p {
+    font-size: var(--font-size-xs);
+  }
+
+  .agent-store-badge {
+    top: var(--spacing-3);
+    right: var(--spacing-3);
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: 10px;
+  }
+}
+
+/* 插件商店特有样式 */
+
+/* 商店头部标签页 */
+.agent-store-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-6);
+  padding: var(--spacing-4) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.agent-store-tabs {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.agent-store-tab-button {
+  padding: var(--spacing-2) var(--spacing-4);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.agent-store-tab-button:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.agent-store-tab-button.active {
+  background: var(--color-primary);
+  color: white;
+}
+
+.agent-store-actions {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.agent-store-refresh-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.agent-store-refresh-button:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.agent-store-refresh-button.loading .agent-store-refresh-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 插件卡片特有样式 */
+.agent-store-plugin-card {
+  position: relative;
+}
+
+.agent-store-plugin-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--spacing-3);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  background: var(--color-surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.agent-store-plugin-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 插件状态样式 */
+.agent-store-install-status.running {
+  background: var(--color-success);
+  color: white;
+}
+
+.agent-store-install-status.installed {
+  background: var(--color-info);
+  color: white;
+}
+
+.agent-store-install-status.installing {
+  background: var(--color-warning);
+  color: white;
+  pointer-events: none;
+}
+
+/* 插件类型标签 */
+.agent-store-tag-type {
+  background: var(--color-secondary);
+  color: white;
+}
+
+/* 空状态样式 */
+.agent-store-empty-state,
+.agent-store-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8);
+  text-align: center;
+  grid-column: 1 / -1;
+  min-height: 500px;
+}
+
+/* 使用统一的错误状态样式（与 Dashboard 一致） */
+.agent-store-error-state .error-content {
+  text-align: center;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.agent-store-error-state .error-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background-secondary);
+  border-radius: 50%;
+  margin-bottom: var(--spacing-2);
+  transition: transform var(--duration-300) var(--ease-out);
+}
+
+.agent-store-error-state .error-content:hover .error-icon-wrapper {
+  transform: scale(1.05);
+}
+
+.agent-store-error-state .error-state-icon {
+  width: 48px;
+  height: 48px;
+  stroke: var(--error-icon-color, #9CA3AF);
+}
+
+.agent-store-error-state .error-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  text-align: center;
+  cursor: default;
+  user-select: text;
+}
+
+.agent-store-error-state .error-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  cursor: default;
+  user-select: text;
+}
+
+.agent-store-error-state .error-message {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  line-height: var(--line-height-normal);
+  cursor: default;
+  user-select: text;
+}
+
+.agent-store-error-state .error-retry-btn {
+  margin-top: var(--spacing-5);
+  padding: var(--spacing-3) var(--spacing-8);
+  background: var(--color-primary-light);
+  color: var(--color-text-primary);
+  border: none;
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-out);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+  min-width: 160px;
+}
+
+.agent-store-error-state .error-retry-btn:hover {
+  background: var(--color-primary-light);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.agent-store-error-state .error-retry-btn:active {
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+/* 保持旧的空状态图标样式（如果需要） */
+.agent-store-empty-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-4);
+  opacity: 0.5;
+}
+
+.agent-store-empty-state h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.agent-store-empty-state p {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-4);
+}
+
+/* 加载状态样式 */
+.agent-store-loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8);
+  text-align: center;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.agent-store-loading-state p {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.agent-store-retry-button {
+  padding: var(--spacing-2) var(--spacing-4);
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.agent-store-retry-button:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* 骨架屏样式 */
+.agent-store-skeleton-card {
+  pointer-events: none;
+  cursor: default;
+}
+
+.agent-store-skeleton-card:hover {
+  transform: none;
+  box-shadow: var(--color-shadow);
+  border-color: var(--color-border);
+}
+
+/* 骨架屏基础线条 */
+.skeleton-line {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-secondary) 0%,
+    var(--color-surface-hover) 50%,
+    var(--color-surface-secondary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--border-radius-sm);
+}
+
+/* Shimmer 动画 */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 标题骨架 */
+.skeleton-title {
+  height: 24px;
+  width: 60%;
+  margin: 0 auto;
+}
+
+/* 文本骨架 */
+.skeleton-text {
+  height: 14px;
+  width: 100%;
+  margin-bottom: var(--spacing-2);
+}
+
+.skeleton-text-short {
+  height: 14px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* 标签骨架 */
+.skeleton-tag {
+  height: 20px;
+  width: 50px;
+  border-radius: var(--border-radius-md);
+}
+
+/* 图标骨架 */
+.skeleton-icon {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+}
+
+/* 统计值骨架 */
+.skeleton-stat {
+  height: 14px;
+  width: 30px;
+}
+
+/* 按钮骨架 */
+.skeleton-button {
+  height: 25px;
+  width: 60px;
+  border-radius: var(--border-radius-md);
+}
