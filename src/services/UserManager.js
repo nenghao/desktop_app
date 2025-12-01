@@ -302,7 +302,7 @@ export class UserManager {
     const avatarFileName = avatarName.replace('.svg', '');
 
     // 返回绝对路径
-    return `/src/assets/icons/avatar/${avatarFileName}.svg`;
+    return `/src/assets/avatar/${avatarFileName}.svg`;
   }
 
   /**

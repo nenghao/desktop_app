@@ -81,10 +81,12 @@
       "dist/**/*",
       "electron/**/*",
       "node_modules/**/*",
-      "package.json"
+      "package.json",
+      "src/assets/icons/**/*"
     ],
     "asarUnpack": [
-      "node_modules/electron/**/*"
+      "node_modules/electron/**/*",
+      "src/assets/icons/**/*"
     ],
     "electronLanguages": [
       "en-US",
@@ -94,15 +96,15 @@
     ],
     "extraResources": [
       {
-        "from": "src/assets/icons/avatar/",
-        "to": "assets/icons/avatar/",
+        "from": "src/assets/avatar/",
+        "to": "assets/avatar/",
         "filter": [
           "**/*.svg"
         ]
       }
     ],
     "mac": {
-      "icon": "src/assets/icons/mac/icon.icns",
+      "icon": "src/assets/icon.icns",
       "category": "public.app-category.productivity",
       "target": [
         {

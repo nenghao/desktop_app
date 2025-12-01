@@ -94,23 +94,30 @@ function getAssetPath(relativePath) {
   if (isDev) {
     return path.join(__dirname, '../', relativePath);
   } else {
-    return path.join(app.getAppPath(), relativePath);
+    // 在打包后的应用中，图标文件可能在不同位置
+    if (process.platform === 'darwin') {
+      // macOS: 图标通常在 Resources 目录
+      return path.join(process.resourcesPath, relativePath);
+    } else {
+      // Windows/Linux: 在应用目录
+      return path.join(app.getAppPath(), relativePath);
+    }
   }
 }
 
 // 定义获取资源URL的辅助函数
 function getResourcePath(relativePath) {
   // avatar SVG资源特殊处理
-  if (relativePath.startsWith('src/assets/icons/avatar/') || relativePath.startsWith('assets/icons/avatar/')) {
+  if (relativePath.startsWith('src/assets/avatar/') || relativePath.startsWith('assets/avatar/')) {
     // 标准化路径
-    const normalizedPath = relativePath.replace('src/assets/icons/avatar/', '').replace('assets/icons/avatar/', '');
+    const normalizedPath = relativePath.replace('src/assets/avatar/', '').replace('assets/avatar/', '');
 
     if (isDev) {
       // 开发模式：直接返回相对路径
-      return `file://${path.join(__dirname, '../src/assets/icons/avatar', normalizedPath).replace(/\\/g, '/')}`;
+      return `file://${path.join(__dirname, '../src/assets/avatar', normalizedPath).replace(/\\/g, '/')}`;
     } else {
       // 生产模式：返回打包后的路径
-      return `file://${path.join(app.getAppPath(), 'assets/icons/avatar', normalizedPath).replace(/\\/g, '/')}`;
+      return `file://${path.join(app.getAppPath(), 'assets/avatar', normalizedPath).replace(/\\/g, '/')}`;
     }
   }
 
@@ -147,7 +154,7 @@ function createDocumentWindow(options = {}) {
     y,
     title,
     show: false, // 先不显示，等内容加载后再显示
-    icon: path.join(__dirname, '../src/assets/icons/icon.png'),
+    icon: getAssetPath('src/assets/icons/icon.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -228,7 +235,7 @@ function openSplitPanelDemo() {
     minWidth: 800,
     minHeight: 600,
     title: '双面板演示 - 奇境探索',
-    icon: path.join(__dirname, '../src/assets/icons/icon.png'),
+    icon: getAssetPath('src/assets/icons/icon.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -266,7 +273,7 @@ async function createMainWindow() {
     minWidth: 900,
     minHeight: 600,
     show: false, // 先不显示，等加载完成后再显示
-    icon: path.join(__dirname, '../src/assets/icons/icon.png'),
+    icon: getAssetPath('src/assets/icons/icon.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -515,7 +522,7 @@ function openPluginDebugger() {
     minWidth: 800,
     minHeight: 600,
     title: '插件调试器',
-    icon: path.join(__dirname, '../src/assets/icons/icon.png'),
+    icon: getAssetPath('src/assets/icons/icon.png'),
     webPreferences: {
       nodeIntegration: true, // 调试窗口需要访问文件系统
       contextIsolation: false,
@@ -641,7 +648,8 @@ function getMenuTemplate() {
 
   const menuTemplate = [
     {
-      label: process.platform === 'darwin' ? '奇境探索' : 'app.icon',
+      label: process.platform === 'darwin' || process.platform === 'win32' ? '关于' : '',
+      icon: process.platform !== 'darwin' && process.platform !== 'win32' ? path.join(__dirname, '../src/assets/icons/png/32x32.png') : undefined,
       submenu: [
         {
           id: 'about',
@@ -711,11 +719,17 @@ function getMenuTemplate() {
 
   // macOS 特殊处理
   if (process.platform === 'darwin') {
-    menuTemplate[0].submenu.unshift({
-      id: 'services',
-      label: '服务',
-      submenu: []
-    });
+    // 找到偏好设置的位置
+    const preferencesIndex = menuTemplate[0].submenu.findIndex(item => item.id === 'preferences');
+
+    if (preferencesIndex > -1) {
+      // 在偏好设置之后插入服务菜单
+      menuTemplate[0].submenu.splice(preferencesIndex + 1, 0, {
+        id: 'services',
+        label: '服务',
+        submenu: []
+      });
+    }
 
     // 找到窗口菜单的索引（可能因为添加了 Debug 菜单而改变）
     const windowMenuIndex = menuTemplate.findIndex(menu => menu.label === '窗口');
