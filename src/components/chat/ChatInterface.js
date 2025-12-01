@@ -866,6 +866,9 @@ class ApiService {
         const respondingMessage = this.chatListView.messages.find(m => m.isResponding === true);
 
         if (respondingMessage) {
+          // 首先标记为错误消息
+          respondingMessage.isError = true;
+
           // 如果有正在响应的消息，更新为错误消息
           this.chatListView.updateStreamMessage(
             `错误: ${event.error}`,
@@ -875,9 +878,6 @@ class ApiService {
           );
           // 结束响应状态，隐藏加载动画
           this.chatListView.finishStreamMessage();
-
-          // 标记为错误消息
-          respondingMessage.isError = true;
         } else {
           // 如果没有正在响应的消息，添加新的错误消息
           this.chatListView.addMessage({
@@ -1018,35 +1018,141 @@ class ApiService {
   }
 
   /**
-   * 处理重试
+   * 处理重试 - 处理所有类型的错误消息
    */
   handleRetry(message) {
-    // 找到对应的用户消息
-    const messageIndex = this.chatListView.messages.findIndex(
-      (m) => m.id == message.id
-    );
-    if (messageIndex > 0) {
-      const userMessage = this.chatListView.messages[messageIndex - 1];
-      if (userMessage.type === "user") {
-        // 保存用户消息内容
-        const userContent = userMessage.content;
+    console.log('🔄 处理重试消息:', message);
 
-        // 批量删除失败的AI消息和用户消息
-        this.chatListView.removeMessages([userMessage.id, message.id]);
+    // 查找对应的用户消息（更健壮的查找逻辑）
+    const userMessage = this.findCorrespondingUserMessage(message);
 
-        // 重新发送用户消息
-        this.handleSendMessage(userContent, {
-          model: this.chatInput.currentModel,
-          role: this.chatInput.currentRole,
-          networkMode: this.configCacheService.getCachedSetting(
-            "networkMode",
-            false
-          ),
-          thinking: this.chatInput.thinking,
-          reasoning: this.chatInput.reasoning,
-        });
+    if (userMessage) {
+      console.log('✅ 找到对应的用户消息:', userMessage);
+      // 保存用户消息内容
+      const userContent = userMessage.content;
+
+      // 收集需要删除的消息ID
+      const messagesToDelete = new Set([message.id]); // 始终删除当前错误消息
+
+      // 如果找到用户消息，也删除它
+      if (userMessage.id !== message.id) {
+        messagesToDelete.add(userMessage.id);
+      }
+
+      // 查找并删除所有相关的失败消息
+      const relatedErrorMessages = this.findRelatedErrorMessages(userMessage, message);
+      relatedErrorMessages.forEach(errorMsg => {
+        messagesToDelete.add(errorMsg.id);
+      });
+
+      // 转换为数组
+      const messagesToDeleteArray = Array.from(messagesToDelete);
+      console.log('🗑️ 删除所有相关失败消息:', messagesToDeleteArray);
+
+      // 批量删除失败的消息
+      this.chatListView.removeMessages(messagesToDeleteArray);
+
+      // 重新发送用户消息
+      console.log('📤 重新发送消息:', userContent);
+      this.handleSendMessage(userContent, {
+        model: this.chatInput.currentModel,
+        role: this.chatInput.currentRole,
+        networkMode: this.configCacheService.getCachedSetting(
+          "networkMode",
+          false
+        ),
+        thinking: this.chatInput.thinking,
+        reasoning: this.chatInput.reasoning,
+      });
+    } else {
+      console.warn('⚠️ 未找到对应的用户消息，无法重试');
+      this.showToast('未找到对应的用户消息，无法重试', 'error');
+    }
+  }
+
+  /**
+   * 查找与用户消息相关的所有错误消息
+   */
+  findRelatedErrorMessages(userMessage, currentError) {
+    const messages = this.chatListView.messages;
+    const userIndex = messages.findIndex(m => m.id === userMessage.id);
+    const relatedErrors = [];
+
+    if (userIndex === -1) return relatedErrors;
+
+    // 查找用户消息之后的所有错误消息，直到遇到正常的AI响应
+    for (let i = userIndex + 1; i < messages.length; i++) {
+      const msg = messages[i];
+
+      // 如果遇到正常的AI响应（非错误），停止查找
+      if (msg.type === 'assistant' && !msg.isError) {
+        break;
+      }
+
+      // 收集所有错误消息（不包括当前错误消息，避免重复）
+      if (msg.isError && msg.id !== currentError.id) {
+        relatedErrors.push(msg);
       }
     }
+
+    console.log('🔍 找到相关错误消息:', relatedErrors);
+    return relatedErrors;
+  }
+
+  /**
+   * 查找对应的用户消息 - 支持多种错误场景
+   */
+  findCorrespondingUserMessage(errorMessage) {
+    const messages = this.chatListView.messages;
+    const errorIndex = messages.findIndex(m => m.id === errorMessage.id);
+
+    if (errorIndex === -1) {
+      console.warn('错误消息未找到:', errorMessage.id);
+      return null;
+    }
+
+    console.log('🔍 查找失败消息对应的用户消息:', { errorMessage, errorIndex });
+
+    // 策略1: 如果是用户消息本身出错，直接返回
+    if (errorMessage.type === 'user') {
+      console.log('📝 策略1: 错误消息本身是用户消息，直接重试', errorMessage);
+      return errorMessage;
+    }
+
+    // 策略2: 向前查找最近的一条用户消息（跳过其他错误消息）
+    for (let i = errorIndex - 1; i >= 0; i--) {
+      const msg = messages[i];
+      console.log('🔍 检查消息:', msg);
+
+      if (msg.type === 'user') {
+        console.log('📝 策略2成功: 找到前向用户消息', msg);
+        return msg;
+      }
+      // 如果遇到其他AI错误消息，继续向前查找用户消息
+      if (msg.isError && msg.type === 'assistant') {
+        console.log('⏭️ 跳过其他AI错误消息，继续查找');
+        continue;
+      }
+    }
+
+    // 策略3: 在整个消息列表中查找最后一条用户消息（排除错误消息）
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const msg = messages[i];
+      if (msg.type === 'user' && !msg.isError) {
+        console.log('📝 策略3成功: 找到最后一条有效用户消息', msg);
+        return msg;
+      }
+    }
+
+    // 策略4: 如果只找到用户错误消息，使用最后一条用户消息（包括错误的）
+    const lastUserMessage = messages.slice().reverse().find(m => m.type === 'user');
+    if (lastUserMessage) {
+      console.log('📝 策略4成功: 使用最后一条用户消息（可能是错误消息）', lastUserMessage);
+      return lastUserMessage;
+    }
+
+    console.warn('❌ 所有策略都未找到对应的用户消息');
+    return null;
   }
 
   /**

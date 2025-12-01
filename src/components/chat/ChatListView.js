@@ -309,6 +309,16 @@ export class ChatListView {
      */
     renderMessageActions(message) {
         const isError = message.isError;
+
+        // 添加调试日志
+        if (isError) {
+            console.log('🔄 渲染错误消息的操作按钮:', {
+                messageId: message.id,
+                content: message.content || message.errorMessage,
+                isError
+            });
+        }
+
         return `
             <div class="message-actions">
                 <button class="action-btn" data-action="satisfied" data-message-id="${message.id}">
@@ -440,7 +450,7 @@ export class ChatListView {
     renderMarkdownFallback(content) {
         // 先保护代码块，避免被后续处理影响
         const codeBlocks = [];
-        let processedContent = content.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, lang, code) => {
+        let processedContent = content.replace(/```(\w+)?\n?([\s\S]*?)```/g, (_, lang, code) => {
             const langClass = lang ? ` class="language-${lang}"` : '';
             const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
             // 为代码块添加header
@@ -1272,7 +1282,7 @@ export class ChatListView {
 
         // 转换消息格式并加载
         if (messages && messages.length > 0) {
-            this.messages = messages.map((msg, index) => {
+            this.messages = messages.map((msg) => {
                 // 去除 content 和 reasoningContent 首尾换行符
                 let content = msg.content || '';
                 let reasoningContent = msg.reasoningContent || '';
