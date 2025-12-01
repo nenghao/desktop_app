@@ -311,6 +311,13 @@ ${"=".repeat(50)}
    * 发送AI聊天请求
    */
   async sendAIRequest(userMessage, options, userMessageId) {
+    // 确保等待 UserManager 初始化完成
+    if (this.userManager && this.userManager.ready) {
+      await this.userManager.ready();
+      // 添加短暂延迟确保状态完全同步
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
     // 检查用户登录状态
     if (!this.userManager || !this.userManager.isUserAuthenticated()) {
       throw new Error("请先登录");

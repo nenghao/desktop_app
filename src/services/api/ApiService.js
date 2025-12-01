@@ -456,8 +456,14 @@ export class ApiService {
    */
   getAuthToken() {
     // 首先尝试从 UserManager 获取token
-    if (this.userManager && this.userManager.getCurrentUser()) {
-      return this.userManager.getCurrentUser().access_token;
+    if (this.userManager) {
+      const currentUser = this.userManager.getCurrentUser();
+      if (currentUser && currentUser.access_token) {
+        return currentUser.access_token;
+      }
+      console.warn('⚠️ [ApiService.getAuthToken] 用户未登录或token不存在');
+    } else {
+      console.warn('⚠️ [ApiService.getAuthToken] UserManager未初始化');
     }
     // 备用: 不应该喻取localStorage，但提供一个恢复机制
     return null;

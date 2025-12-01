@@ -191,6 +191,16 @@ export class ChatApiService extends ApiService {
       throw new Error("请先登录");
     }
 
+    // 验证token格式（Bearer token通常是JWT，长度较长）
+    if (typeof token !== 'string' || token.length < 50) {
+      console.error('❌ [ChatApiService] Token格式无效:', {
+        hasToken: !!token,
+        tokenLength: token?.length || 0,
+        tokenType: typeof token
+      });
+      throw new Error("认证令牌无效，请重新登录");
+    }
+
     // 如果有当前会话ID，使用它；否则生成新的
     const conversationId =
       this.currentConversationId || this.generateConversationId();
