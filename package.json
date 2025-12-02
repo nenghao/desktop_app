@@ -74,7 +74,6 @@
   "build": {
     "appId": "com.baizesz.seek",
     "productName": "奇境探索",
-    "executableName": "Questech",
     "directories": {
       "output": "release"
     },
@@ -90,9 +89,7 @@
     ],
     "electronLanguages": [
       "en-US",
-      "en-GB",
-      "zh-CN",
-      "zh-TW"
+      "zh-CN"
     ],
     "extraResources": [
       {
@@ -106,6 +103,11 @@
     "mac": {
       "icon": "src/assets/icons/mac/AppIcon.icns",
       "category": "public.app-category.productivity",
+      "extendInfo": {
+        "CFBundleDisplayName": "奇境探索",
+        "CFBundleName": "奇境探索",
+        "CFBundleExecutable": "Questech"
+      },
       "target": [
         {
           "target": "dmg",
