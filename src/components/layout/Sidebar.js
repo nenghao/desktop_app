@@ -630,8 +630,8 @@ export class Sidebar {
     // 生成子分类
     const subcategoriesHTML = hasSubcategories
       ? category.subcategories
-          .map(
-            (sub) => `
+        .map(
+          (sub) => `
       <button class="nav-subitem"
               data-route="${sub.route}"
               data-category="${sub.id}">
@@ -640,8 +640,8 @@ export class Sidebar {
         <span class="nav-count" data-category-count="${sub.id}">${sub.count || 0}</span>
       </button>
     `
-          )
-          .join("")
+        )
+        .join("")
       : "";
 
     // 只有存在子分类时才显示箭头
@@ -841,7 +841,7 @@ export class Sidebar {
       });
     }
 
-  
+
     // 用户信息点击事件
     const userInfo = this.container.querySelector("#user-info");
     const userAvatar = this.container.querySelector("#user-avatar");
@@ -868,7 +868,7 @@ export class Sidebar {
     this.eventBus.on("settings:modal:open", () => {
       this.handleSettingsClick();
     });
-    }
+  }
 
   /**
    * 设置活跃区域
@@ -1247,7 +1247,7 @@ export class Sidebar {
       };
 
       // 设置关闭回调
-      this.loginModal.onClose = () => {};
+      this.loginModal.onClose = () => { };
     }
 
     this.loginModal.show();
@@ -1306,7 +1306,8 @@ export class Sidebar {
   handleAppDownloadClick() {
     // 阻止默认行为，让hover弹窗处理
     console.log("📱 点击下载App按钮");
-    // 如果弹窗被点击，不需要额外处理，主要由hover弹窗处理下载
+    // 在新的标签页打开： https://www.baizesz.com/app/download
+    window.open("https://www.baizesz.com/app/download", "_blank");
   }
 
   /**
