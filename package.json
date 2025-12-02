@@ -74,6 +74,7 @@
   "build": {
     "appId": "com.baizesz.seek",
     "productName": "奇境探索",
+    "executableName": "Questech",
     "directories": {
       "output": "release"
     },
@@ -85,8 +86,7 @@
       "src/assets/icons/**/*"
     ],
     "asarUnpack": [
-      "node_modules/electron/**/*",
-      "src/assets/icons/**/*"
+      "node_modules/electron/**/*"
     ],
     "electronLanguages": [
       "en-US",
@@ -104,7 +104,7 @@
       }
     ],
     "mac": {
-      "icon": "src/assets/icon.icns",
+      "icon": "src/assets/icons/mac/AppIcon.icns",
       "category": "public.app-category.productivity",
       "target": [
         {
