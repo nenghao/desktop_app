@@ -559,6 +559,19 @@ export class Sidebar {
         </nav>
       </div>
 
+      <!-- App下载组 - 仅在web端显示 -->
+      <div class="sidebar-group app-download-group" id="app-download-group">
+        <div class="app-download-section" id="app-download-section">
+          <div class="app-download-wrapper">
+            <button class="nav-item app-download-btn" id="app-download-btn" title="下载App">
+              <span class="nav-icon">${this.getIcon("download")}</span>
+              <span class="nav-text">下载App</span>
+            </button>
+
+              </div>
+        </div>
+      </div>
+
       <!-- 底部组 -->
       <div class="sidebar-group sidebar-footer-group">
         <div class="user-info" id="user-info">
@@ -819,6 +832,16 @@ export class Sidebar {
       });
     }
 
+    // App下载按钮 - 仅在web端显示
+    const appDownloadBtn = this.container.querySelector("#app-download-btn");
+    if (appDownloadBtn) {
+      appDownloadBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.handleAppDownloadClick();
+      });
+    }
+
+  
     // 用户信息点击事件
     const userInfo = this.container.querySelector("#user-info");
     const userAvatar = this.container.querySelector("#user-avatar");
@@ -845,7 +868,7 @@ export class Sidebar {
     this.eventBus.on("settings:modal:open", () => {
       this.handleSettingsClick();
     });
-  }
+    }
 
   /**
    * 设置活跃区域
@@ -1278,6 +1301,15 @@ export class Sidebar {
   }
 
   /**
+   * 处理App下载按钮点击
+   */
+  handleAppDownloadClick() {
+    // 阻止默认行为，让hover弹窗处理
+    console.log("📱 点击下载App按钮");
+    // 如果弹窗被点击，不需要额外处理，主要由hover弹窗处理下载
+  }
+
+  /**
    * 更新用户显示
    */
   updateUserDisplay() {
@@ -1365,6 +1397,12 @@ export class Sidebar {
   async unmount() {
     // 清理tooltip事件监听器
     this.cleanupTooltips();
+
+    // 清理动态创建的下载弹窗
+    const downloadMenu = document.querySelector("#download-menu");
+    if (downloadMenu) {
+      downloadMenu.remove();
+    }
 
     if (this.container) {
       this.container.innerHTML = "";

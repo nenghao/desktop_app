@@ -7,12 +7,10 @@
   height: 40px;
   margin: 4px 8px;
   border-radius: 8px;
-  background: linear-gradient(
-    90deg,
-    var(--color-border, #e5e7eb) 25%,
-    var(--color-surface-alt, #f3f4f6) 50%,
-    var(--color-border, #e5e7eb) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--color-border, #e5e7eb) 25%,
+      var(--color-surface-alt, #f3f4f6) 50%,
+      var(--color-border, #e5e7eb) 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s ease-in-out infinite;
 }
@@ -21,6 +19,7 @@
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -174,6 +173,57 @@
   stroke: currentColor;
   fill: none;
 }
+
+.electron-app .app-download-group {
+  display: none;
+}
+
+/* App下载组 */
+.app-download-group {
+  border: none;
+  padding: 0 var(--spacing-2);
+  margin-bottom: var(--spacing-1);
+}
+
+/* App下载栏目 */
+.app-download-section {
+  width: 100%;
+}
+
+/* 下载按钮容器 */
+.app-download-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.app-download-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  padding-left: 10px;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  text-align: left;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  width: 100%;
+  height: 35px;
+  user-select: none;
+  position: relative;
+  transition:
+    background-color var(--duration-300) var(--ease-in-out),
+    color var(--duration-300) var(--ease-in-out);
+}
+
+
+.app-download-btn:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
 
 /* 用户信息区域 */
 .user-info {

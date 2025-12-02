@@ -29,6 +29,7 @@
   flex: 1;
   overflow: hidden;
   background-color: var(--color-surface);
+  position: relative; /* 为弹窗提供定位上下文 */
 }
 
 .app-main {
