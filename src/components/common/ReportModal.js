@@ -9,13 +9,49 @@ export class ReportModal {
     this.eventBus = options.eventBus;
     this.notificationCenter = options.notificationCenter;
     this.conversationId = options.conversationId;
+    this.userManager = options.userManager;
+  }
+
+  /**
+   * 获取报告理由列表
+   */
+  async fetchReportReasons() {
+    try {
+      // 从 UserManager 获取token
+      if (!this.userManager || !this.userManager.getCurrentUser()) {
+        throw new Error('用户未登录');
+      }
+      const token = this.userManager.getCurrentUser().access_token;
+
+      // 使用 ChatApiService 调用获取报告理由的接口
+      const response = await chatApiService.getReportReasons(token, this.conversationId);
+
+      if (response.success && response.data && response.data.reasons) {
+        console.log('📋 获取到报告理由列表:', response.data.reasons);
+        return response.data.reasons;
+      } else {
+        throw new Error(response.message || '获取报告理由失败');
+      }
+    } catch (error) {
+      console.error('获取报告理由失败:', error);
+      // 返回默认理由列表作为降级方案
+      return [
+        "没有理解问题",
+        "没有完成任务",
+        "编造事实",
+        "废话太多",
+        "没有创意",
+        "文风不好",
+        "内容不合规2"
+      ];
+    }
   }
 
   /**
    * 显示报告模态框
    */
-  show() {
-    // 创建报告原因选项的DOM元素
+  async show() {
+    // 创建报告表单
     const reportForm = document.createElement('div');
     reportForm.className = 'report-form';
 
@@ -32,6 +68,12 @@ export class ReportModal {
         font-size: 14px;
         margin-bottom: 16px;
         color: var(--color-text-primary);
+      }
+      .report-loading {
+        text-align: center;
+        padding: 20px;
+        color: var(--color-text-secondary);
+        font-size: 14px;
       }
       .report-reasons {
         display: flex;
@@ -77,11 +119,28 @@ export class ReportModal {
         outline: none;
         border-color: var(--color-primary-light);
       }
+      .report-comment-input.warning {
+        border-color: var(--color-warning);
+      }
+      .report-comment-input.error {
+        border-color: var(--color-error);
+      }
+      .report-comment-counter {
+        text-align: right;
+        font-size: 12px;
+        color: var(--color-text-secondary);
+      }
+      .report-comment-counter.warning {
+        color: var(--color-warning);
+      }
+      .report-comment-counter.error {
+        color: var(--color-error);
+      }
       .report-footer {
         display: flex;
         justify-content: flex-end;
         gap: 10px;
-        margin-top: 20px;
+        margin-top: 8px;
         padding-top: 16px;
         border-top: 1px solid var(--color-border);
       }
@@ -115,19 +174,14 @@ export class ReportModal {
     `;
     reportForm.appendChild(style);
 
-    // 创建HTML结构
+    // 创建初始HTML结构（显示加载状态）
     reportForm.innerHTML += `
       <div class="report-title">请选择理由帮助我们做的更好</div>
-      <div class="report-reasons">
-        <div class="report-reason-item" data-reason="没有理解问题">没有理解问题</div>
-        <div class="report-reason-item" data-reason="没有完成任务">没有完成任务</div>
-        <div class="report-reason-item" data-reason="编造事实">编造事实</div>
-        <div class="report-reason-item" data-reason="废话太多">废话太多</div>
-        <div class="report-reason-item" data-reason="没有创意">没有创意</div>
-        <div class="report-reason-item" data-reason="文风不好">文风不好</div>
-      </div>
+      <div class="report-loading">正在加载报告理由...</div>
+      <div class="report-reasons" id="report-reasons-container"></div>
       <div class="report-comments">
-        <textarea id="report-comment-input" class="report-comment-input" placeholder="欢迎说说你的想法"></textarea>
+        <textarea id="report-comment-input" class="report-comment-input" placeholder="描述内容中存在的问题：对于不合规内容可以说明相关事件/人物。" maxlength="500"></textarea>
+        <div id="report-comment-counter" class="report-comment-counter">0/500</div>
       </div>
       <div class="report-footer">
         <button class="report-btn" id="report-cancel-btn">取消</button>
@@ -139,22 +193,67 @@ export class ReportModal {
     let selectedReason = null;
     const submitBtn = reportForm.querySelector('#report-submit-btn');
     const cancelBtn = reportForm.querySelector('#report-cancel-btn');
-    const reasonItems = reportForm.querySelectorAll('.report-reason-item');
+    const reasonsContainer = reportForm.querySelector('#report-reasons-container');
     const commentInput = reportForm.querySelector('#report-comment-input');
+    const commentCounter = reportForm.querySelector('#report-comment-counter');
+    const loadingElement = reportForm.querySelector('.report-loading');
 
-    // 绑定理由项点击事件
-    reasonItems.forEach(item => {
-      item.addEventListener('click', () => {
-        // 移除其他项的选中状态
-        reasonItems.forEach(i => i.classList.remove('selected'));
-        // 添加当前项的选中状态
-        item.classList.add('selected');
-        // 保存选中的理由
-        selectedReason = item.dataset.reason;
-        // 启用提交按钮
-        submitBtn.disabled = false;
-      });
+    // 字数统计功能
+    const updateCharCounter = () => {
+      const currentLength = commentInput.value.length;
+      const maxLength = 500;
+
+      // 更新计数器文本
+      commentCounter.textContent = `${currentLength}/${maxLength}`;
+
+      // 根据字数更新样式
+      commentInput.classList.remove('warning', 'error');
+      commentCounter.classList.remove('warning', 'error');
+
+      if (currentLength >= maxLength) {
+        commentInput.classList.add('error');
+        commentCounter.classList.add('error');
+      } else if (currentLength >= maxLength * 0.8) { // 400字以上显示警告色
+        commentInput.classList.add('warning');
+        commentCounter.classList.add('warning');
+      }
+    };
+
+    // 绑定输入事件
+    commentInput.addEventListener('input', updateCharCounter);
+    commentInput.addEventListener('paste', () => {
+      // 粘贴后稍微延迟更新，确保内容已粘贴
+      setTimeout(updateCharCounter, 10);
     });
+
+    // 获取报告理由并渲染
+    try {
+      const reasons = await this.fetchReportReasons();
+      loadingElement.style.display = 'none';
+
+      // 渲染理由选项
+      reasonsContainer.innerHTML = reasons.map(reason =>
+        `<div class="report-reason-item" data-reason="${reason}">${reason}</div>`
+      ).join('');
+
+      // 绑定理由项点击事件
+      const reasonItems = reasonsContainer.querySelectorAll('.report-reason-item');
+      reasonItems.forEach(item => {
+        item.addEventListener('click', () => {
+          // 移除其他项的选中状态
+          reasonItems.forEach(i => i.classList.remove('selected'));
+          // 添加当前项的选中状态
+          item.classList.add('selected');
+          // 保存选中的理由
+          selectedReason = item.dataset.reason;
+          // 启用提交按钮
+          submitBtn.disabled = false;
+        });
+      });
+    } catch (error) {
+      loadingElement.textContent = '加载报告理由失败，请稍后重试';
+      loadingElement.style.color = 'var(--color-error)';
+    }
 
     // 创建模态框
     const reportModal = new Modal({
@@ -190,11 +289,10 @@ export class ReportModal {
         submitBtn.textContent = '提交中...';
 
         // 从 UserManager 获取token
-        const userManager = options.userManager;
-        if (!userManager || !userManager.getCurrentUser()) {
+        if (!this.userManager || !this.userManager.getCurrentUser()) {
           throw new Error('用户未登录');
         }
-        const token = userManager.getCurrentUser().access_token;
+        const token = this.userManager.getCurrentUser().access_token;
 
         // 发送报告请求
         const response = await chatApiService.reportConversation(

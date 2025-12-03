@@ -81,6 +81,7 @@ export const API_REQUEST_CACHE = {
   SIDEBAR_CONFIG: 30 * 60 * 1000,       // 侧边栏配置：30分钟
   CHAT_MODELS: 10 * 60 * 1000,          // 聊天模型：10分钟
   CHAT_ROLES: 10 * 60 * 1000,           // 聊天角色：10分钟
+  CHAT_REPORT_REASONS: 10 * 60 * 1000,  // 聊天报告理由：10分钟
   AIGC_CONTENT: 5 * 60 * 1000,          // AIGC内容：5分钟
   PERSPECTIVES: 30 * 60 * 1000,         // 分析视角：30分钟
 };

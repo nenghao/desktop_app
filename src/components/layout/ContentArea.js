@@ -250,7 +250,8 @@ export class ContentArea {
     this.chatInterface = new ChatInterface({
       userManager: this.userManager,
       eventBus: this.eventBus,
-      settingsModal: settingsModal
+      settingsModal: settingsModal,
+      stateManager: this.stateManager
     });
     
     this.currentComponent = this.chatInterface;

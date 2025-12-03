@@ -23,6 +23,7 @@ export class ChatInterface {
     this.userManager = options.userManager;
     this.eventBus = options.eventBus;
     this.settingsModal = options.settingsModal;
+    this.stateManager = options.stateManager;
     this.currentController = null;
     this.notificationCenter = options.notificationCenter || new NotificationCenter();
     this.configCacheService = configCacheService;
@@ -105,6 +106,7 @@ export class ChatInterface {
       chatApiService: this.chatApiService,
       userManager: this.userManager,
       settingsModal: this.settingsModal,
+      stateManager: this.stateManager,
     });
     const chatListContainer = this.container.querySelector(
       "#chat-list-container"

@@ -16,6 +16,7 @@ export class ChatListView {
         this.chatApiService = options.chatApiService;
         this.userManager = options.userManager;
         this.settingsModal = options.settingsModal;
+        this.stateManager = options.stateManager;
 
         // 虚拟滚动相关配置
         this.virtualScrollEnabled = true;
@@ -1275,6 +1276,14 @@ export class ChatListView {
      */
     loadConversation(conversationId, messages) {
         console.log('📯 ChatListView.loadConversation 被调用:', { conversationId, messages, messagesLength: messages?.length });
+
+        // 更新当前会话状态到 stateManager
+        if (this.stateManager) {
+            this.stateManager.setState('chat.currentConversation', conversationId);
+            console.log('✅ 已更新当前会话状态到 stateManager:', conversationId);
+        } else {
+            console.warn('⚠️ ChatListView 没有 stateManager 引用');
+        }
 
         // 清空当前消息和高度缓存
         this.messages = [];

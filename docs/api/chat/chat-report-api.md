@@ -19,3 +19,26 @@ response2：
     "message": "参数错误",
     "data": null
 }
+
+
+获取上报reasons类型的接口：
+postman request '192.168.0.103:10089/chat/report/reasons/' \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkZW50aWZpZXIiOiIxMzUzZTE2ODY1NjI1MTY4YzJjMWNiMjI0MjQ5YjdhYiIsImV4cCI6MTc2NDMzMzc1NSwiaWF0IjoxNzY0MjQ3MzU1LCJpc3MiOiJmYXN0YXBpLWNoYXQtc2VydmljZSIsInR5cGUiOiJhY2Nlc3MifQ.ZhzN6KBntk4j-VEnWc3gmGl6P3O6Lo2BetA7fAOjO5k' \
+  --body '{
+  "conversation_id": "bzsz_1756733525_978531",
+  "comment": "模型没有正确理解我的问题"
+}'
+
+respone:
+{
+    "success": true,
+    "message": "获取成功",
+    "data": {
+        "reasons": [
+            "没有理解问题",
+            "没有完成任务",
+           ...
+        ]
+    }
+}

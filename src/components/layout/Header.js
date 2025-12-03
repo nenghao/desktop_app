@@ -16,6 +16,7 @@ export class Header {
     this.stateManager = options.stateManager;
     this.router = options.router;
     this.agentManager = options.agentManager; // 注入 AgentManager
+    this.userManager = options.userManager;
     this.notificationCenter =
       options.notificationCenter ||
       new NotificationCenter({ eventBus: this.eventBus });
@@ -1179,21 +1180,41 @@ export class Header {
   handleReport() {
     console.log("📊 生成报告");
 
-    // 导入ReportModal组件
-    import("../common/ReportModal.js")
-      .then(({ showReportModal }) => {
-        // 使用ReportModal组件显示报告模态框
-        showReportModal({
-          eventBus: this.eventBus,
-          notificationCenter: this.notificationCenter,
-        });
-      })
-      .catch((error) => {
-        console.error("加载ReportModal组件失败:", error);
+    try {
+      // 获取当前会话ID
+      const currentConversationId =
+        this.stateManager?.getState("chat.currentConversation");
+      if (!currentConversationId) {
+        console.warn("没有当前会话可生成报告");
         if (this.notificationCenter) {
-          this.notificationCenter.error("报告功能加载失败");
+          this.notificationCenter.error("需要选中会话才能生成报告");
         }
-      });
+        return;
+      }
+
+      // 导入ReportModal组件
+      import("../common/ReportModal.js")
+        .then(({ showReportModal }) => {
+          // 使用ReportModal组件显示报告模态框
+          showReportModal({
+            eventBus: this.eventBus,
+            notificationCenter: this.notificationCenter,
+            conversationId: currentConversationId,
+            userManager: this.userManager,
+          });
+        })
+        .catch((error) => {
+          console.error("加载ReportModal组件失败:", error);
+          if (this.notificationCenter) {
+            this.notificationCenter.error("报告功能加载失败");
+          }
+        });
+    } catch (error) {
+      console.error("获取当前会话ID失败:", error);
+      if (this.notificationCenter) {
+        this.notificationCenter.error("获取当前会话信息失败");
+      }
+    }
   }
 
   /**
@@ -1229,7 +1250,7 @@ export class Header {
     try {
       // 获取当前会话ID
       const currentConversationId =
-        this.stateManager?.getCurrentConversationId();
+        this.stateManager?.getState("chat.currentConversation");
       if (!currentConversationId) {
         console.warn("没有当前会话可删除");
         return;

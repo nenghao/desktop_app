@@ -18,10 +18,11 @@ export class ChatApiService extends ApiService {
 
     this.currentConversationId = null; // 当前选中的会话 ID
 
-    // 缓存和请求时间记录
+    // 缓存和请求时间记录（单位：毫秒）
     this.cache = {
       models: { data: null, lastFetchTime: null },
-      roles: { data: null, lastFetchTime: null }
+      roles: { data: null, lastFetchTime: null },
+      reportReasons: { data: null, lastFetchTime: null }
     };
   }
 
@@ -172,6 +173,14 @@ export class ChatApiService extends ApiService {
    */
   clearCurrentConversationId() {
     this.currentConversationId = null;
+  }
+
+  /**
+   * 清除报告理由缓存
+   */
+  clearReportReasonsCache() {
+    this.cache.reportReasons = { data: null, lastFetchTime: null };
+    console.log('📋 已清除报告理由缓存');
   }
 
   /**
@@ -447,13 +456,13 @@ export class ChatApiService extends ApiService {
       return controller;
     } catch (error) {
       const errorMessage = error.message || "发送消息失败";
-      
+
       // 触发error事件，通知ChatInterface隐藏加载动画
       onMessage({
         type: "error",
         error: errorMessage
       });
-      
+
       return controller;
     }
   }
@@ -564,13 +573,13 @@ export class ChatApiService extends ApiService {
 
       // 从响应头获取真实的conversation_id
       const serverConversationId = conversationId; // 后端应该返回相同的conversation_id
-      
+
       // 检查响应是否成功
       if (response.success && response.data?.choices?.[0]?.message) {
         const messageData = response.data.choices[0].message;
         const content = messageData.content || '';
         const reasoningContent = messageData.reasoning_content || null;
-        
+
         onMessage({
           type: "complete",
           content: content,
@@ -595,14 +604,53 @@ export class ChatApiService extends ApiService {
       }
       console.error('[ChatApiService] 非流式请求失败:', error);
       const errorMessage = error.message || "发送消息失败";
-      
+
       // 触发error事件，通知ChatInterface隐藏加载动画
       onMessage({
         type: "error",
         error: errorMessage
       });
-      
+
       return controller;
+    }
+  }
+
+  /**
+   * 获取报告理由列表
+   */
+  async getReportReasons(token, conversationId) {
+    if (!token) {
+      throw new Error("请先登录");
+    }
+
+    // 检查缓存是否有效（10分钟内）
+    const now = Date.now();
+    const cache = this.cache.reportReasons;
+
+    if (cache.data && cache.lastFetchTime &&
+      (now - cache.lastFetchTime) < API_REQUEST_CACHE.CHAT_REPORT_REASONS) {
+      return cache.data;
+    }
+
+    try {
+      const response = await this.get(
+        "/chat/report/reasons/"
+      );
+
+      // 缓存响应数据
+      this.cache.reportReasons = {
+        data: response,
+        lastFetchTime: now
+      };
+
+      return response;
+    } catch (error) {
+      // 如果有缓存数据，即使过期也返回作为降级方案
+      if (cache.data) {
+        console.warn('📋 请求失败，使用过期的缓存数据');
+        return cache.data;
+      }
+      throw error;
     }
   }
 

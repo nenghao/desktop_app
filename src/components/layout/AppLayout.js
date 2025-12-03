@@ -174,7 +174,8 @@ export class AppLayout {
       eventBus: this.eventBus,
       stateManager: this.stateManager,
       router: this.router,
-      agentManager: this.agentManager
+      agentManager: this.agentManager,
+      userManager: this.userManager
     });
     initPromises.push(
       this.header.render(headerContainer).catch(err => {
