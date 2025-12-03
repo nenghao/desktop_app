@@ -152,7 +152,7 @@
     },
     "appx": {
       "applicationId": "com.baizesz.seek",
-      "artifactName": "${productName}-${version}.${ext}",
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
       "identityName": "53D5FAF4.449826F304142",
       "publisher": "CN=111BA3F5-8A55-4E46-A95B-9D22A5E1D33E",
       "publisherDisplayName": "奇境探索",
