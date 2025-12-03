@@ -174,10 +174,6 @@
   fill: none;
 }
 
-.electron-app .app-download-group {
-  display: none;
-}
-
 /* App下载组 */
 .app-download-group {
   border: none;
@@ -185,9 +181,18 @@
   margin-bottom: var(--spacing-1);
 }
 
+.electron-app .app-download-group {
+  display: none;
+}
+
+.web-app .app-download-group {
+  display: block;
+}
+
 /* App下载栏目 */
 .app-download-section {
   width: 100%;
+  margin-bottom: 20px;
 }
 
 /* 下载按钮容器 */
@@ -645,6 +650,7 @@
 
 /* iPad mini和平板设备特殊处理 - 确保侧边栏正常显示 */
 @media (max-width: 768px) and (min-width: 481px) {
+
   /* 对于没有mobile类的小屏幕设备（如iPad mini），确保侧边栏正常显示 */
   .app-layout:not(.mobile) .app-sidebar {
     display: flex;
