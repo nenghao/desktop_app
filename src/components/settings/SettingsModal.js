@@ -252,23 +252,37 @@ export class SettingsModal extends BaseComponent {
 
     // 定义窗口标题
     const titles = {
+      'open-source': '开源库声明',
       'user-agreement': '服务协议',
       'privacy-policy': '隐私政策',
       'third-party': '第三方信息共享清单',
       'about': '关于奇境探索'
     };
 
-    // 使用 Electron API 打开独立窗口
-    if (url && window.electronAPI && window.electronAPI.createDocumentWindow) {
-      window.electronAPI.createDocumentWindow({
-        title: titles[action] || '查看详情',
-        url: url,
-        width: 900,
-        height: 700
-      });
+    // 如果有URL，尝试打开
+    if (url) {
+      // 优先使用 Electron API 打开独立窗口
+      if (window.electronAPI && window.electronAPI.createDocumentWindow) {
+        window.electronAPI.createDocumentWindow({
+          title: titles[action] || '查看详情',
+          url: url,
+          width: 900,
+          height: 700
+        });
+      } else {
+        // Web环境下在新标签页打开
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
     } else {
-      // 其他链接的处理逻辑
-      console.log('点击了:', action);
+      // 处理没有URL的链接，如反馈
+      switch (action) {
+        case 'feedback':
+          console.log('打开意见与反馈');
+          // 可以在这里添加反馈功能的逻辑
+          break;
+        default:
+          console.log('点击了:', action);
+      }
     }
   }
 
