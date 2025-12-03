@@ -101,7 +101,7 @@
       }
     ],
     "mac": {
-      "icon": "src/assets/icons/mac/AppIcon.icns",
+      "icon": "src/assets/icons/AppIcon.icns",
       "category": "public.app-category.productivity",
       "extendInfo": {
         "CFBundleDisplayName": "奇境探索",
@@ -119,11 +119,18 @@
       ]
     },
     "win": {
-      "icon": "src/assets/icons/win/icon.ico",
-      "artifactName": "${productName} Setup ${version}.${ext}",
+      "icon": "src/assets/icons/app_icon.ico",
+      "artifactName": "${productName}_setup_${version}.${ext}",
       "target": [
         {
           "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "appx",
           "arch": [
             "x64",
             "arm64"
@@ -132,7 +139,7 @@
       ]
     },
     "linux": {
-      "icon": "src/assets/icons/linux/icon.png",
+      "icon": "src/assets/icons/AppIcon.png",
       "target": [
         {
           "target": "AppImage",
@@ -143,6 +150,17 @@
         }
       ]
     },
+    "appx": {
+      "applicationId": "com.baizesz.seek",
+      "artifactName": "${productName}-${version}.${ext}",
+      "identityName": "53D5FAF4.449826F304142",
+      "publisher": "CN=111BA3F5-8A55-4E46-A95B-9D22A5E1D33E",
+      "publisherDisplayName": "奇境探索",
+      "languages": [
+        "zh-CN",
+        "en-US"
+      ]
+    },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
@@ -150,8 +168,8 @@
       "perMachine": false,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "installerIcon": "src/assets/icons/win/icon.ico",
-      "uninstallerIcon": "src/assets/icons/win/icon.ico",
+      "installerIcon": "src/assets/icons/app_icon.ico",
+      "uninstallerIcon": "src/assets/icons/app_icon.ico",
       "displayLanguageSelector": true,
       "installerLanguages": [
         "zh_CN",

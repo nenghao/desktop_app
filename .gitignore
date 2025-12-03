@@ -6,8 +6,10 @@ yarn-error.log*
 
 # Electron
 dist/
-build/*
-!build/installer.nsh
+# build/*
+# !build/installer.nsh
+# !build/appx
+
 /out/
 /output/
 release/
