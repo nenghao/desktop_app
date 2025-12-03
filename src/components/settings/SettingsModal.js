@@ -76,8 +76,9 @@ export class SettingsModal extends BaseComponent {
     // 同步当前主题状态
     this.syncCurrentTheme();
 
-    // 更新内容后显示
+    // 更新内容后显示（updateSettingsContent 会自动调用 bindEvents）
     this.updateSettingsContent();
+
     this.modal.show();
     // 发送内部事件
     this.emit('show');
@@ -113,7 +114,7 @@ export class SettingsModal extends BaseComponent {
     const settingsContainer = modalBody.querySelector('.settings-container');
     if (settingsContainer) {
       this.updateSettingsContentHTML(settingsContainer);
-      // 重新绑定事件
+      // 重新绑定事件 - 重要：innerHTML 更新后需要重新绑定
       this.bindEvents();
     }
   }
@@ -157,19 +158,19 @@ export class SettingsModal extends BaseComponent {
       <!-- 底部链接区域 -->
       <div class="settings-section">
         <div class="footer-links">
-          <a href="#" class="footer-link" data-action="open-source" data-url="https://www.baizesz.com/document/opensource-licenses/">开源库声明 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
-          <a href="#" class="footer-link" data-action="user-agreement" data-url="https://www.baizesz.com/user/agreement/">服务协议 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
-          <a href="#" class="footer-link" data-action="privacy-policy" data-url="https://www.baizesz.com/user/private/">隐私政策 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
-          <a href="#" class="footer-link" data-action="third-party" data-url="https://www.baizesz.com/document/sdksharing/">第三方信息共享清单 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
+          <a href="#" class="footer-link" data-action="open-source" data-url="https://www.baizesz.com/document/opensource-licenses">开源库声明 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
+          <a href="#" class="footer-link" data-action="user-agreement" data-url="https://www.baizesz.com/user/agreement">服务协议 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
+          <a href="#" class="footer-link" data-action="privacy-policy" data-url="https://www.baizesz.com/user/private">隐私政策 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
+          <a href="#" class="footer-link" data-action="third-party" data-url="https://www.baizesz.com/document/sdksharing">第三方信息共享清单 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
           <a href="#" class="footer-link" data-action="feedback">意见与反馈 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
-          <a href="#" class="footer-link" data-action="about" data-url="https://www.baizesz.com/about/">关于奇境探索 <span class="version">1.0.0(1)</span> <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
+          <a href="#" class="footer-link" data-action="about" data-url="https://www.baizesz.com/about">关于奇境探索 <span class="version">1.0.0(1)</span> <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
         </div>
       </div>
     `;
   }
 
   /**
-   * 绑定事件
+   * 绑定事件 - 使用事件委托避免DOM更新后事件丢失问题
    */
   bindEvents() {
     const modalBody = this.modal.getBody();
@@ -178,24 +179,37 @@ export class SettingsModal extends BaseComponent {
       return;
     }
 
-    // Lit 组件关闭按钮事件
-    const closeBtn = modalBody.querySelector('#settings-close-btn');
-    if (closeBtn) {
-      this.addDOMListener(closeBtn, 'power-close', () => this.hide());
+    // 移除之前的事件监听器（如果存在）
+    if (this.modalClickHandler) {
+      modalBody.removeEventListener('click', this.modalClickHandler);
     }
 
-    // 使用统一的事件绑定方法
-    // 主题选择
-    const themeButtons = modalBody.querySelectorAll('.theme-btn');
-    themeButtons.forEach(btn => {
-      this.addDOMListener(btn, 'click', (e) => this.handleThemeChange(e.target.dataset.theme));
-    });
+    // 使用事件委托 - 只在 modalBody 上绑定一个监听器
+    this.modalClickHandler = (e) => {
+      const target = e.target;
 
-    // 底部链接点击事件
-    const footerLinks = modalBody.querySelectorAll('.footer-link');
-    footerLinks.forEach(link => {
-      this.addDOMListener(link, 'click', (e) => this.handleFooterLinkClick(e));
-    });
+      // 处理主题按钮点击
+      if (target.classList.contains('theme-btn')) {
+        this.handleThemeChange(target.dataset.theme);
+        return;
+      }
+
+      // 处理底部链接点击
+      if (target.classList.contains('footer-link')) {
+        this.handleFooterLinkClick(e);
+        return;
+      }
+
+      // 处理 Lit 关闭按钮的点击
+      const closeBtn = target.closest('#settings-close-btn');
+      if (closeBtn) {
+        this.hide();
+        return;
+      }
+    };
+
+    // 在 modalBody 上添加事件委托监听器
+    this.addDOMListener(modalBody, 'click', this.modalClickHandler);
   }
 
   // 移除自定义事件系统，使用BaseComponent的统一事件系统
@@ -268,8 +282,18 @@ export class SettingsModal extends BaseComponent {
           url: url,
           width: 900,
           height: 700
+        }).then((windowId) => {
+          console.log('✅ SettingsModal: 文档窗口创建成功', windowId);
+        }).catch((error) => {
+          console.error('❌ SettingsModal: 文档窗口创建失败', error);
+          // 降级到浏览器打开
+          window.open(url, '_blank', 'noopener,noreferrer');
         });
       } else {
+        console.log('🌐 SettingsModal: Electron API 不可用，使用浏览器打开', {
+          hasElectronAPI: !!window.electronAPI,
+          hasCreateDocumentWindow: window.electronAPI && !!window.electronAPI.createDocumentWindow
+        });
         // Web环境下在新标签页打开
         window.open(url, '_blank', 'noopener,noreferrer');
       }
@@ -277,11 +301,11 @@ export class SettingsModal extends BaseComponent {
       // 处理没有URL的链接，如反馈
       switch (action) {
         case 'feedback':
-          console.log('打开意见与反馈');
+          console.log('💬 SettingsModal: 打开意见与反馈');
           // 可以在这里添加反馈功能的逻辑
           break;
         default:
-          console.log('点击了:', action);
+          console.log('🔍 SettingsModal: 点击了:', action);
       }
     }
   }
@@ -315,6 +339,15 @@ export class SettingsModal extends BaseComponent {
    * 销毁组件
    */
   destroy() {
+    // 清理事件委托监听器
+    if (this.modalClickHandler) {
+      const modalBody = this.modal.getBody();
+      if (modalBody) {
+        modalBody.removeEventListener('click', this.modalClickHandler);
+      }
+      this.modalClickHandler = null;
+    }
+
     if (this.modal) {
       this.modal.destroy();
     }
