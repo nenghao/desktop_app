@@ -9,6 +9,7 @@ dist/
 # build/*
 # !build/installer.nsh
 # !build/appx
+build/codesign.pfx
 
 /out/
 /output/

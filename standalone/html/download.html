@@ -506,15 +506,22 @@
                         <p class="platform-description">
                             支持 Windows 10 及以上版本，提供完整的桌面应用体验
                         </p>
-                        <button class="windows-download-btn" onclick="downloadFile('windows')">
-                            <svg viewBox="0 0 88 88" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                fill="currentColor">
-                                <path
-                                    d="m0 12.402 35.687-4.86.016 34.423-35.67.203zm35.67 33.529.028 34.453L.028 75.48.026 45.7zm4.326-39.025L87.314 0v41.527l-47.318.376zm47.329 39.349-.011 41.34-47.318-6.678-.066-34.739z">
-                                </path>
-                            </svg>
-                            Download for Windows
-                        </button>
+                        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                            <a href="https://apps.microsoft.com/detail/9nk9xmrnz94v?hl=zh-CN&gl=CN" target="_blank"
+                                class="app-store-badge">
+                                <img src="https://developer.microsoft.com/en-us/store/badges/images/English_get-it-from-MS.png"
+                                    alt="Get it from Microsoft" style="height: 40px; border-radius: 8px;">
+                            </a>
+                            <button class="windows-download-btn" onclick="downloadFile('windows')">
+                                <svg viewBox="0 0 88 88" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                    fill="currentColor">
+                                    <path
+                                        d="m0 12.402 35.687-4.86.016 34.423-35.67.203zm35.67 33.529.028 34.453L.028 75.48.026 45.7zm4.326-39.025L87.314 0v41.527l-47.318.376zm47.329 39.349-.011 41.34-47.318-6.678-.066-34.739z">
+                                    </path>
+                                </svg>
+                                Download for Windows(.exe)
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -575,7 +582,7 @@
                             支持 Android 8.0 及以上版本，适配各种屏幕尺寸
                         </p>
                         <a href="https://play.google.com/store" target="_blank" class="app-store-badge">
-                            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                            <img src="https://ling-realm-1257063273.cos.ap-guangzhou.myqcloud.com/googleplay.png"
                                 alt="Get it on Google Play" style="height: 60px;">
                         </a>
                     </div>
@@ -604,14 +611,15 @@
         // 下载功能
         function downloadFile(platform) {
             const downloadLinks = {
-                'windows': '#', // 替换为实际的 Windows 下载链接
+                'windows': 'https://apps.microsoft.com/detail/9nk9xmrnz94v?hl=zh-CN&gl=CN',
                 'macos': '#',    // 替换为实际的 macOS 下载链接
                 'linux': '#',    // 替换为实际的 Linux 下载链接
                 'ios': '#',      // 替换为实际的 App Store 链接
                 'android': '#'   // 替换为实际的 Google Play 链接
             };
+            console.log("link:", downloadLinks[platform]);
 
-            const button = event.target.closest('.download-btn');
+            const button = event.target.closest('button') || event.target;
             const originalContent = button.innerHTML;
 
             // 显示加载状态
