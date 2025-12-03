@@ -154,7 +154,7 @@ function createDocumentWindow(options = {}) {
     y,
     title,
     show: false, // 先不显示，等内容加载后再显示
-    icon: getAssetPath('src/assets/icons/icon.png'),
+    icon: getAssetPath('src/assets/icons/AppIcon_win.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -235,7 +235,7 @@ function openSplitPanelDemo() {
     minWidth: 800,
     minHeight: 600,
     title: '双面板演示 - 奇境探索',
-    icon: getAssetPath('src/assets/icons/icon.png'),
+    icon: getAssetPath('src/assets/icons/AppIcon_win.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -273,7 +273,7 @@ async function createMainWindow() {
     minWidth: 900,
     minHeight: 600,
     show: false, // 先不显示，等加载完成后再显示
-    icon: getAssetPath('src/assets/icons/icon.png'),
+    icon: getAssetPath('src/assets/icons/AppIcon_win.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
