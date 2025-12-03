@@ -13,10 +13,10 @@ import '../lit/index.js';
 export class SettingsModal extends BaseComponent {
   constructor(options = {}) {
     super(options);
-    
+
     // 获取配置缓存服务实例
     this.configCacheService = getConfigCacheService();
-    
+
     // 初始化设置 - 只加载主题设置相关内容
     this.loadThemeSettings();
 
@@ -75,7 +75,7 @@ export class SettingsModal extends BaseComponent {
   show() {
     // 同步当前主题状态
     this.syncCurrentTheme();
-    
+
     // 更新内容后显示
     this.updateSettingsContent();
     this.modal.show();
@@ -83,7 +83,7 @@ export class SettingsModal extends BaseComponent {
     this.emit('show');
     // 发送全局事件
     this.emitGlobal('settings:modal:show');
-    
+
     // 调用生命周期钩子
     this.onMounted();
   }
@@ -136,8 +136,8 @@ export class SettingsModal extends BaseComponent {
         </button>
       `;
     }).join('');
-    
-    
+
+
     container.innerHTML = `
       <!-- 使用 Lit Elements 关闭按钮 -->
       <power-close-button 
@@ -157,10 +157,10 @@ export class SettingsModal extends BaseComponent {
       <!-- 底部链接区域 -->
       <div class="settings-section">
         <div class="footer-links">
-          <a href="#" class="footer-link" data-action="open-source" data-url="https://www.baizesz.com/doc/sdksharing/">开源库声明 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
+          <a href="#" class="footer-link" data-action="open-source" data-url="https://www.baizesz.com/document/opensource-licenses/">开源库声明 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
           <a href="#" class="footer-link" data-action="user-agreement" data-url="https://www.baizesz.com/user/agreement/">服务协议 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
           <a href="#" class="footer-link" data-action="privacy-policy" data-url="https://www.baizesz.com/user/private/">隐私政策 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
-          <a href="#" class="footer-link" data-action="third-party" data-url="https://www.baizesz.com/doc/sdksharing/">第三方信息共享清单 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
+          <a href="#" class="footer-link" data-action="third-party" data-url="https://www.baizesz.com/document/sdksharing/">第三方信息共享清单 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
           <a href="#" class="footer-link" data-action="feedback">意见与反馈 <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
           <a href="#" class="footer-link" data-action="about" data-url="https://www.baizesz.com/about/">关于奇境探索 <span class="version">1.0.0(1)</span> <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg></a>
         </div>
@@ -217,7 +217,7 @@ export class SettingsModal extends BaseComponent {
     this.configCacheService.saveSetting('theme', theme);
 
     // 发送内部事件
-    this.emit('themeChange', theme);    
+    this.emit('themeChange', theme);
     // 发送全局事件
     if (this.eventBus) {
       this.emitGlobal('settings:theme:change', theme);
