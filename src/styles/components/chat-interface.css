@@ -186,12 +186,6 @@
 }
 
 @media (max-width: 480px) {
-  .chat-interface {
-    height: 100vh;
-    height: 100dvh;
-    /* 动态视口高度 */
-  }
-
   /* 输入相关样式已移至 chat-input.css */
 
   .message-bubble {

@@ -359,14 +359,6 @@ async function createMainWindow() {
   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
     const responseHeaders = { ...details.responseHeaders };
 
-    // 处理预检请求
-    if (details.method === 'OPTIONS') {
-      responseHeaders['Access-Control-Allow-Origin'] = ['*'];
-      responseHeaders['Access-Control-Allow-Methods'] = ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'];
-      responseHeaders['Access-Control-Allow-Headers'] = ['Content-Type', 'Authorization', 'X-Requested-With'];
-      responseHeaders['Access-Control-Max-Age'] = ['86400'];
-    }
-
     // 设置 Content Security Policy
     responseHeaders['Content-Security-Policy'] = [
       isDev
