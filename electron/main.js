@@ -1,13 +1,13 @@
 /**
  * Electron 主进程
  */
-
 const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const isDev = process.env.NODE_ENV === 'development' && !process.env.FORCE_PROD;
 const contextMenu = require('electron-context-menu').default;
+const windowStateKeeper = require('electron-window-state');
 
 contextMenu({
   showSearchWithGoogle: false,
@@ -266,10 +266,18 @@ function openSplitPanelDemo() {
  * 创建主窗口
  */
 async function createMainWindow() {
+  // 加载上次的窗口状态
+  let state = windowStateKeeper({
+    defaultWidth: 1200,
+    defaultHeight: 800
+  });
+
   // 创建浏览器窗口
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    x: state.x,
+    y: state.y,
+    width: state.width,
+    height: state.height,
     minWidth: 900,
     minHeight: 600,
     show: false, // 先不显示，等加载完成后再显示
@@ -289,6 +297,8 @@ async function createMainWindow() {
     autoHideMenuBar: true,
     backgroundColor: '#ffffff'
   });
+
+  state.manage(mainWindow);
 
   // 加载应用
   console.log('📝 开始加载应用...');
@@ -410,14 +420,9 @@ async function createMainWindow() {
       console.log('  - 窗口位置:', mainWindow.getBounds());
 
       // 确保窗口在主显示器上并居中
-      const { screen } = require('electron');
-      const primaryDisplay = screen.getPrimaryDisplay();
-      const { width, height } = primaryDisplay.workAreaSize;
-
-      mainWindow.setPosition(
-        Math.floor((width - 1200) / 2),
-        Math.floor((height - 800) / 2)
-      );
+      // const { screen } = require('electron');
+      // const primaryDisplay = screen.getPrimaryDisplay();
+      // const { width, height } = primaryDisplay.workAreaSize;
 
       // 强制置顶并聚焦
       // mainWindow.setAlwaysOnTop(true);
