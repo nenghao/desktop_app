@@ -357,39 +357,49 @@ async function createMainWindow() {
 
   // 设置 Content Security Policy
   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    const responseHeaders = { ...details.responseHeaders };
+
+    // 处理预检请求
+    if (details.method === 'OPTIONS') {
+      responseHeaders['Access-Control-Allow-Origin'] = ['*'];
+      responseHeaders['Access-Control-Allow-Methods'] = ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'];
+      responseHeaders['Access-Control-Allow-Headers'] = ['Content-Type', 'Authorization', 'X-Requested-With'];
+      responseHeaders['Access-Control-Max-Age'] = ['86400'];
+    }
+
+    // 设置 Content Security Policy
+    responseHeaders['Content-Security-Policy'] = [
+      isDev
+        ? [
+          "default-src 'self' data: blob: http: ws: http://192.168.0.103:10089 https://static.baizesz.com",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: http: http://192.168.0.103:10089 https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com",
+          "style-src 'self' 'unsafe-inline' http: http://192.168.0.103:10089",
+          "img-src 'self' data: blob: http: http://192.168.0.103:10089 https://static.baizesz.com",
+          "connect-src 'self' http: ws: http://192.168.0.103:10089 ws://192.168.0.103:10089 https://static.baizesz.com",
+          "font-src 'self' data: http:192.168.0.103:10089",
+          "media-src 'self' data: blob: http:192.168.0.103:10089",
+          "worker-src 'self' blob:",
+          "child-src 'self' blob:",
+          "object-src 'none'",
+          "base-uri 'self'"
+        ].join('; ')
+        : [
+          "default-src 'self' data: blob: https:",
+          "script-src 'self' 'unsafe-inline' blob: https://api.baizesz.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com",
+          "style-src 'self' 'unsafe-inline' https://api.baizesz.com",
+          "img-src 'self' data: blob: https: https://api.baizesz.com https://static.baizesz.com",
+          "connect-src 'self' https: https://api.baizesz.com https://static.baizesz.com",
+          "font-src 'self' data: https://api.baizesz.com",
+          "media-src 'self' data: blob: https://api.baizesz.com",
+          "worker-src 'self' blob:",
+          "child-src 'self' blob:",
+          "object-src 'none'",
+          "base-uri 'self'"
+        ].join('; ')
+    ];
+
     callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [
-          isDev
-            ? [
-              "default-src 'self' data: blob: http: ws: http://192.168.0.103:10089",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: http: http://192.168.0.103:10089 https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com",
-              "style-src 'self' 'unsafe-inline' http: http://192.168.0.103:10089",
-              "img-src 'self' data: blob: http: http://192.168.0.103:10089",
-              "connect-src 'self' http: ws: http://192.168.0.103:10089 ws://192.168.0.103:10089",
-              "font-src 'self' data: http://192.168.0.103:10089",
-              "media-src 'self' data: blob: http://192.168.0.103:10089",
-              "worker-src 'self' blob:",
-              "child-src 'self' blob:",
-              "object-src 'none'",
-              "base-uri 'self'"
-            ].join('; ')
-            : [
-              "default-src 'self' data: blob: https:",
-              "script-src 'self' 'unsafe-inline' blob: https://api.baizesz.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com",
-              "style-src 'self' 'unsafe-inline' https://api.baizesz.com",
-              "img-src 'self' data: blob: https: https://api.baizesz.com",
-              "connect-src 'self' https: https://api.baizesz.com",
-              "font-src 'self' data: https://api.baizesz.com",
-              "media-src 'self' data: blob: https://api.baizesz.com",
-              "worker-src 'self' blob:",
-              "child-src 'self' blob:",
-              "object-src 'none'",
-              "base-uri 'self'"
-            ].join('; ')
-        ]
-      }
+      responseHeaders
     });
   });
 
