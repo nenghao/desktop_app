@@ -1,6 +1,6 @@
 /**
  * 应用配置API服务
- * 专门处理应用配置相关的网络请求（侧边栏配置等）
+ * 专门处理应用配置相关的网络请求（侧边栏配置、版本检查等）
  * 参考 UserApiService 的架构设计
  */
 
@@ -59,6 +59,33 @@ export class AppConfigApiService extends ApiService {
     } catch (error) {
       console.error('❌ [AppConfigApiService] 获取侧边栏配置失败:', error);
       throw error;
+    }
+  }
+
+  /**
+   * 获取应用配置（版本检查，无需认证）
+   * @param {string} platform - 平台标识 (如: 'Windows', 'macOS', 'linux')
+   * @param {string} version - 当前版本号 (如: '1.0.0')
+   * @returns {Promise<Object>} 版本检查结果
+   */
+  async fetchAppConfig(platform, version) {
+    try {
+      console.log(`⚙️ [AppConfigApiService] 获取应用配置 (${platform} v${version})`);
+
+      // 构建查询参数
+      const params = new URLSearchParams({
+        platform: platform,
+        version: version
+      });
+
+      // 不需要认证，直接使用 GET 请求
+      // 注意：代理会将 /api 重写，所以这里路径是 config/app/
+      const response = await this.get(`config/app/?${params}`);
+
+      return response;
+    } catch (error) {
+      const formattedError = this.handleApiError(error, 'app_config');
+      throw formattedError;
     }
   }
 

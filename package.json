@@ -1,7 +1,7 @@
 {
   "name": "questech",
   "productName": "奇境探索",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "奇境探索 - AI智能体",
   "main": "electron/main.js",
   "homepage": "./",
