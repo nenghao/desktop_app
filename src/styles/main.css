@@ -27,6 +27,7 @@
 @import './components/login-modal.css';
 @import './components/user-profile-modal.css';
 @import './components/settings-modal.css';
+@import './components/version-update-modal.css';
 @import './components/chat-interface.css';
 @import './components/selector-popup.css';
 @import './components/chat-input.css';

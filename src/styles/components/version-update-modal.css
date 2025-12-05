@@ -1,0 +1,347 @@
+/**
+ * 版本更新模态框样式
+ */
+
+.version-update-modal {
+  --update-primary-color: #6366f1;
+  --update-success-color: #10b981;
+  --update-warning-color: #f59e0b;
+  --update-error-color: #ef4444;
+  --update-text-primary: #1f2937;
+  --update-text-secondary: #6b7280;
+  --update-border: #e5e7eb;
+  --update-bg: #ffffff;
+  --update-bg-secondary: #f9fafb;
+}
+
+.modal-title {
+  color: white !important;
+}
+
+.version-update-modal .modal-content {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.version-update-modal .modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--update-border);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  position: relative;
+}
+
+.version-update-modal .modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.version-update-modal .modal-body {
+  padding: 0;
+}
+
+/* 更新容器 */
+.update-container {
+  padding: 24px;
+  text-align: center;
+  max-width: 100%;
+}
+
+/* 版本图标 */
+.update-icon {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.update-icon svg {
+  color: var(--update-primary-color);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* 更新标题 */
+
+/* 版本信息 */
+.version-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: var(--update-bg-secondary);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid var(--update-border);
+}
+
+.version-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.version-item .label {
+  font-size: 12px;
+  color: var(--update-text-secondary);
+  font-weight: 500;
+}
+
+.version-item .value {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.version-item .value.current {
+  color: var(--update-text-secondary);
+}
+
+.version-item .value.latest {
+  color: var(--update-success-color);
+}
+
+/* 更新描述 */
+.update-description {
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.update-description p {
+  margin: 0 0 16px 0;
+  color: var(--update-text-primary);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.update-features {
+  background: var(--update-bg-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--update-border);
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.update-features h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--update-text-primary);
+}
+
+.update-features ul {
+  margin: 0;
+  padding-left: 16px;
+  list-style: disc;
+}
+
+.update-features li {
+  margin-bottom: 8px;
+  color: var(--update-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* 操作按钮 */
+.update-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.update-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.update-btn.primary {
+  background: var(--update-primary-color);
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3), 0 2px 4px -1px rgba(99, 102, 241, 0.2);
+}
+
+.update-btn.primary:hover {
+  background: #5558e3;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.2);
+}
+
+.update-btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3), 0 2px 4px -1px rgba(99, 102, 241, 0.2);
+}
+
+.update-btn.secondary {
+  background: transparent;
+  color: var(--update-text-secondary);
+  border: 1px solid var(--update-border);
+}
+
+.update-btn.secondary:hover {
+  background: var(--update-bg-secondary);
+  color: var(--update-text-primary);
+  border-color: var(--update-text-secondary);
+}
+
+.btn-icon {
+  transition: transform 0.2s ease;
+}
+
+.update-btn:hover .btn-icon {
+  transform: translateX(2px);
+}
+
+/* 强制更新提示 */
+.force-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  color: #92400e;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.force-notice svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 640px) {
+  .version-update-modal .modal-content {
+    max-height: calc(100vh - 32px);
+  }
+
+  .update-container {
+    padding: 20px 16px;
+  }
+
+  .version-info {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .update-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .update-btn {
+    width: 100%;
+  }
+
+  .force-notice {
+    text-align: left;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .version-update-modal {
+    --update-primary-color: #818cf8;
+    --update-success-color: #34d399;
+    --update-warning-color: #fbbf24;
+    --update-error-color: #f87171;
+    --update-text-primary: #f9fafb;
+    --update-text-secondary: #d1d5db;
+    --update-border: #374151;
+    --update-bg: #1f2937;
+    --update-bg-secondary: #111827;
+  }
+
+  .force-notice {
+    background: #451a03;
+    border-color: #7c2d12;
+    color: #fef3c7;
+  }
+}
+
+/* 动画效果 */
+.version-update-modal .modal-content {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 加载状态 */
+.update-btn.loading {
+  position: relative;
+  color: transparent;
+}
+
+.update-btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.update-btn.loading.primary::after {
+  border-top-color: white;
+}
+
+.update-btn.loading.secondary::after {
+  border-top-color: var(--update-text-primary);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

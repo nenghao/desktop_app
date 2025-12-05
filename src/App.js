@@ -15,7 +15,11 @@ import { ElectronAdapter } from './utils/electron-adapter.js';
 import { AppLayout } from './components/layout/AppLayout.js';
 import { routes } from './router/index.js';
 import { appConfig } from './config/app-config.js';
+import { VersionManager } from './utils/VersionManager.js';
+import { VersionUpdateModal } from './components/version/VersionUpdateModal.js';
+import { AppVersion } from './utils/AppVersion.js';
 import serviceRegistry from './core/ServiceRegistry.js';
+
 
 export class App {
   constructor() {
@@ -46,6 +50,9 @@ export class App {
 
     // 应用容器
     this.container = null;
+
+    // 版本更新模态框
+    this.versionUpdateModal = null;
   }
 
   /**
@@ -83,8 +90,16 @@ export class App {
       // 6. 设置全局事件监听
       this.setupGlobalEventListeners();
 
+      // 7. 创建版本管理器并进行版本检查（最后执行）
+      this.versionManager = new VersionManager({
+        eventBus: this.eventBus
+      });
+
+      await this.versionManager.handleAppStartup(AppVersion.getVersion());
+
       this.initialized = true;
       console.log('✅ Questech SPA 初始化完成');
+      console.log(`📱 当前版本: ${AppVersion.getVersion()} (${AppVersion.getProductName()})`);
 
     } catch (error) {
       console.error('❌ Questech SPA 初始化失败:', error);
@@ -281,6 +296,11 @@ export class App {
       this.handleDataUpdate(updateInfo);
     });
 
+    // 监听版本更新事件
+    this.eventBus.on('app:update-version', (updateInfo) => {
+      this.handleVersionUpdate(updateInfo);
+    });
+
     // 监听设置主题变化事件
     this.eventBus.on('settings:theme:change', (eventObj) => {
       const theme = eventObj.data || eventObj;
@@ -382,6 +402,12 @@ export class App {
         await this.layout.unmount();
       }
 
+      // 销毁版本更新模态框
+      if (this.versionUpdateModal) {
+        this.versionUpdateModal.destroy();
+        this.versionUpdateModal = null;
+      }
+
       // 清空容器
       if (this.container) {
         this.container.innerHTML = '';
@@ -405,8 +431,7 @@ export class App {
    */
   getInfo() {
     return {
-      name: appConfig.name,
-      version: appConfig.version,
+      ...AppVersion.getAppInfo(),
       initialized: this.initialized,
       mounted: this.mounted,
       buildTime: appConfig.buildTime
@@ -525,6 +550,83 @@ export class App {
         ]
       });
     }
+  }
+
+  /**
+   * 处理版本更新事件
+   * @param {Object} updateInfo - 版本更新信息
+   */
+  handleVersionUpdate(updateInfo) {
+    console.log('📢 [App] 收到版本更新通知:', updateInfo);
+
+    // EventBus 可能会包装事件数据，需要从 data 字段获取实际数据
+    const eventData = updateInfo.data || updateInfo;
+    const {
+      currentVersion,
+      latestVersion,
+      updateInfo: versionInfo,
+      downloadUrl,
+      forceUpdate,
+      reason
+    } = eventData;
+
+    console.log('📦 [App] 解析版本更新信息:', {
+      currentVersion,
+      latestVersion,
+      forceUpdate,
+      reason
+    });
+
+    // 显示版本更新模态框
+    this.showVersionUpdateModal(eventData);
+  }
+
+  /**
+   * 显示版本更新模态框
+   * @param {Object} updateInfo - 版本更新信息
+   */
+  showVersionUpdateModal(updateInfo) {
+    // 如果已有模态框存在，先销毁
+    if (this.versionUpdateModal) {
+      this.versionUpdateModal.destroy();
+      this.versionUpdateModal = null;
+    }
+
+    // 创建新的版本更新模态框
+    this.versionUpdateModal = new VersionUpdateModal({
+      updateInfo: updateInfo,
+      forceUpdate: updateInfo.forceUpdate || false,
+      title: updateInfo.forceUpdate ? '需要更新' : '发现新版本',
+      confirmText: updateInfo.forceUpdate ? '立即更新' : '立即更新',
+      cancelText: '稍后提醒'
+    });
+
+    // 绑定事件监听器
+    this.versionUpdateModal.on('confirm', (updateInfo) => {
+      console.log('✅ [App] 用户确认版本更新', updateInfo);
+      this.emitGlobal('version-update:user-confirm', updateInfo);
+    });
+
+    this.versionUpdateModal.on('cancel', (updateInfo) => {
+      console.log('❌ [App] 用户取消版本更新', updateInfo);
+      this.emitGlobal('version-update:user-cancel', updateInfo);
+    });
+
+    this.versionUpdateModal.on('update-error', (error) => {
+      console.error('❌ [App] 版本更新失败', error);
+      // 显示错误提示
+      if (this.notificationCenter) {
+        this.notificationCenter.show({
+          type: 'error',
+          title: '更新失败',
+          message: '版本更新过程中发生错误，请稍后重试',
+          duration: 5000
+        });
+      }
+    });
+
+    // 显示模态框
+    this.versionUpdateModal.show();
   }
 
   /**
