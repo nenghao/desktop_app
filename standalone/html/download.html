@@ -206,156 +206,236 @@
             margin: 0 auto;
         }
 
-        /* ========== 下载卡片网格 ========== */
-        .download-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-            align-items: center;
-            margin-bottom: 64px;
+        /* ========== 平台选择区域 ========== */
+        .platform-selection {
+            margin: 40px 0;
         }
 
-        .current-system-row {
+        .platform-row {
             display: flex;
             justify-content: center;
-            width: 100%;
-            max-width: 400px;
+            gap: 24px;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .other-systems-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .download-card {
+        .platform-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 24px;
             background-color: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
+            border: 2px solid var(--color-border);
+            border-radius: 16px;
+            cursor: pointer;
             transition: all 0.3s ease;
+            min-width: 120px;
             position: relative;
             overflow: hidden;
         }
 
-        .download-card::before {
+        .platform-item::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--black));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
         }
 
-        .download-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            border-color: var(--black);
+        .platform-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+            border-color: var(--color-primary);
         }
 
-        .download-card:hover::before {
-            transform: scaleX(1);
+        .platform-item:hover::before {
+            opacity: 0.05;
+        }
+
+        .platform-item.active {
+            border-color: var(--color-primary);
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .platform-item.active .platform-icon,
+        .platform-item.active .platform-label {
+            color: white;
         }
 
         .platform-icon {
-            width: 40px;
-            height: 40px;
-            margin: 0 auto;
+            position: relative;
+            z-index: 1;
             color: var(--color-primary);
+            transition: color 0.3s ease;
         }
 
-        .platform-name {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--color-text-primary);
-            margin-bottom: 8px;
-        }
-
-        .platform-description {
+        .platform-label {
             font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        /* ========== 下载详情区域 ========== */
+        .download-details {
+            margin: 40px 0 64px 0;
+            min-height: 400px;
+        }
+
+        .details-content {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .details-content.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .default-message {
+            text-align: center;
             color: var(--color-text-secondary);
+            padding: 60px 20px;
+        }
+
+        .message-icon {
+            color: var(--color-text-tertiary);
             margin-bottom: 24px;
-            line-height: 1.5;
         }
 
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: var(--color-primary);
-            color: white;
-            padding: 12px 24px;
-            border: none;
+        .default-message h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--color-text-primary);
+        }
+
+        .default-message p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .platform-details {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .platform-details .platform-description {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .download-grid {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .download-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background-color: var(--color-border);
             border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
+            overflow: hidden;
+        }
+
+        .download-row-full {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            background-color: var(--color-surface);
             transition: all 0.2s ease;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            padding: 0 20px;
         }
 
-        .download-btn:hover {
-            background-color: var(--color-primary-hover);
+        .download-row-full:hover {
+            background-color: var(--color-surface-secondary);
         }
 
-        /* Windows 下载按钮 - 类似徽章样式 */
-        .windows-download-btn {
-            display: inline-flex;
+        .download-text {
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--color-text-primary);
+            flex: 1;
+            pointer-events: none;
+        }
+
+        .download-button {
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            background-color: var(--black);
-            color: var(--white);
-            padding: 8px 20px;
-            border: 1px solid var(--color-text-secondary);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
             text-decoration: none;
+            color: var(--color-primary);
             transition: all 0.2s ease;
-            margin-top: 8px;
-            font-family: 'Inter', sans-serif;
-            height: 40px;
+            padding: 4px;
+            border-radius: 4px;
         }
 
-        .windows-download-btn:hover {
-            opacity: 0.8;
+        .download-button:hover {
             transform: scale(1.05);
         }
 
-        /* App Store 徽章样式 */
-        .app-store-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            margin-top: 8px;
+        .download-button i {
+            color: var(--color-primary);
         }
 
-        .app-store-badge img {
-            max-width: 100%;
-            height: auto;
+        /* ========== 加载和错误状态 ========== */
+        .loading-state,
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-secondary);
         }
 
-        .platform-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background-color: var(--color-success-light);
-            color: var(--color-success);
-            padding: 4px 8px;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 20px;
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .error-icon {
+            color: var(--red-600);
+            margin-bottom: 16px;
+        }
+
+        .loading-state h3,
+        .error-state h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+        }
+
+        .loading-state p,
+        .error-state p {
+            font-size: 16px;
+            line-height: 1.5;
         }
 
         /* ========== 页脚 ========== */
@@ -400,6 +480,113 @@
             }
         }
 
+        /* ========== 版本信息区域 ========== */
+        .version-info {
+            margin: 32px 0;
+            text-align: center;
+        }
+
+        .version-content {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px 32px;
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .version-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .version-info-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .version-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .version-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+        }
+
+        .version-number {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            background-color: var(--color-primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .release-notes-preview {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        .expand-icon {
+            color: var(--color-text-tertiary);
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            transform: rotate(0deg);
+        }
+
+        .version-content.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .release-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .version-content.expanded .release-details {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .release-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--color-text-primary);
+        }
+
+        .release-details ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .release-details li {
+            margin-bottom: 8px;
+        }
+
         /* ========== 响应式设计 ========== */
         @media (max-width: 768px) {
             .hero-title {
@@ -410,9 +597,33 @@
                 font-size: 1rem;
             }
 
-            .other-systems-row {
-                grid-template-columns: repeat(2, 1fr);
+            .version-content {
+                padding: 12px 20px;
+            }
+
+            .version-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .version-info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .platform-row {
                 gap: 16px;
+            }
+
+            .platform-item {
+                min-width: 100px;
+                padding: 20px 16px;
+            }
+
+            .details-content {
+                padding: 24px;
             }
 
             .navbar-content {
@@ -434,13 +645,29 @@
                 padding: 48px 0;
             }
 
-            .download-card {
-                padding: 24px;
+            .platform-row {
+                gap: 12px;
             }
 
-            .other-systems-row {
-                grid-template-columns: 1fr;
-                gap: 16px;
+            .platform-item {
+                min-width: 80px;
+                padding: 16px 12px;
+            }
+
+            .platform-label {
+                font-size: 12px;
+            }
+
+            .details-content {
+                padding: 20px;
+            }
+
+            .platform-details h2 {
+                font-size: 24px;
+            }
+
+            .download-text {
+                font-size: 14px;
             }
         }
 
@@ -524,99 +751,73 @@
                 </p>
             </section>
 
-            <!-- 下载卡片网格 -->
-            <section class="download-grid">
-                <!-- 第一排：当前系统卡片 -->
-                <div class="current-system-row">
-                    <!-- Windows 下载卡片 -->
-                    <div class="download-card fade-in-up">
-                        <div class="platform-badge">当前系统</div>
-                        <div class="platform-icon">
-                            <i data-lucide="monitor" size="64"></i>
+            <!-- 版本信息区域 -->
+            <section class="version-info" id="version-info">
+                <div class="version-content" id="version-content" onclick="toggleVersionDetails()">
+                    <div class="version-header">
+                        <div class="version-info-row">
+                            <div class="version-badge">
+                                <span class="version-label">最新版本</span>
+                                <span class="version-number" id="latest-version">v1.0.2</span>
+                            </div>
+                            <div class="release-notes-preview" id="release-notes-preview">版本更新详情</div>
                         </div>
-                        <h2 class="platform-name">Windows</h2>
-                        <p class="platform-description">
-                            支持 Windows 10 及以上版本，提供完整的桌面应用体验
-                        </p>
-                        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
-                            <a href="https://apps.microsoft.com/detail/9nk9xmrnz94v?hl=zh-CN&gl=CN" target="_blank"
-                                class="app-store-badge">
-                                <img src="https://static.baizesz.com/icons/microsoft_store.png"
-                                    alt="Get it from Microsoft" style="height: 40px; border-radius: 8px;">
-                            </a>
-                            <button class="windows-download-btn" onclick="downloadFile('windows')">
-                                <svg viewBox="0 0 88 88" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                    fill="currentColor">
-                                    <path
-                                        d="m0 12.402 35.687-4.86.016 34.423-35.67.203zm35.67 33.529.028 34.453L.028 75.48.026 45.7zm4.326-39.025L87.314 0v41.527l-47.318.376zm47.329 39.349-.011 41.34-47.318-6.678-.066-34.739z">
-                                    </path>
-                                </svg>
-                                Download for Windows(.exe)
-                            </button>
-                        </div>
+                        <i data-lucide="chevron-down" class="expand-icon" size="20"></i>
+                    </div>
+                    <div class="release-details" id="release-details">
+                        <ul id="release-details-list">
+                            <li>新版本包含多项功能改进和bug修复</li>
+                        </ul>
                     </div>
                 </div>
+            </section>
 
-                <!-- 第二排：其他系统卡片 -->
-                <div class="other-systems-row">
-                    <!-- macOS 下载卡片 -->
-                    <div class="download-card fade-in-up">
+            <!-- 平台选择区域 -->
+            <section class="platform-selection">
+                <div class="platform-row">
+                    <div class="platform-item" data-platform="windows">
                         <div class="platform-icon">
-                            <i data-lucide="laptop" size="64"></i>
+                            <i data-lucide="monitor" size="48"></i>
                         </div>
-                        <h2 class="platform-name">macOS</h2>
-                        <p class="platform-description">
-                            支持 macOS 10.15 及以上版本，原生适配 Apple Silicon
-                        </p>
-                        <a href="https://apps.apple.com" target="_blank" class="app-store-badge">
-                            <img src="https://tools.applemediaservices.com/api/badges/download-on-the-mac-app-store/black/en-us?size=250x83&releaseDate=1672531200&h=84251a7e5fbb0b5c8ef34894e86d6a14"
-                                alt="Download on the Mac App Store" style="height: 40px;">
-                        </a>
+                        <div class="platform-label">Windows</div>
                     </div>
-
-                    <!-- Linux 下载卡片 -->
-                    <div class="download-card fade-in-up">
+                    <div class="platform-item" data-platform="macos">
                         <div class="platform-icon">
-                            <i data-lucide="terminal" size="64"></i>
+                            <i data-lucide="laptop" size="48"></i>
                         </div>
-                        <h2 class="platform-name">Linux</h2>
-                        <p class="platform-description">
-                            支持 Ubuntu 20.04+、Fedora 35+ 等主流发行版
-                        </p>
-                        <button class="windows-download-btn" onclick="downloadFile('linux')">
-                            <i data-lucide="app-window-mac" size="20"></i>
-                            Download for Linux
-                        </button>
+                        <div class="platform-label">macOS</div>
                     </div>
-
-                    <!-- iOS 下载卡片 -->
-                    <div class="download-card fade-in-up">
+                    <div class="platform-item" data-platform="linux">
                         <div class="platform-icon">
-                            <i data-lucide="smartphone" size="64"></i>
+                            <i data-lucide="terminal" size="48"></i>
                         </div>
-                        <h2 class="platform-name">iOS</h2>
-                        <p class="platform-description">
-                            支持 iOS 15.0 及以上版本，iPhone 和 iPad 通用
-                        </p>
-                        <a href="https://apps.apple.com" target="_blank" class="app-store-badge">
-                            <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=1672531200&h=84251a7e5fbb0b5c8ef34894e86d6a14"
-                                alt="Download on the App Store" style="height: 40px;">
-                        </a>
+                        <div class="platform-label">Linux</div>
                     </div>
-
-                    <!-- Android 下载卡片 -->
-                    <div class="download-card fade-in-up">
+                    <div class="platform-item" data-platform="ios">
                         <div class="platform-icon">
-                            <i data-lucide="smartphone" size="64"></i>
+                            <i data-lucide="smartphone" size="48"></i>
                         </div>
-                        <h2 class="platform-name">Android</h2>
-                        <p class="platform-description">
-                            支持 Android 8.0 及以上版本，适配各种屏幕尺寸
-                        </p>
-                        <a href="https://play.google.com/store" target="_blank" class="app-store-badge">
-                            <img src="https://static.baizesz.com/icons/google_play.png" alt="Get it on Google Play"
-                                style="height: 60px;">
-                        </a>
+                        <div class="platform-label">iOS</div>
+                    </div>
+                    <div class="platform-item" data-platform="android">
+                        <div class="platform-icon">
+                            <i data-lucide="smartphone" size="48"></i>
+                        </div>
+                        <div class="platform-label">Android</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 下载详情区域 -->
+            <section class="download-details" id="download-details">
+                <div class="details-content" id="details-content">
+                    <!-- 默认提示 -->
+                    <div class="default-message">
+                        <div class="message-icon">
+                            <i data-lucide="download" size="64"></i>
+                        </div>
+                        <h3>选择平台查看下载选项</h3>
+                        <p>点击上方平台图标查看对应的下载版本和安装方式</p>
                     </div>
                 </div>
             </section>
@@ -643,104 +844,517 @@
         // 初始化 Lucide 图标
         lucide.createIcons();
 
-        // 下载功能
-        function downloadFile(platform) {
-            const downloadLinks = {
-                'windows': 'https://apps.microsoft.com/detail/9nk9xmrnz94v?hl=zh-CN&gl=CN',
-                'macos': '#',    // 替换为实际的 macOS 下载链接
-                'linux': '#',    // 替换为实际的 Linux 下载链接
-                'ios': '#',      // 替换为实际的 App Store 链接
-                'android': '#'   // 替换为实际的 Google Play 链接
-            };
-            console.log("link:", downloadLinks[platform]);
+        // 展开/收起版本详情
+        function toggleVersionDetails() {
+            const versionContent = document.getElementById('version-content');
+            const isExpanded = versionContent.classList.contains('expanded');
 
-            const button = event.target.closest('button') || event.target;
-            const originalContent = button.innerHTML;
+            if (isExpanded) {
+                versionContent.classList.remove('expanded');
+            } else {
+                versionContent.classList.add('expanded');
+            }
+        }
 
-            // 显示加载状态
-            button.innerHTML = '<div class="loading"></div> 下载中...';
-            button.disabled = true;
+        // 更新版本信息
+        function updateVersionInfo(latestVersion, releaseNotes) {
+            const versionElement = document.getElementById('latest-version');
+            const detailsListElement = document.getElementById('release-details-list');
 
-            // 模拟下载延迟
-            setTimeout(() => {
-                console.log(`下载 ${platform} 版本`);
+            if (latestVersion) {
+                versionElement.textContent = `v${latestVersion}`;
+            }
 
-                // 恢复按钮状态
-                button.innerHTML = originalContent;
-                button.disabled = false;
+            if (releaseNotes) {
+                // 将发布说明分割为列表项
+                const notesArray = releaseNotes.split(/[,，;；、]/).filter(note => note.trim());
+                detailsListElement.innerHTML = notesArray.map(note => `<li>${note.trim()}</li>`).join('');
+            }
+        }
 
-                // 如果有实际链接，可以在新窗口打开
-                if (downloadLinks[platform] && downloadLinks[platform] !== '#') {
-                    window.open(downloadLinks[platform], '_blank');
+        // 检测系统架构和Linux发行版
+        function detectSystemArchitecture() {
+            const userAgent = navigator.userAgent;
+            const platform = navigator.platform;
+
+            // 检测操作系统
+            let os = 'unknown';
+            let arch = 'unknown';
+            let distro = 'unknown';
+
+            if (userAgent.includes('Windows')) {
+                os = 'windows';
+                // Windows 架构检测
+                if (userAgent.includes('Win64') || userAgent.includes('WOW64') || platform.includes('Win64')) {
+                    arch = 'amd64';
+                } else if (userAgent.includes('ARM') || userAgent.includes('aarch64')) {
+                    arch = 'arm64';
                 } else {
-                    // 显示临时提示
-                    showNotification(`${platform} 版本即将发布，敬请期待！`);
+                    arch = 'amd64'; // 默认假设为 amd64
                 }
-            }, 2000);
+            } else if (userAgent.includes('Mac')) {
+                os = 'macos';
+                // macOS 架构检测
+                if (userAgent.includes('Intel') || platform.includes('Intel') || userAgent.includes('MacIntel')) {
+                    arch = 'intel';
+                } else if (userAgent.includes('ARM') || userAgent.includes('aarch64') || platform.includes('MacARM')) {
+                    arch = 'apple-silicon';
+                } else {
+                    // 对于较新的 macOS 系统，默认假设为 Apple Silicon
+                    arch = 'apple-silicon';
+                }
+            } else if (userAgent.includes('Linux')) {
+                os = 'linux';
+                if (userAgent.includes('x86_64') || userAgent.includes('amd64')) {
+                    arch = 'amd64';
+                } else if (userAgent.includes('ARM') || userAgent.includes('aarch64')) {
+                    arch = 'arm64';
+                } else {
+                    arch = 'amd64';
+                }
+
+                // 检测Linux发行版
+                if (userAgent.includes('Ubuntu') || userAgent.includes('Debian')) {
+                    distro = 'debian';
+                } else if (userAgent.includes('Fedora') || userAgent.includes('RHEL') || userAgent.includes('CentOS') || userAgent.includes('Red Hat')) {
+                    distro = 'redhat';
+                } else if (userAgent.includes('SUSE') || userAgent.includes('openSUSE')) {
+                    distro = 'suse';
+                } else if (userAgent.includes('Arch')) {
+                    distro = 'arch';
+                }
+            }
+
+            return { os, arch, distro };
         }
 
-        // 通知功能
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background-color: var(--color-primary);
-                color: white;
-                padding: 16px 24px;
-                border-radius: 8px;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-                z-index: 1000;
-                max-width: 300px;
-                animation: slideInRight 0.3s ease-out;
+
+        // 全局变量
+        let downloadData = null;
+        let currentPlatform = null;
+
+        // 初始化平台交互
+        function initializePlatformInteraction() {
+            const platformItems = document.querySelectorAll('.platform-item');
+
+            platformItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    const platform = this.dataset.platform;
+                    showPlatformDetails(platform);
+
+                    // 更新激活状态
+                    platformItems.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                });
+
+                item.addEventListener('mouseenter', function () {
+                    const platform = this.dataset.platform;
+                    if (currentPlatform !== platform) {
+                        showPlatformDetails(platform);
+                    }
+                });
+            });
+        }
+
+        // 显示平台下载详情
+        function showPlatformDetails(platform) {
+            currentPlatform = platform;
+            const detailsContent = document.getElementById('details-content');
+
+            if (!downloadData) {
+                showLoadingState();
+                fetchDownloadData(platform);
+                return;
+            }
+
+            const platformData = downloadData.data.platforms.find(p => p.platform === platform);
+            if (!platformData) {
+                showErrorState('暂无该平台的下载信息');
+                return;
+            }
+
+            let html = `
+                <div class="platform-details">
+                    <p class="platform-description">${platformData.description}</p>
+                    <div class="download-grid">
             `;
-            notification.textContent = message;
 
-            document.body.appendChild(notification);
+            // 创建下载列表
+            html += '<div class="download-list">';
 
-            setTimeout(() => {
-                notification.style.animation = 'slideOutRight 0.3s ease-out';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
+            // 按优先级处理不同类型的下载
+            const sortedDownloads = [...platformData.downloads].sort((a, b) => {
+                // 优先级: store > 其他类型
+                const priority = {
+                    'store': 5,
+                    'default': 1
+                };
+                return (priority[b.type] || priority.default) - (priority[a.type] || priority.default);
+            });
+
+            sortedDownloads.forEach(download => {
+                if (download.type === 'store') {
+                    // 官方商店下载 - 显示徽章图标
+                    if (platform === 'windows') {
+                        // Microsoft Store
+                        html += `
+                            <div class="download-row-full">
+                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <a href="${download.url}" class="download-button" target="_blank">
+                                    <img src="https://static.baizesz.com/icons/microsoft_store.png" alt="Get it from Microsoft Store" style="height: 40px; border-radius: 8px;">
+                                </a>
+                            </div>
+                        `;
+                    } else if (platform === 'macos') {
+                        // Mac App Store
+                        html += `
+                            <div class="download-row-full">
+                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <a href="${download.url}" class="download-button" target="_blank">
+                                    <img src="https://tools.applemediaservices.com/api/badges/download-on-the-mac-app-store/black/en-us?size=250x83&releaseDate=1672531200&h=84251a7e5fbb0b5c8ef34894e86d6a14"
+                                        alt="Download on the Mac App Store" style="height: 40px; border-radius: 8px;">
+                                </a>
+                            </div>
+                        `;
+                    } else if (platform === 'ios') {
+                        // iOS App Store
+                        html += `
+                            <div class="download-row-full">
+                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <a href="${download.url}" class="download-button" target="_blank">
+                                    <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=1672531200&h=84251a7e5fbb0b5c8ef34894e86d6a14"
+                                        alt="Download on the App Store" style="height: 40px; border-radius: 8px;">
+                                </a>
+                            </div>
+                        `;
+                    } else if (platform === 'android') {
+                        // Android Google Play
+                        html += `
+                            <div class="download-row-full">
+                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <a href="${download.url}" class="download-button" target="_blank">
+                                    <img src="https://static.baizesz.com/icons/google_play.png" alt="Get it on Google Play" style="height: 50px; border-radius: 8px;">
+                                </a>
+                            </div>
+                        `;
+                    } else {
+                        // 其他平台的store类型，显示默认徽章
+                        html += `
+                            <div class="download-row-full">
+                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <a href="${download.url}" class="download-button" target="_blank">
+                                    <i data-lucide="shopping-bag" size="16"></i>
+                                </a>
+                            </div>
+                        `;
+                    }
+                } else {
+                    // 普通下载 - 显示下载图标
+                    html += `
+                        <div class="download-row-full">
+                            <span class="download-text">${download.architecture} ${download.description}（${download.type}）</span>
+                            <a href="${download.url}" class="download-button" target="_blank">
+                                <i data-lucide="download" size="16"></i>
+                            </a>
+                        </div>
+                    `;
+                }
+            });
+
+            html += '</div>';
+
+            html += `
+                    </div>
+                </div>
+            `;
+            detailsContent.innerHTML = html;
+
+            // 重新初始化图标
+            lucide.createIcons();
+
+            // 添加动画效果
+            detailsContent.classList.add('show');
         }
 
-        // 添加滑入滑出动画
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
+        // 获取下载名称
+        function getDownloadName(name, platform) {
+            const nameMap = {
+                'windows': {
+                    'exe': 'Windows 安装程序',
+                    'portable': 'Windows 便携版'
+                },
+                'macos': {
+                    'dmg': 'macOS 安装包'
+                },
+                'linux': {
+                    'deb': 'Debian/Ubuntu 安装包',
+                    'rpm': 'RedHat/CentOS 安装包',
+                    'AppImage': '通用 AppImage 格式'
+                },
+                'android': {
+                    'apk': 'Android 安装包'
+                },
+                'ios': {
+                    'appstore': 'App Store 下载'
                 }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
+            };
+            return nameMap[platform]?.[name] || name;
+        }
+
+        // 显示加载状态
+        function showLoadingState() {
+            const detailsContent = document.getElementById('details-content');
+            detailsContent.innerHTML = `
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>正在获取下载信息...</p>
+                </div>
+            `;
+            detailsContent.classList.add('show');
+        }
+
+        // 显示错误状态
+        function showErrorState(message) {
+            const detailsContent = document.getElementById('details-content');
+            detailsContent.innerHTML = `
+                <div class="error-state">
+                    <div class="error-icon">
+                        <i data-lucide="alert-circle" size="48"></i>
+                    </div>
+                    <h3>获取失败</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+            lucide.createIcons();
+            detailsContent.classList.add('show');
+        }
+
+        // 使用文档中的示例数据作为默认数据
+        function getDefaultDownloadData() {
+            return {
+                "success": true,
+                "message": "获取下载链接成功",
+                "data": {
+                    "latest_version": "1.0.2",
+                    "release_notes": "新版本包含多项功能改进和bug修复",
+                    "platforms": [
+                        {
+                            "platform": "windows",
+                            "description": "支持 Windows 10 及以上版本，提供完整的桌面应用体验",
+                            "downloads": [
+                                {
+                                    "type": "store",
+                                    "architecture": "universal",
+                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64.exe",
+                                    "size": "125MB",
+                                    "description": "应用商店"
+                                },
+                                {
+                                    "type": "exe",
+                                    "architecture": "AMD64",
+                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64.exe",
+                                    "size": "125MB",
+                                    "description": "安装包"
+                                },
+                                {
+                                    "type": "portable",
+                                    "architecture": "AMD64",
+                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64-portable.zip",
+                                    "size": "118MB",
+                                    "description": "便携版"
+                                },
+                                {
+                                    "type": "exe",
+                                    "architecture": "ARM64",
+                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64.exe",
+                                    "size": "125MB",
+                                    "description": "安装包"
+                                },
+                                {
+                                    "type": "portable",
+                                    "architecture": "ARM64",
+                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64-portable.zip",
+                                    "size": "118MB",
+                                    "description": "便携版"
+                                }
+                            ]
+                        },
+                        {
+                            "platform": "macos",
+                            "description": "支持 macOS 11 及以上版本，原生适配 Apple Silicon",
+                            "downloads": [
+                                {
+                                    "type": "store",
+                                    "architecture": "universal",
+                                    "url": "https://apps.apple.com/app/id123456789",
+                                    "size": "-",
+                                    "description": "Mac App Store 下载"
+                                },
+                                {
+                                    "type": "dmg",
+                                    "architecture": "universal",
+                                    "url": "https://www.baizesz.com/app/download/macos/questech-1.0.2-universal.dmg",
+                                    "size": "142MB",
+                                    "description": "dmg"
+                                },
+                                {
+                                    "type": "dmg",
+                                    "architecture": "Intel x86_64",
+                                    "url": "https://www.baizesz.com/app/download/macos/questech-1.0.2-intel.dmg",
+                                    "size": "138MB",
+                                    "description": "dmg"
+                                },
+                                {
+                                    "type": "dmg",
+                                    "architecture": "Apple Silicon",
+                                    "url": "https://www.baizesz.com/app/download/macos/questech-1.0.2-arm.dmg",
+                                    "size": "135MB",
+                                    "description": "dmg"
+                                }
+                            ]
+                        },
+                        {
+                            "platform": "linux",
+                            "description": "支持 Ubuntu 20.04+、Fedora 35+ 等主流发行版",
+                            "downloads": [
+                                {
+                                    "type": "deb",
+                                    "architecture": "AMD64",
+                                    "url": "https://www.baizesz.com/app/download/linux/questech_1.0.2_amd64.deb",
+                                    "size": "98MB",
+                                    "description": "Debian/Ubuntu 安装包"
+                                },
+                                {
+                                    "type": "rpm",
+                                    "architecture": "AMD64",
+                                    "url": "https://www.baizesz.com/app/download/linux/questech-1.0.2-1.x86_64.rpm",
+                                    "size": "95MB",
+                                    "description": "RedHat/CentOS 安装包"
+                                },
+                                {
+                                    "type": "AppImage",
+                                    "architecture": "AMD64",
+                                    "url": "https://www.baizesz.com/app/download/linux/Questech-1.0.2.AppImage",
+                                    "size": "108MB",
+                                    "description": "AppImage格式"
+                                },
+                                {
+                                    "type": "deb",
+                                    "architecture": "ARM64",
+                                    "url": "https://www.baizesz.com/app/download/linux/questech_1.0.2_arm64.deb",
+                                    "size": "94MB",
+                                    "description": "Debian/Ubuntu 安装包"
+                                },
+                                {
+                                    "type": "AppImage",
+                                    "architecture": "ARM64",
+                                    "url": "https://www.baizesz.com/app/download/linux/Questech-1.0.2-arm64.AppImage",
+                                    "size": "102MB",
+                                    "description": "AppImage格式"
+                                }
+                            ]
+                        },
+                        {
+                            "platform": "android",
+                            "description": "支持 Android 8.0 及以上版本，适配各种屏幕尺寸",
+                            "downloads": [
+                                {
+                                    "type": "apk",
+                                    "architecture": "UNIVERSAL",
+                                    "url": "https://www.baizesz.com/app/download/android/questech-1.0.2.apk",
+                                    "size": "45MB",
+                                    "description": "apk"
+                                }
+                            ]
+                        },
+                        {
+                            "platform": "ios",
+                            "description": "支持 iOS 15.0 及以上版本，iPhone 和 iPad 通用",
+                            "downloads": [
+                                {
+                                    "type": "store",
+                                    "architecture": "UNIVERSAL",
+                                    "url": "https://apps.apple.com/app/id123456789",
+                                    "size": "-",
+                                    "description": "App Store 下载"
+                                }
+                            ]
+                        }
+                    ]
                 }
+            };
+        }
+
+        // 从API获取下载信息
+        async function fetchDownloadData() {
+            try {
+                // 请求所有平台的数据
+                const response = await fetch(`http://192.168.0.103:10089/config/downloads/`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        downloadData = data;
+                    } else {
+                        throw new Error('API返回失败');
+                    }
+                } else {
+                    throw new Error('网络请求失败');
+                }
+            } catch (error) {
+                console.warn('API请求失败，使用默认数据:', error);
+                // 使用默认数据
+                downloadData = getDefaultDownloadData();
             }
 
-            @keyframes slideOutRight {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
+            // 更新版本信息
+            updateVersionInfo(downloadData.data.latest_version, downloadData.data.release_notes);
+
+            // 自动选择并显示当前系统的平台详情
+            const { os: currentOs } = detectSystemArchitecture();
+            let autoSelectPlatform = 'windows'; // 默认选择Windows
+
+            switch (currentOs) {
+                case 'windows':
+                    autoSelectPlatform = 'windows';
+                    break;
+                case 'macos':
+                    autoSelectPlatform = 'macos';
+                    break;
+                case 'linux':
+                    autoSelectPlatform = 'linux';
+                    break;
             }
-        `;
-        document.head.appendChild(style);
+
+            // 自动选中当前系统平台并显示详情
+            showPlatformDetails(autoSelectPlatform);
+
+            // 设置平台激活状态
+            const targetItem = document.querySelector(`[data-platform="${autoSelectPlatform}"]`);
+            if (targetItem) {
+                targetItem.classList.add('active');
+            }
+        }
 
         // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function () {
+            // 初始化平台交互
+            initializePlatformInteraction();
+
+            // 初始化图标
+            lucide.createIcons();
+
             // 监听系统主题变化
             const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
             mediaQuery.addEventListener('change', (e) => {
                 console.log(`系统主题切换为: ${e.matches ? '深色' : '浅色'}模式`);
             });
+
+            // 预加载下载数据
+            fetchDownloadData();
+
+            // 调试信息
+            const { os, arch, distro } = detectSystemArchitecture();
+            console.log(`检测到的系统: ${os}, 架构: ${arch}, 发行版: ${distro}`);
         });
 
         // 添加平滑滚动
