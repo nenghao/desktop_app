@@ -1,7 +1,7 @@
 {
   "name": "questech",
   "productName": "奇境探索",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "奇境探索 - AI智能体",
   "main": "electron/main.js",
   "homepage": "./",
@@ -42,6 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "electron-context-menu": "^4.1.1",
+    "electron-updater": "^6.6.2",
     "electron-window-state": "^5.0.3",
     "html2canvas": "^1.4.1",
     "lit": "^3.0.0",
@@ -77,6 +78,10 @@
     "productName": "奇境探索",
     "directories": {
       "output": "release"
+    },
+    "publish": {
+      "provider": "generic",
+      "url": "https://updates-1257063273.cos.ap-guangzhou.myqcloud.com/updates/"
     },
     "files": [
       "dist/**/*",
@@ -121,7 +126,7 @@
     },
     "win": {
       "icon": "src/assets/icons/app_icon.ico",
-      "artifactName": "${productName}_setup_${version}.${ext}",
+      "artifactName": "${name}_setup_${version}.${ext}",
       "target": [
         {
           "target": "nsis",
@@ -153,7 +158,7 @@
     },
     "appx": {
       "applicationId": "com.baizesz.seek",
-      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "artifactName": "${name}-${version}-${arch}.${ext}",
       "identityName": "53D5FAF4.449826F304142",
       "publisher": "CN=111BA3F5-8A55-4E46-A95B-9D22A5E1D33E",
       "publisherDisplayName": "奇境探索",

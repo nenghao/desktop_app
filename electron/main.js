@@ -5,6 +5,10 @@ const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = require('electron')
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+
+// 读取应用版本信息
+const packageJson = require('../package.json');
+const appVersion = packageJson.version;
 const isDev = process.env.NODE_ENV === 'development' && !process.env.FORCE_PROD;
 const contextMenu = require('electron-context-menu').default;
 const windowStateKeeper = require('electron-window-state');
@@ -378,8 +382,8 @@ async function createMainWindow() {
           "style-src 'self' 'unsafe-inline' http: http://192.168.0.103:10089",
           "img-src 'self' data: blob: http: http://192.168.0.103:10089 https://static.baizesz.com",
           "connect-src 'self' http: ws: http://192.168.0.103:10089 ws://192.168.0.103:10089 https://static.baizesz.com",
-          "font-src 'self' data: http:192.168.0.103:10089",
-          "media-src 'self' data: blob: http:192.168.0.103:10089",
+          "font-src 'self' data: http://192.168.0.103:10089",
+          "media-src 'self' data: blob: http://192.168.0.103:10089",
           "worker-src 'self' blob:",
           "child-src 'self' blob:",
           "object-src 'none'",
@@ -612,7 +616,7 @@ function handleMenuClick(menuId) {
         type: 'info',
         title: '关于 奇境探索',
         message: '奇境探索',
-        detail: 'AI 智能体系统\n版本: 1.0.0',
+        detail: `AI 智能体系统\n版本: ${appVersion}`,
         buttons: ['确定']
       });
       break;
@@ -891,6 +895,73 @@ ipcMain.handle('fs-ensure-dir', async (_event, dirPath) => {
 });
 
 /**
+ * 初始化自动更新
+ */
+function initAutoUpdate() {
+  if (process.windowsStore) {
+    return
+  }
+
+  // 现在可以安全导入 autoUpdater
+  const { autoUpdater } = require('electron-updater');
+  autoUpdater.logger = console
+  // const { autoUpdater } = require('electron');
+  // const server = 'https://updates-1257063273.cos.ap-guangzhou.myqcloud.com/updates/';
+  // const feed = `${server}windows/${app.getVersion()}`;
+  // autoUpdater.setFeedURL(feed);
+
+  autoUpdater.setFeedURL({
+    "provider": "generic",
+    "url": "https://updates-1257063273.cos.ap-guangzhou.myqcloud.com/updates/"
+  })
+
+  autoUpdater.autoDownload = true
+  // 设置自动更新事件监听
+  autoUpdater.on('checking-for-update', () => {
+    console.log('正在检查更新...');
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    console.log('发现新版本:', info.version);
+    dialog.showMessageBox({
+      type: 'info',
+      title: '更新提示',
+      message: `发现新版本, 是否现在更新？`,
+      buttons: ['是', '否']
+    }).then(result => {
+      if (result.response === 0) { // 用户点击是
+        autoUpdater.downloadUpdate();
+      }
+    });
+  });
+
+  autoUpdater.on('update-not-available', (info) => {
+    console.log('已是最新版本');
+  });
+
+  autoUpdater.on('error', (err) => {
+    console.error('更新错误:', err);
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    console.log('下载进度:', Math.round(progressObj.percent) + '%');
+  });
+
+  autoUpdater.on('update-downloaded', (info) => {
+    console.log('更新下载完成');
+    dialog.showMessageBox({
+      title: '安装更新',
+      message: '新版本已下载，应用将重启进行安装。',
+    }).then(() => {
+      autoUpdater.quitAndInstall();
+    });
+  });
+
+  // 启动时检查更新
+  autoUpdater.checkForUpdatesAndNotify();
+}
+
+/**
  * 应用事件处理
  */
 
@@ -909,6 +980,9 @@ app.whenReady().then(() => {
   // - Windows: 菜单隐藏在标题栏中，可通过 Alt 键调出
   // - macOS 和 Linux: 显示在系统原生菜单栏
   Menu.setApplicationMenu(Menu.buildFromTemplate(getMenuTemplate()));
+
+  // 初始化自动更新
+  initAutoUpdate();
 
   // macOS 特殊处理：当点击 dock 图标时重新创建窗口
   app.on('activate', () => {
