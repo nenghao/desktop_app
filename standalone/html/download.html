@@ -1289,7 +1289,7 @@
         async function fetchDownloadData() {
             try {
                 // 请求所有平台的数据
-                const response = await fetch(`http://api.baizesz.com/config/downloads/`);
+                const response = await fetch(`https://api.baizesz.com/config/downloads/`);
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success) {
