@@ -1,4 +1,4 @@
-name: Build Universal
+name: Build Mac Universal
 
 on:
   push:
