@@ -31,10 +31,12 @@ jobs:
         run: npm run build
 
       - name: Package Electron for macOS (${{ matrix.arch }})
-        run: npm run electron:dist -- --mac --${{ matrix.arch }}
+        run: npx electron-builder --mac --${{ matrix.arch }} --publish=never
 
       - name: Upload macOS artifact (${{ matrix.arch }})
         uses: actions/upload-artifact@v4
         with:
           name: mac-${{ matrix.arch }}
-          path: release/
+          path: |
+            release/*.dmg
+            release/*.zip
