@@ -27,7 +27,7 @@ jobs:
 
       - name: Package Electron
         shell: bash
-        run: npm run electron:dist -- --mac universal
+        run: npm run electron:dist -- --mac
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
