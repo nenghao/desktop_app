@@ -499,17 +499,21 @@
         .version-content {
             display: inline-flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 0;
             padding: 16px 32px;
             background-color: var(--color-surface);
             border: 1px solid var(--color-border);
             border-radius: 12px;
             box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: gap 0.4s linear;
             max-width: 600px;
             margin: 0 auto;
             text-align: left;
+        }
+
+        .version-content.expanded {
+            gap: 12px;
         }
 
         .version-header {
@@ -558,7 +562,7 @@
 
         .expand-icon {
             color: var(--color-text-tertiary);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s linear;
             flex-shrink: 0;
             transform: rotate(0deg);
         }
@@ -568,17 +572,20 @@
         }
 
         .release-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s linear;
             color: var(--color-text-secondary);
             font-size: 14px;
             line-height: 1.6;
         }
 
         .version-content.expanded .release-details {
-            max-height: 400px;
-            overflow-y: auto;
+            grid-template-rows: 1fr;
+        }
+
+        .release-details > div {
+            overflow: hidden;
         }
 
         .release-details h4 {
@@ -770,14 +777,16 @@
                                 <span class="version-label">最新版本</span>
                                 <span class="version-number" id="latest-version">-</span>
                             </div>
-                            <div class="release-notes-preview" id="release-notes-preview">暂无版本信息</div>
+                            <div class="release-notes-preview" id="release-notes-preview">版本更新信息</div>
                         </div>
                         <i data-lucide="chevron-down" class="expand-icon" size="20"></i>
                     </div>
                     <div class="release-details" id="release-details">
-                        <ul id="release-details-list">
-                            <li>暂无版本更新信息</li>
-                        </ul>
+                        <div>
+                            <ul id="release-details-list">
+                                <li>暂无版本更新信息</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -852,8 +861,17 @@
             const isExpanded = versionContent.classList.contains('expanded');
 
             if (isExpanded) {
-                versionContent.classList.remove('expanded');
+                // 收起时先隐藏内容再收起容器
+                const listItems = versionContent.querySelectorAll('.release-details li');
+                listItems.forEach((item, index) => {
+                    item.style.transitionDelay = `${0.05 * (listItems.length - index - 1)}s`;
+                });
+
+                setTimeout(() => {
+                    versionContent.classList.remove('expanded');
+                }, 50);
             } else {
+                // 展开时先展开容器再显示内容
                 versionContent.classList.add('expanded');
             }
         }
