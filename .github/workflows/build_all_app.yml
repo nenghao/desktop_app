@@ -44,4 +44,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: electron-build-${{ runner.os }}
-          path: release/
+          path: |
+            release/*.dmg
+            release/*.blockmap
+            release/*.yml
+            release/*.exe
+            release/*.appx
+            release/*.msi
+            release/*.zip
+            release/*.pkg
+            release/*.AppImage
+            release/*.deb
+            release/*.rpm

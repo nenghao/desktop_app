@@ -33,4 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: macOS
-          path: release/
+          path: |
+            release/*.dmg
+            release/*.blockmap
+            release/*.yml

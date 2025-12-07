@@ -39,4 +39,5 @@ jobs:
           name: mac-${{ matrix.arch }}
           path: |
             release/*.dmg
-            release/*.zip
+            release/*.blockmap
+            release/*.yml
