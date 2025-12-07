@@ -302,11 +302,13 @@
             transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(20px);
+            display: none;
         }
 
         .details-content.show {
             opacity: 1;
             transform: translateY(0);
+            display: block;
         }
 
         .default-message {
@@ -380,6 +382,14 @@
             color: var(--color-text-primary);
             flex: 1;
             pointer-events: none;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .download-text.store {
+            font-weight: 550;
+            font-size: 16px;
         }
 
         .download-button {
@@ -758,15 +768,15 @@
                         <div class="version-info-row">
                             <div class="version-badge">
                                 <span class="version-label">最新版本</span>
-                                <span class="version-number" id="latest-version">v1.0.2</span>
+                                <span class="version-number" id="latest-version">-</span>
                             </div>
-                            <div class="release-notes-preview" id="release-notes-preview">版本更新详情</div>
+                            <div class="release-notes-preview" id="release-notes-preview">暂无版本信息</div>
                         </div>
                         <i data-lucide="chevron-down" class="expand-icon" size="20"></i>
                     </div>
                     <div class="release-details" id="release-details">
                         <ul id="release-details-list">
-                            <li>新版本包含多项功能改进和bug修复</li>
+                            <li>暂无版本更新信息</li>
                         </ul>
                     </div>
                 </div>
@@ -775,11 +785,17 @@
             <!-- 平台选择区域 -->
             <section class="platform-selection">
                 <div class="platform-row">
-                    <div class="platform-item" data-platform="windows">
+                    <div class="platform-item" data-platform="android">
                         <div class="platform-icon">
-                            <i data-lucide="monitor" size="48"></i>
+                            <i data-lucide="smartphone" size="48"></i>
                         </div>
-                        <div class="platform-label">Windows</div>
+                        <div class="platform-label">Android</div>
+                    </div>
+                    <div class="platform-item" data-platform="ios">
+                        <div class="platform-icon">
+                            <i data-lucide="smartphone" size="48"></i>
+                        </div>
+                        <div class="platform-label">iOS</div>
                     </div>
                     <div class="platform-item" data-platform="macos">
                         <div class="platform-icon">
@@ -793,17 +809,11 @@
                         </div>
                         <div class="platform-label">Linux</div>
                     </div>
-                    <div class="platform-item" data-platform="ios">
+                    <div class="platform-item" data-platform="windows">
                         <div class="platform-icon">
-                            <i data-lucide="smartphone" size="48"></i>
+                            <i data-lucide="monitor" size="48"></i>
                         </div>
-                        <div class="platform-label">iOS</div>
-                    </div>
-                    <div class="platform-item" data-platform="android">
-                        <div class="platform-icon">
-                            <i data-lucide="smartphone" size="48"></i>
-                        </div>
-                        <div class="platform-label">Android</div>
+                        <div class="platform-label">Windows</div>
                     </div>
                 </div>
             </section>
@@ -811,14 +821,6 @@
             <!-- 下载详情区域 -->
             <section class="download-details" id="download-details">
                 <div class="details-content" id="details-content">
-                    <!-- 默认提示 -->
-                    <div class="default-message">
-                        <div class="message-icon">
-                            <i data-lucide="download" size="64"></i>
-                        </div>
-                        <h3>选择平台查看下载选项</h3>
-                        <p>点击上方平台图标查看对应的下载版本和安装方式</p>
-                    </div>
                 </div>
             </section>
         </div>
@@ -882,7 +884,14 @@
             let arch = 'unknown';
             let distro = 'unknown';
 
-            if (userAgent.includes('Windows')) {
+            // 移动设备检测优先
+            if (/iPhone|iPad|iPod/.test(userAgent)) {
+                os = 'ios';
+                arch = 'UNIVERSAL';
+            } else if (/Android/.test(userAgent)) {
+                os = 'android';
+                arch = 'UNIVERSAL';
+            } else if (userAgent.includes('Windows')) {
                 os = 'windows';
                 // Windows 架构检测
                 if (userAgent.includes('Win64') || userAgent.includes('WOW64') || platform.includes('Win64')) {
@@ -932,6 +941,7 @@
         // 全局变量
         let downloadData = null;
         let currentPlatform = null;
+        let selectedPlatform = null; // 记录用户点击选中的平台
 
         // 初始化平台交互
         function initializePlatformInteraction() {
@@ -940,6 +950,7 @@
             platformItems.forEach(item => {
                 item.addEventListener('click', function () {
                     const platform = this.dataset.platform;
+                    selectedPlatform = platform; // 记录选中的平台
                     showPlatformDetails(platform);
 
                     // 更新激活状态
@@ -947,12 +958,20 @@
                     this.classList.add('active');
                 });
 
-                item.addEventListener('mouseenter', function () {
-                    const platform = this.dataset.platform;
-                    if (currentPlatform !== platform) {
-                        showPlatformDetails(platform);
-                    }
-                });
+                // item.addEventListener('mouseenter', function () {
+                //     const platform = this.dataset.platform;
+                //     if (selectedPlatform !== platform) {
+                //         // 只有在hover的平台不是选中平台时才显示
+                //         showPlatformDetails(platform);
+                //     }
+                // });
+
+                // item.addEventListener('mouseleave', function () {
+                //     // 鼠标离开后，如果有选中的平台，恢复显示选中平台的内容
+                //     if (selectedPlatform) {
+                //         showPlatformDetails(selectedPlatform);
+                //     }
+                // });
             });
         }
 
@@ -962,8 +981,8 @@
             const detailsContent = document.getElementById('details-content');
 
             if (!downloadData) {
+                // 如果没有数据，只显示加载状态，不再重复请求
                 showLoadingState();
-                fetchDownloadData(platform);
                 return;
             }
 
@@ -999,7 +1018,7 @@
                         // Microsoft Store
                         html += `
                             <div class="download-row-full">
-                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <span class="download-text store">${download.architecture} ${download.description}</span>
                                 <a href="${download.url}" class="download-button" target="_blank">
                                     <img src="https://static.baizesz.com/icons/microsoft_store.png" alt="Get it from Microsoft Store" style="height: 40px; border-radius: 8px;">
                                 </a>
@@ -1009,7 +1028,7 @@
                         // Mac App Store
                         html += `
                             <div class="download-row-full">
-                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <span class="download-text store">${download.architecture} ${download.description}</span>
                                 <a href="${download.url}" class="download-button" target="_blank">
                                     <img src="https://tools.applemediaservices.com/api/badges/download-on-the-mac-app-store/black/en-us?size=250x83&releaseDate=1672531200&h=84251a7e5fbb0b5c8ef34894e86d6a14"
                                         alt="Download on the Mac App Store" style="height: 40px; border-radius: 8px;">
@@ -1020,7 +1039,7 @@
                         // iOS App Store
                         html += `
                             <div class="download-row-full">
-                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <span class="download-text store">${download.architecture} ${download.description}</span>
                                 <a href="${download.url}" class="download-button" target="_blank">
                                     <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&releaseDate=1672531200&h=84251a7e5fbb0b5c8ef34894e86d6a14"
                                         alt="Download on the App Store" style="height: 40px; border-radius: 8px;">
@@ -1031,7 +1050,7 @@
                         // Android Google Play
                         html += `
                             <div class="download-row-full">
-                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <span class="download-text store">${download.architecture} ${download.description}</span>
                                 <a href="${download.url}" class="download-button" target="_blank">
                                     <img src="https://static.baizesz.com/icons/google_play.png" alt="Get it on Google Play" style="height: 50px; border-radius: 8px;">
                                 </a>
@@ -1041,7 +1060,7 @@
                         // 其他平台的store类型，显示默认徽章
                         html += `
                             <div class="download-row-full">
-                                <span class="download-text">${download.architecture} ${download.description}</span>
+                                <span class="download-text store">${download.architecture} ${download.description}</span>
                                 <a href="${download.url}" class="download-button" target="_blank">
                                     <i data-lucide="shopping-bag" size="16"></i>
                                 </a>
@@ -1129,167 +1148,13 @@
             detailsContent.classList.add('show');
         }
 
-        // 使用文档中的示例数据作为默认数据
-        function getDefaultDownloadData() {
-            return {
-                "success": true,
-                "message": "获取下载链接成功",
-                "data": {
-                    "latest_version": "1.0.2",
-                    "release_notes": "新版本包含多项功能改进和bug修复",
-                    "platforms": [
-                        {
-                            "platform": "windows",
-                            "description": "支持 Windows 10 及以上版本，提供完整的桌面应用体验",
-                            "downloads": [
-                                {
-                                    "type": "store",
-                                    "architecture": "universal",
-                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64.exe",
-                                    "size": "125MB",
-                                    "description": "应用商店"
-                                },
-                                {
-                                    "type": "exe",
-                                    "architecture": "AMD64",
-                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64.exe",
-                                    "size": "125MB",
-                                    "description": "安装包"
-                                },
-                                {
-                                    "type": "portable",
-                                    "architecture": "AMD64",
-                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64-portable.zip",
-                                    "size": "118MB",
-                                    "description": "便携版"
-                                },
-                                {
-                                    "type": "exe",
-                                    "architecture": "ARM64",
-                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64.exe",
-                                    "size": "125MB",
-                                    "description": "安装包"
-                                },
-                                {
-                                    "type": "portable",
-                                    "architecture": "ARM64",
-                                    "url": "https://www.baizesz.com/app/download/windows/questech-1.0.2-x64-portable.zip",
-                                    "size": "118MB",
-                                    "description": "便携版"
-                                }
-                            ]
-                        },
-                        {
-                            "platform": "macos",
-                            "description": "支持 macOS 11 及以上版本，原生适配 Apple Silicon",
-                            "downloads": [
-                                {
-                                    "type": "store",
-                                    "architecture": "universal",
-                                    "url": "https://apps.apple.com/app/id123456789",
-                                    "size": "-",
-                                    "description": "Mac App Store 下载"
-                                },
-                                {
-                                    "type": "dmg",
-                                    "architecture": "universal",
-                                    "url": "https://www.baizesz.com/app/download/macos/questech-1.0.2-universal.dmg",
-                                    "size": "142MB",
-                                    "description": "dmg"
-                                },
-                                {
-                                    "type": "dmg",
-                                    "architecture": "Intel x86_64",
-                                    "url": "https://www.baizesz.com/app/download/macos/questech-1.0.2-intel.dmg",
-                                    "size": "138MB",
-                                    "description": "dmg"
-                                },
-                                {
-                                    "type": "dmg",
-                                    "architecture": "Apple Silicon",
-                                    "url": "https://www.baizesz.com/app/download/macos/questech-1.0.2-arm.dmg",
-                                    "size": "135MB",
-                                    "description": "dmg"
-                                }
-                            ]
-                        },
-                        {
-                            "platform": "linux",
-                            "description": "支持 Ubuntu 20.04+、Fedora 35+ 等主流发行版",
-                            "downloads": [
-                                {
-                                    "type": "deb",
-                                    "architecture": "AMD64",
-                                    "url": "https://www.baizesz.com/app/download/linux/questech_1.0.2_amd64.deb",
-                                    "size": "98MB",
-                                    "description": "Debian/Ubuntu 安装包"
-                                },
-                                {
-                                    "type": "rpm",
-                                    "architecture": "AMD64",
-                                    "url": "https://www.baizesz.com/app/download/linux/questech-1.0.2-1.x86_64.rpm",
-                                    "size": "95MB",
-                                    "description": "RedHat/CentOS 安装包"
-                                },
-                                {
-                                    "type": "AppImage",
-                                    "architecture": "AMD64",
-                                    "url": "https://www.baizesz.com/app/download/linux/Questech-1.0.2.AppImage",
-                                    "size": "108MB",
-                                    "description": "AppImage格式"
-                                },
-                                {
-                                    "type": "deb",
-                                    "architecture": "ARM64",
-                                    "url": "https://www.baizesz.com/app/download/linux/questech_1.0.2_arm64.deb",
-                                    "size": "94MB",
-                                    "description": "Debian/Ubuntu 安装包"
-                                },
-                                {
-                                    "type": "AppImage",
-                                    "architecture": "ARM64",
-                                    "url": "https://www.baizesz.com/app/download/linux/Questech-1.0.2-arm64.AppImage",
-                                    "size": "102MB",
-                                    "description": "AppImage格式"
-                                }
-                            ]
-                        },
-                        {
-                            "platform": "android",
-                            "description": "支持 Android 8.0 及以上版本，适配各种屏幕尺寸",
-                            "downloads": [
-                                {
-                                    "type": "apk",
-                                    "architecture": "UNIVERSAL",
-                                    "url": "https://www.baizesz.com/app/download/android/questech-1.0.2.apk",
-                                    "size": "45MB",
-                                    "description": "apk"
-                                }
-                            ]
-                        },
-                        {
-                            "platform": "ios",
-                            "description": "支持 iOS 15.0 及以上版本，iPhone 和 iPad 通用",
-                            "downloads": [
-                                {
-                                    "type": "store",
-                                    "architecture": "UNIVERSAL",
-                                    "url": "https://apps.apple.com/app/id123456789",
-                                    "size": "-",
-                                    "description": "App Store 下载"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            };
-        }
 
         // 从API获取下载信息
         async function fetchDownloadData() {
             try {
                 // 请求所有平台的数据
                 const response = await fetch(`https://api.baizesz.com/config/downloads/`);
+
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success) {
@@ -1301,39 +1166,16 @@
                     throw new Error('网络请求失败');
                 }
             } catch (error) {
-                console.warn('API请求失败，使用默认数据:', error);
-                // 使用默认数据
-                downloadData = getDefaultDownloadData();
+                console.error('API请求失败:', error);
+                // 不再使用默认数据，直接返回错误
+                showErrorState('无法获取下载信息，请稍后重试');
+                return;
             }
 
             // 更新版本信息
             updateVersionInfo(downloadData.data.latest_version, downloadData.data.release_notes);
-
-            // 自动选择并显示当前系统的平台详情
-            const { os: currentOs } = detectSystemArchitecture();
-            let autoSelectPlatform = 'windows'; // 默认选择Windows
-
-            switch (currentOs) {
-                case 'windows':
-                    autoSelectPlatform = 'windows';
-                    break;
-                case 'macos':
-                    autoSelectPlatform = 'macos';
-                    break;
-                case 'linux':
-                    autoSelectPlatform = 'linux';
-                    break;
-            }
-
-            // 自动选中当前系统平台并显示详情
-            showPlatformDetails(autoSelectPlatform);
-
-            // 设置平台激活状态
-            const targetItem = document.querySelector(`[data-platform="${autoSelectPlatform}"]`);
-            if (targetItem) {
-                targetItem.classList.add('active');
-            }
         }
+
 
         // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function () {
@@ -1349,8 +1191,58 @@
                 console.log(`系统主题切换为: ${e.matches ? '深色' : '浅色'}模式`);
             });
 
-            // 预加载下载数据
-            fetchDownloadData();
+            // 异步加载数据，不阻塞页面显示
+            fetchDownloadData().then(() => {
+                // 根据API返回的平台数据，隐藏不存在的平台
+                if (downloadData && downloadData.data && downloadData.data.platforms) {
+                    const availablePlatforms = downloadData.data.platforms.map(p => p.platform);
+                    const allPlatformItems = document.querySelectorAll('.platform-item');
+
+                    allPlatformItems.forEach(item => {
+                        const platform = item.dataset.platform;
+                        if (!availablePlatforms.includes(platform)) {
+                            item.style.display = 'none'; // 隐藏不存在的平台
+                        }
+                    });
+                }
+
+                // 数据加载成功后，检查当前系统是否支持
+                const { os: currentOs } = detectSystemArchitecture();
+                let autoSelectPlatform = null;
+
+                switch (currentOs) {
+                    case 'windows':
+                        autoSelectPlatform = 'windows';
+                        break;
+                    case 'macos':
+                        autoSelectPlatform = 'macos';
+                        break;
+                    case 'linux':
+                        autoSelectPlatform = 'linux';
+                        break;
+                    case 'ios':
+                        autoSelectPlatform = 'ios';
+                        break;
+                    case 'android':
+                        autoSelectPlatform = 'android';
+                        break;
+                }
+
+                // 只有匹配到当前系统且该平台在API中存在才自动选择
+                if (autoSelectPlatform && downloadData && downloadData.data && downloadData.data.platforms) {
+                    const availablePlatforms = downloadData.data.platforms.map(p => p.platform);
+                    if (availablePlatforms.includes(autoSelectPlatform)) {
+                        selectedPlatform = autoSelectPlatform;
+                        showPlatformDetails(autoSelectPlatform);
+
+                        // 设置平台激活状态
+                        const targetItem = document.querySelector(`[data-platform="${autoSelectPlatform}"]`);
+                        if (targetItem) {
+                            targetItem.classList.add('active');
+                        }
+                    }
+                }
+            });
 
             // 调试信息
             const { os, arch, distro } = detectSystemArchitecture();
