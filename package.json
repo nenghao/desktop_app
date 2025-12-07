@@ -1,0 +1,193 @@
+{
+  "name": "questech",
+  "productName": "奇境探索",
+  "version": "1.0.2",
+  "description": "奇境探索 - AI智能体",
+  "main": "electron/main.js",
+  "homepage": "./",
+  "scripts": {
+    "dev": "vite --port 5173",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview --port 3000",
+    "electron": "electron .",
+    "electron:dev": "cross-env NODE_ENV=development concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:manual": "cross-env NODE_ENV=development electron .",
+    "electron:app-only": "cross-env NODE_ENV=development concurrently \"vite --port 5173 --open false\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:install": "cross-env ELECTRON_MIRROR=https://registry.npmmirror.com/mirrors/electron/ npm install electron --save-dev",
+    "start": "node scripts/start-auto.js",
+    "start:safe": "node scripts/start-auto.js",
+    "start:auto": "node scripts/start-auto.js",
+    "start:macos": "bash scripts/start-macos.sh",
+    "start:windows": "call scripts\\start-app.bat",
+    "start:linux": "bash scripts/start-app.sh",
+    "start:node": "node scripts/start-app.js",
+    "electron:pack": "npm run build && electron-builder",
+    "electron:dist": "npm run build && electron-builder --publish=never",
+    "lint": "eslint src --ext .js",
+    "lint:fix": "eslint src --ext .js --fix",
+    "format": "prettier --write src/**/*.{js,css,html}",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "analyze": "vite-bundle-analyzer"
+  },
+  "keywords": [
+    "electron",
+    "plugin-system",
+    "spa",
+    "questech",
+    "desktop-app"
+  ],
+  "author": "奇境探索团队",
+  "license": "MIT",
+  "dependencies": {
+    "electron-context-menu": "^4.1.1",
+    "electron-updater": "^6.6.2",
+    "electron-window-state": "^5.0.3",
+    "html2canvas": "^1.4.1",
+    "lit": "^3.0.0",
+    "lucide": "^0.542.0",
+    "marked": "^16.2.1"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^1.0.0",
+    "chokidar": "^3.6.0",
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^39.2.3",
+    "electron-builder": "^26.0.12",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "terser": "^5.43.1",
+    "vite": "^5.0.0",
+    "vite-bundle-analyzer": "^0.7.0",
+    "vitest": "^1.0.0",
+    "wait-on": "^8.0.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "browserslist": [
+    "Chrome >= 100",
+    "Firefox >= 100",
+    "Safari >= 15",
+    "Edge >= 100"
+  ],
+  "build": {
+    "appId": "com.baizesz.seek",
+    "productName": "奇境探索",
+    "directories": {
+      "output": "release"
+    },
+    "publish": {
+      "provider": "generic",
+      "url": "https://updates-1257063273.cos.ap-guangzhou.myqcloud.com/updates/"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "src/assets/icons/**/*"
+    ],
+    "asarUnpack": [
+      "node_modules/electron/**/*"
+    ],
+    "electronLanguages": [
+      "en-US",
+      "zh-CN"
+    ],
+    "extraResources": [
+      {
+        "from": "src/assets/avatar/",
+        "to": "assets/avatar/",
+        "filter": [
+          "**/*.svg"
+        ]
+      }
+    ],
+    "mac": {
+      "icon": "src/assets/icons/AppIcon.icns",
+      "category": "public.app-category.productivity",
+      "artifactName": "${name}_${platform}_${arch}_${version}.${ext}",
+      "extendInfo": {
+        "CFBundleDisplayName": "奇境探索",
+        "CFBundleName": "奇境探索",
+        "CFBundleExecutable": "Questech"
+      },
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "icon": "src/assets/icons/app_icon.ico",
+      "artifactName": "${name}_${platform}_${arch}_${version}.${ext}",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "appx",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "icon": "src/assets/icons/AppIcon.png",
+      "artifactName": "${name}_${platform}_${arch}_${version}.${ext}",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "appx": {
+      "applicationId": "com.baizesz.seek",
+      "artifactName": "${name}_${platform}_${arch}_${version}.${ext}",
+      "identityName": "53D5FAF4.449826F304142",
+      "publisher": "CN=111BA3F5-8A55-4E46-A95B-9D22A5E1D33E",
+      "publisherDisplayName": "奇境探索",
+      "languages": [
+        "zh-CN",
+        "en-US"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "${name}_${platform}_${arch}_${version}.${ext}",
+      "allowElevation": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "src/assets/icons/app_icon.ico",
+      "uninstallerIcon": "src/assets/icons/app_icon.ico",
+      "displayLanguageSelector": true,
+      "installerLanguages": [
+        "zh_CN",
+        "en_US"
+      ],
+      "language": "2052",
+      "menuCategory": true,
+      "runAfterFinish": true,
+      "include": "build/installer.nsh"
+    }
+  }
+}

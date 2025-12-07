@@ -1,0 +1,73 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Electron
+dist/
+# build/*
+# !build/installer.nsh
+# !build/appx
+build/codesign.pfx
+
+/out/
+/output/
+release/
+*.log
+*.tmp
+third_party/
+src/plugins/dependencies/
+*.pdf
+example/
+examples/
+temp/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.Python
+env/
+venv/
+.venv/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+# .vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*~
+.cursor/
+.superdesign/
+.windsurfrules
+CLAUDE.md
+.claude/
+
+# Temporary files
+*.temp
+.cache/
+
+# Logs
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

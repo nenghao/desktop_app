@@ -1,0 +1,202 @@
+/**
+ * 通用选择器弹窗样式
+ * 用于模型选择器和角色选择器
+ */
+
+/* 选择器弹窗 */
+.selector-popup {
+  position: fixed;
+  z-index: var(--z-index-popover);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  /* width: 220px; */
+  max-height: 400px;
+  overflow: hidden;
+  display: none;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.selector-popup.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 选择器内容 */
+.selector-content {
+  padding: var(--spacing-2);
+}
+
+/* 选择器列表 */
+.selector-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  max-height: 150px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* 选择器项 */
+.selector-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: var(--app-transition);
+  border: 1px solid transparent;
+  gap: var(--spacing-4);
+}
+
+/* 选中图标容器 */
+.check-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.selector-item:hover {
+  background: var(--color-surface-hover);
+  /* border-color: var(--color-border-hover); */
+}
+
+.selector-item.selected {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+
+/* 选择器信息 */
+.selector-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+/* 选择器名称 */
+.selector-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.selector-item.selected .selector-name {
+  color: var(--color-text-primary);
+}
+
+/* 选择器描述 */
+.selector-description {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+}
+
+.selector-item.selected .selector-description {
+  color: var(--color-text-secondary);
+}
+
+/* 选中图标 */
+.check-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* 滚动条样式 */
+.selector-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.selector-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.selector-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.selector-list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
+}
+
+/* 深色主题适配 */
+.theme-dark .selector-popup {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+.selector-item:hover {
+  background: var(--color-surface-hover);
+}
+
+ .selector-item.selected {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .selector-popup {
+    width: 200px;
+  }
+
+  .selector-item {
+    height: 50px;
+    padding: var(--spacing-2);
+  }
+
+  .selector-name {
+    font-size: var(--font-size-xs);
+  }
+
+  .selector-description {
+    font-size: var(--font-size-2xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .selector-popup {
+    width: 180px;
+  }
+
+  .selector-list {
+    max-height: 125px;
+    /* 移动端稍微减少高度 (50px * 2.5 = 125px) */
+  }
+
+  .selector-item {
+    height: 50px;
+    padding: var(--spacing-2);
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .selector-item {
+    border-width: 2px;
+  }
+
+  .selector-item.selected {
+    border-width: 2px;
+  }
+}
+
+/* 减少动画模式 */
+@media (prefers-reduced-motion: reduce) {
+  .selector-popup {
+    transition: none;
+  }
+
+  .selector-item {
+    transition: none;
+  }
+}

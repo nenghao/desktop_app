@@ -1,0 +1,171 @@
+/**
+ * 统一模态框组件样式 - 两层结构
+ */
+
+/* 第一层：背景遮罩层 */
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-index-modal, 1050);
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+/* 显示状态 */
+.modal-show {
+  visibility: visible;
+}
+
+/* 第二层：内容包裹层 */
+.modal-container {
+  background: var(--color-background);
+  border-radius: 12px;
+  max-width: 95vw;
+  /* 自适应高度：最大720px，或者视口高度减去80px（上下各40px间隙） */
+  max-height: min(720px, calc(100vh - 80px));
+  overflow: hidden;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 显示动画 */
+.modal-show .modal-container {
+  transform: scale(1) translateY(0);
+}
+
+/* 模态框内容结构 */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* 支持滚动 */
+  overflow-y: auto;
+  /* position: relative; */
+}
+
+.modal-header {
+  padding: var(--spacing-3);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  margin: 0;
+  margin-left: var(--spacing-3);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.modal-close:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.modal-close svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-primary);
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* 防止背景滚动 */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* 不同尺寸的模态框 */
+.modal-container.modal-sm {
+  width: 300px;
+}
+
+.modal-container.modal-md {
+  width: 500px;
+}
+
+.modal-container.modal-lg {
+  width: 800px;
+}
+
+.modal-container.modal-xl {
+  width: 1140px;
+}
+
+/* 重置按钮 */
+.reset-btn {
+  width: 100%;
+  height: var(--setting-item-height, 40px);
+  border: none;
+  background: var(--color-surface-secondary);
+  border-radius: var(--border-radius-lg, 8px);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-200, 200ms) var(--ease-in-out);
+}
+
+.reset-btn:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
+  color: var(--color-text-primary);
+}
+
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .modal-container {
+    max-height: var(--container-sm);
+    margin: 20px;
+    max-height: var(--container-sm);
+  }
+
+  .modal-header,
+  .modal-body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+

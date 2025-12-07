@@ -1,0 +1,96 @@
+/**
+ * 基础主题框架
+ * 定义所有语义化颜色变量的结构，但不包含具体颜色值
+ * 具体的颜色映射由各个主题文件提供
+ */
+
+:root {
+    /* ========== 主要颜色变量 ========== */
+    --color-primary: ;
+    --color-primary-hover: ;
+    --color-primary-active: ;
+    --color-primary-light: ;
+    --color-primary-dark: ;
+
+    /* ========== 次要颜色变量 ========== */
+    --color-secondary: ;
+    --color-secondary-hover: ;
+    --color-secondary-active: ;
+    --color-secondary-light: ;
+
+    /* ========== 背景颜色变量 ========== */
+    --color-background: ;
+    --color-background-secondary: ;
+    --color-background-tertiary: ;
+    --color-background-elevated: ;
+    --color-background-overlay: ;
+
+    /* ========== 表面颜色变量 ========== */
+    --color-surface: ;
+    --color-surface-secondary: ;
+    --color-surface-tertiary: ;
+    --color-surface-hover: ;
+    --color-surface-active: ;
+
+    /* ========== 文本颜色变量 ========== */
+    --color-text-primary: ;
+    --color-text-secondary: ;
+    --color-text-tertiary: ;
+    --color-text-quaternary: ;
+    --color-text-inverse: ;
+    --color-text-disabled: ;
+    --color-text-placeholder: ;
+
+    /* ========== 边框颜色变量 ========== */
+    --color-border: ;
+    --color-border-hover: ;
+    --color-border-focus: ;
+    --color-border-active: ;
+    --color-border-disabled: ;
+
+    /* ========== 状态颜色变量 ========== */
+    --color-success: ;
+    --color-success-hover: ;
+    --color-success-light: ;
+    --color-success-dark: ;
+
+    --color-warning: ;
+    --color-warning-hover: ;
+    --color-warning-light: ;
+    --color-warning-dark: ;
+
+    --color-error: ;
+    --color-error-hover: ;
+    --color-error-light: ;
+    --color-error-dark: ;
+
+    --color-info: ;
+    --color-info-hover: ;
+    --color-info-light: ;
+    --color-info-dark: ;
+
+    /* ========== 阴影颜色变量 ========== */
+    --color-shadow: ;
+    --color-shadow-hover: ;
+    --color-shadow-focus: ;
+
+    /* ========== 分割线颜色变量 ========== */
+    --color-divider: ;
+    --color-divider-light: ;
+
+    /* ========== 链接颜色变量 ========== */
+    --color-link: ;
+    --color-link-hover: ;
+    --color-link-visited: ;
+}
+
+/**
+ * 智能体主题颜色变量
+ * 这些变量会在智能体激活时被动态设置
+ */
+:root {
+    --agent-primary: ;
+    --agent-secondary: ;
+    --agent-accent: ;
+    --agent-background: ;
+}

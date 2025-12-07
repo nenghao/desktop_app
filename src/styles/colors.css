@@ -1,0 +1,26 @@
+/**
+ * 颜色系统主入口文件
+ * 统一导入所有颜色相关的CSS文件，确保正确的加载顺序
+ * 
+ * 加载顺序说明：
+ * 1. palette.css - 基础颜色调色板（唯一真理来源）
+ * 2. base-theme.css - 主题框架（语义化变量声明）
+ * 3. light-theme.css - 浅色主题实现
+ * 4. dark-theme.css - 深色主题实现
+ * 5. auto-theme.css - 自动主题（媒体查询）
+ */
+
+/* 1. 基础颜色调色板 - 所有颜色的唯一真理来源 */
+@import './colors/palette.css';
+
+/* 2. 主题框架 - 语义化颜色变量声明 */
+@import './themes/base-theme.css';
+
+/* 3. 浅色主题实现 */
+@import './themes/light-theme.css';
+
+/* 4. 深色主题实现 */
+@import './themes/dark-theme.css';
+
+/* 5. 自动主题实现 */
+@import './themes/auto-theme.css';

@@ -1,0 +1,1173 @@
+/**
+ * AgentDetail 视图样式
+ */
+
+.agent-detail {
+  width: 100%;
+  height: 100%;
+  background: var(--color-surface);
+  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 500px;
+}
+
+/* 智能体内容容器 */
+.agent-content-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* 智能体主内容容器 */
+.agent-main-content {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+
+.agent-ui-empty {
+   display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          padding: 2rem;
+          text-align: center;
+          color: var(--color-text-secondary);
+}
+
+.agent-ui-empty h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-primary);
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.agent-ui-empty p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+/* 依赖安装器覆盖层 - 毛玻璃效果 */
+.dependency-installer-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: var(--glass-backdrop-filter-strong);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter-strong);
+  z-index: 100;
+  overflow: auto;
+  display: none;
+}
+
+.dependency-installer-overlay.show {
+  display: block;
+}
+
+/* 浅色主题的毛玻璃效果 */
+.theme-light .dependency-installer-overlay {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 深色主题的毛玻璃效果 */
+.theme-dark .dependency-installer-overlay {
+  background: rgba(30, 30, 30, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 依赖安装器内容 */
+.dependency-installer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  /* 内容区域不需要额外背景，使用毛玻璃效果 */
+}
+
+.dependency-installer-content .loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.dependency-installer-content .installer-title {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.dependency-installer-content .installer-subtitle {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+/* UI加载状态 */
+.agent-ui-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: var(--spacing-4);
+  color: var(--color-text-secondary);
+}
+
+.agent-ui-loading .loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.agent-ui-loading p {
+  font-size: var(--font-size-base);
+  margin: 0;
+}
+
+/* 移除了浮动返回按钮样式，现在使用footer中的返回按钮 */
+
+/* 智能体标题栏样式 */
+.agent-title-bar {
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+/* 新的智能体头部布局 */
+.agent-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  height: 40px;
+  margin-bottom: var(--spacing-2);
+}
+
+.agent-icon-large {
+  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.agent-title-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.agent-title-section h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+.agent-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-1);
+  flex-wrap: wrap;
+}
+
+.agent-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-shrink: 0;
+}
+
+/* 描述部分（可折叠） */
+.agent-description-section {
+  height: 30px;
+  overflow: hidden;
+  transition: height var(--duration-300) var(--ease-in-out);
+}
+
+.agent-description-section.expanded {
+  height: auto;
+  min-height: 30px;
+}
+
+.agent-description-section .collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  cursor: pointer;
+  padding: 0 var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  transition: background-color var(--duration-200) var(--ease-in-out);
+}
+
+.agent-description-section .collapsible-header:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.description-preview {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 30px;
+}
+
+.collapsible-toggle {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  transition: transform var(--duration-200) var(--ease-in-out);
+  flex-shrink: 0;
+  margin-left: var(--spacing-2);
+}
+
+.agent-description-section.expanded .collapsible-toggle {
+  transform: rotate(180deg);
+}
+
+.agent-description-section .collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--duration-300) var(--ease-in-out);
+}
+
+.agent-description-section.expanded .collapsible-content {
+  max-height: 200px;
+}
+
+.agent-description-section .collapsible-inner {
+  padding: var(--spacing-2);
+}
+
+.agent-description-full {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* App Footer 样式 - 从 app-layout.css 移动过来 */
+.app-footer {
+  height: var(--footer-height);
+  min-height: var(--footer-height);
+  background-color: var(--color-background-secondary);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+
+  /* 动画相关属性 - 保持原始布局层级 */
+  transform: translateY(0);
+  transition:
+    transform var(--duration-300) var(--ease-out),
+    opacity var(--duration-300) var(--ease-out),
+    height var(--duration-300) var(--ease-out),
+    min-height var(--duration-300) var(--ease-out);
+  opacity: 1;
+  overflow: hidden;
+}
+
+/* 隐藏状态 - 高度收缩 + 向下移动 */
+.app-footer.hidden {
+  height: 0;
+  min-height: 0;
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+  padding: 0 var(--spacing-4);
+}
+
+/* 显示状态 - 恢复高度 + 回到原位 */
+.app-footer.visible {
+  height: var(--footer-height);
+  min-height: var(--footer-height);
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.footer-left {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.footer-spacer {
+  flex: 1;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-right: var(--spacing-2);
+  user-select: none;
+  gap: var(--spacing-2);
+}
+
+/* 错误内容样式 */
+/* 错误内容样式 */
+.error-content {
+  text-align: center;
+  padding: var(--spacing-4);
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.error-content .error-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-4);
+}
+
+.error-content h2 {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.error-content h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.error-content p {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-6);
+}
+
+.error-content,
+.operation-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8);
+  text-align: center;
+  min-height: 300px;
+}
+
+.error-content .error-icon,
+.operation-error .error-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-4);
+}
+
+.error-content h3,
+.operation-error h3 {
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.error-content p,
+.operation-error p,
+.operation-error .error-message {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-4);
+  max-width: 400px;
+}
+
+.error-content .btn,
+.operation-error .btn {
+  padding: var(--spacing-2) var(--spacing-4);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-in-out);
+}
+
+.error-content .btn:hover,
+.operation-error .btn:hover {
+  background: var(--color-primary-hover);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .agent-header {
+    height: 36px;
+    gap: var(--spacing-2);
+  }
+
+  .agent-icon-large {
+    width: 36px;
+    height: 36px;
+    font-size: 1.75rem;
+  }
+
+  .agent-title-section h1 {
+    font-size: var(--font-size-lg);
+  }
+
+  .agent-description-section {
+    height: 28px;
+  }
+
+  .agent-description-section .collapsible-header {
+    height: 28px;
+  }
+
+  .description-preview {
+    line-height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .error-content {
+    padding: var(--spacing-6);
+    min-height: 200px;
+  }
+
+  .agent-header {
+    height: 32px;
+    gap: var(--spacing-1);
+  }
+
+  .agent-icon-large {
+    width: 32px;
+    height: 32px;
+    font-size: 1.5rem;
+  }
+
+  .agent-title-section h1 {
+    font-size: var(--font-size-base);
+  }
+
+  .agent-meta {
+    gap: var(--spacing-1);
+  }
+
+  .agent-description-section {
+    height: 26px;
+  }
+
+  .agent-description-section .collapsible-header {
+    height: 26px;
+    padding: 0 var(--spacing-1);
+  }
+
+  .description-preview {
+    line-height: 26px;
+    font-size: var(--font-size-xs);
+  }
+
+  .app-footer {
+    padding: 0 var(--spacing-2);
+  }
+}
+
+/* 导航栏 */
+.agent-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--spacing-4) var(--spacing-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(8px);
+}
+
+/* 智能体信息 */
+.agent-info {
+  /* background: var(--color-surface); */
+  backdrop-filter: blur(10px);
+}
+
+/* 智能体头部 */
+.agent-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-6);
+  padding: var(--spacing-3);
+  background: var(--color-surface);
+  border-radius: var(--border-radius-lg);
+  /* border: 1px solid var(--color-border); */
+  user-select: none;
+}
+
+.agent-main-info {
+  display: flex;
+  gap: var(--spacing-6);
+  flex: 1;
+}
+
+.agent-icon-large {
+  font-size: 4rem;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-light);
+  border-radius: var(--border-radius-lg);
+  flex-shrink: 0;
+}
+
+.agent-details h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-3);
+  line-height: 1.2;
+}
+
+.agent-description {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--spacing-4);
+}
+
+/* 智能体元信息和状态 */
+.agent-meta-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-4);
+}
+
+.agent-meta {
+  display: flex;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.agent-rating {
+  color: var(--color-warning);
+  font-weight: var(--font-weight-medium);
+}
+
+.agent-version {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.agent-author {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-sm);
+}
+
+.agent-status {
+  background: var(--color-warning-light);
+  color: var(--color-warning-dark);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.agent-status.python {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #bbdefb;
+}
+
+/* 智能体操作界面容器 */
+.agent-operation-container {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  color: #333333;
+}
+
+/* Python操作容器 - 通用基础样式 */
+.agent-content-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  position: relative;
+}
+
+/* 智能体错误显示组件 */
+.agent-error-display {
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  z-index: 10;
+  flex-direction: column;
+  padding: var(--spacing-8);
+  text-align: center;
+}
+
+.agent-error-display .error-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-4);
+  opacity: 0.8;
+}
+
+.agent-error-display .error-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-3) 0;
+}
+
+.agent-error-display .error-message {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+.agent-error-display .error-code {
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-3);
+  margin-top: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  width: 100%;
+  text-align: left;
+}
+
+.agent-error-display .error-code code {
+  font-family: var(--font-family-mono);
+  background: var(--color-background-tertiary);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-error);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 操作界面加载状态 */
+.operation-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.operation-loading .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--spacing-4);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 确保动画正常工作 */
+.loading-spinner {
+  animation: spin 1s linear infinite !important;
+}
+
+.operation-loading p {
+  color: #666666;
+  margin: 0;
+  font-size: 16px;
+}
+
+/* 操作界面错误状态 */
+.operation-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8);
+  text-align: center;
+}
+
+.operation-error .error-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-4);
+}
+
+.operation-error h3 {
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.operation-error .error-message {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-6);
+}
+
+.operation-error .error-details {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-6);
+}
+
+/* Python状态指示器 */
+.python-status {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-sm);
+}
+
+.agent-actions {
+  flex-shrink: 0;
+}
+
+/* 可折叠区域样式 */
+.collapsible-section {
+  margin-top: var(--spacing-6);
+}
+
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: space-between;
+  cursor: pointer;
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
+  user-select: none;
+  transition: all var(--duration-200) var(--ease-in-out);
+  height: 40px;
+}
+
+.agent-features:hover {
+  background: var(--color-surface-hover);
+}
+
+.collapsible-header h4 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+}
+
+.collapsible-toggle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  transition: transform var(--duration-200) var(--ease-in-out);
+}
+
+.collapsible-section.expanded .collapsible-toggle {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--duration-300) var(--ease-in-out);
+}
+
+.collapsible-section.expanded .collapsible-content {
+  max-height: 1000px;
+}
+
+.collapsible-inner {
+  padding: var(--spacing-4) 0;
+}
+
+/* 智能体章节 */
+.agent-section {
+  padding: var(--spacing-4);
+  background: var(--color-surface);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.agent-section h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-4);
+  padding-bottom: var(--spacing-2);
+  border-bottom: 2px solid var(--color-primary-light);
+}
+
+.agent-section p {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  font-size: var(--font-size-md);
+}
+
+/* 功能列表 */
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-3);
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  background: var(--color-surface-secondary);
+  border-radius: var(--border-radius-md);
+  transition: all var(--duration-200) var(--ease-in-out);
+}
+
+.feature-item:hover {
+  background: var(--color-surface-hover);
+  transform: translateY(-1px);
+}
+
+.feature-icon {
+  color: var(--color-success);
+  font-weight: bold;
+  font-size: var(--font-size-lg);
+}
+
+.feature-text {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 功能特性列表和示例 */
+.agent-features,
+.agent-examples {
+  margin: var(--spacing-3) 0;
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--color-surface-secondary);
+  border-radius: var(--border-radius-xl);
+  border-left: 4px solid var(--color-primary);
+}
+
+.agent-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.agent-features li {
+  margin-bottom: 5px;
+  color: var(--color-text-secondary);
+  height: 30px;
+  user-select: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.agent-features li:last-child {
+  border-bottom: none;
+}
+
+.agent-features li::before {
+  content: "✓";
+  color: var(--color-success);
+  font-weight: bold;
+  margin-right: var(--spacing-2);
+}
+
+/* 使用示例 */
+.examples-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.example-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  transition: all var(--duration-200) var(--ease-in-out);
+}
+
+.example-item:hover {
+  background: var(--color-surface-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--color-shadow-hover);
+}
+
+.example-item code {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background: none;
+  padding: 0;
+}
+
+.btn-example {
+  padding: var(--spacing-1) var(--spacing-3);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: var(--border-radius-base);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-in-out);
+}
+
+.btn-example:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+/* 工作区占位 */
+.agent-workspace {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workspace-placeholder {
+  text-align: center;
+  padding: 40px;
+  background: var(--color-surface);
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-4);
+}
+
+.workspace-placeholder h3 {
+  font-size: 24px;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+.workspace-placeholder p {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  margin-bottom: var(--spacing-2);
+}
+
+.placeholder-info {
+  margin-top: var(--spacing-4);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.placeholder-info p {
+  margin: var(--spacing-1) 0;
+  font-size: 14px;
+}
+
+.placeholder-actions {
+  margin-top: var(--spacing-6);
+  display: flex;
+  gap: var(--spacing-3);
+  justify-content: center;
+}
+
+/* 错误页面 */
+
+/* 按钮样式 */
+.btn {
+  padding: var(--spacing-3) var(--spacing-6);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-in-out);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 移除重复的操作界面容器样式，使用上面的定义 */
+
+/* 本地智能体状态标签 */
+.agent-status.local {
+  background: var(--color-success);
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-medium);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .agent-detail {
+    padding: 0 var(--spacing-2);
+  }
+
+  .agent-info,
+  .agent-operation-container,
+  .agent-content-container {
+    padding: var(--spacing-4) var(--spacing-2);
+  }
+
+  .agent-nav {
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+
+  .nav-title {
+    font-size: var(--font-size-md);
+  }
+
+  .agent-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-4);
+  }
+
+  .agent-main-info {
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+
+  .agent-icon-large {
+    align-self: center;
+  }
+
+  .agent-meta-status {
+    flex-direction: column;
+    gap: var(--spacing-3);
+    align-items: stretch;
+  }
+
+  .agent-meta {
+    justify-content: center;
+  }
+
+  .python-status {
+    justify-content: center;
+  }
+
+  .agent-section {
+    padding: var(--spacing-4);
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .agent-details h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  .agent-description {
+    font-size: var(--font-size-md);
+  }
+
+  .agent-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+  }
+}
+
+/* App Footer 过渡动画 */
+.app-footer {
+  transition: var(--app-transition);
+}
+
+/* 高对比度模式下的 Footer 样式 */
+@media (prefers-contrast: high) {
+  .app-footer {
+    border-top-width: 2px;
+  }
+}
+
+/* 减少动画的用户偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .app-footer {
+    transition: none;
+  }
+}

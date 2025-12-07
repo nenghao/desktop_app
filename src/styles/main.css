@@ -1,0 +1,332 @@
+/**
+ * 主样式文件
+ * 统一管理所有样式导入
+ */
+
+/* 导入基础样式 */
+@import './reset.css';
+@import './variables.css';
+
+/* 导入颜色系统 - 统一入口 */
+@import './colors.css';
+
+/* 导入主题样式 - 已包含在colors.css中，无需重复导入 */
+
+/* 导入布局样式 */
+@import './layout/app-layout.css';
+@import './layout/sidebar.css';
+@import './layout/content-area.css';
+
+/* 导入组件样式 */
+@import './components/modal.css';
+/* 基础模态框样式 - 必须在其他模态框样式之前 */
+@import './components/title-bar.css';
+@import './components/agent-sidebar.css';
+@import './components/loading-spinner.css';
+@import './components/forms.css';
+@import './components/login-modal.css';
+@import './components/user-profile-modal.css';
+@import './components/settings-modal.css';
+@import './components/version-update-modal.css';
+@import './components/chat-interface.css';
+@import './components/selector-popup.css';
+@import './components/chat-input.css';
+@import './components/chat-list-view.css';
+
+@import './components/chat-history-view.css';
+@import './components/pinned-agents.css';
+
+/* 导入视图样式 */
+@import './views/agent-store.css';
+@import './views/news-list.css';
+@import './views/news-detail.css';
+@import './views/dashboard.css';
+
+/* 基础样式 */
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  transition: var(--app-transition);
+}
+
+/* 应用容器 */
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 加载动画 */
+.app-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-index-modal);
+  transition: opacity var(--duration-300) var(--ease-in-out);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-4);
+}
+
+.spinner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* 错误边界 */
+.error-boundary {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-index-modal);
+}
+
+.error-content {
+  text-align: center;
+  max-width: 400px;
+  padding: var(--spacing-8);
+}
+
+.error-icon {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-4);
+}
+
+.error-content h2 {
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-4);
+}
+
+.error-content p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-6);
+}
+
+.error-actions {
+  display: flex;
+  gap: var(--spacing-3);
+  justify-content: center;
+}
+
+/* 按钮样式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2) var(--spacing-4);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--app-transition);
+  outline: none;
+  user-select: none;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
+}
+
+/* 输入框样式 */
+.input {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  transition: var(--app-transition);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.input::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+/* 卡片样式 */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--app-transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 工具类 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: var(--spacing-2);
+}
+
+.gap-3 {
+  gap: var(--spacing-3);
+}
+
+.gap-4 {
+  gap: var(--spacing-4);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+/* 响应式工具类 */
+@media (max-width: 768px) {
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+}

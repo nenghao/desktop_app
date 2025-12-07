@@ -1,0 +1,1046 @@
+/* PDF Tools 样式文件 - 所有类名使用 pdf- 前缀 */
+/* 使用主工程的颜色变量 */
+
+.pdf-tools-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-3);
+  height: 100%;
+  overflow-y: auto;
+  color: var(--color-text-primary);
+  padding-top: calc(var(--header-height) + 10px);
+  padding-bottom: 20px;
+}
+
+/* ========== 工具选择器 ========== */
+.pdf-tool-selector {
+  background: var(--color-surface);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  transition: box-shadow var(--duration-300) var(--ease-out);
+}
+
+.pdf-tool-selector:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .pdf-tool-selector:hover {
+    box-shadow: 0 0px 16px rgba(151, 150, 150, 0.1);
+  }
+}
+
+.pdf-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+}
+
+.pdf-category-btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  height: 30px;
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pdf-category-btn:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary-light);
+}
+
+.pdf-category-btn.pdf-active {
+  background: var(--color-primary-light);
+}
+
+.pdf-icon {
+  font-size: 18px;
+}
+
+/* ========== 表单样式 ========== */
+.pdf-form {
+  background: var(--color-surface);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  transition:
+    opacity 0.3s ease,
+    box-shadow var(--duration-300) var(--ease-out);
+}
+
+.pdf-form:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .pdf-form:hover {
+    box-shadow: 0 0px 16px rgba(151, 150, 150, 0.1);
+  }
+}
+
+.pdf-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.pdf-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+    user-select: none;
+}
+
+.pdf-input-group:has(select),
+.pdf-input-group:has(.pdf-select) {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.pdf-input-group:has(select) > label:first-child,
+.pdf-input-group:has(.pdf-select) > label:first-child {
+  flex-shrink: 0;
+  min-width: auto;
+}
+
+.pdf-input-group:has(select) select,
+.pdf-input-group:has(.pdf-select) .pdf-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.pdf-input-group .pdf-file-selection-label {
+  flex-shrink: 0;
+}
+
+.pdf-input-group .pdf-btn-clear {
+  flex-shrink: 0;
+}
+
+.pdf-input-group-fullwidth {
+  width: 100%;
+}
+
+.pdf-input-group-fullwidth label {
+  display: none;
+}
+
+.pdf-input-group-fullwidth .pdf-textarea {
+  width: 100%;
+}
+
+.pdf-input-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.pdf-text-input,
+.pdf-select,
+.pdf-textarea {
+  padding: 0px 10px;
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  height: 30px;
+}
+
+.pdf-text-input:focus,
+.pdf-select:focus,
+.pdf-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-shadow-focus);
+}
+
+.pdf-select {
+  max-width: 150px;
+}
+
+.pdf-textarea {
+  resize: vertical;
+  font-family: inherit;
+  min-height: 120px;
+}
+
+.pdf-file-input {
+  padding: 10px;
+  background: var(--color-background-secondary);
+  border: 2px dashed var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pdf-file-input:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface-hover);
+}
+
+/* 复选框样式 */
+.pdf-checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pdf-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.pdf-checkbox-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  margin: 0;
+}
+
+.pdf-help-text {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+/* ========== 文件选择组 ========== */
+.pdf-file-selection-group {
+  margin-bottom: 16px;
+}
+
+.pdf-file-selection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.pdf-file-selection-label {
+  cursor: pointer;
+}
+
+.pdf-file-selection-header .pdf-file-selection-label {
+  flex: 1;
+}
+
+.pdf-input-group .pdf-file-selection-label {
+  flex-shrink: 0;
+}
+
+.pdf-file-selection-label input[type="file"] {
+  display: none;
+}
+
+.pdf-file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  height: 30px;
+  background: var(--color-primary-light);
+  color: var(--color-text-primary);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pdf-create-btn {
+  margin: 0 auto;
+  min-width: 200px;
+  height: 30px !important;
+  border-radius: 15px !important;
+}
+
+.pdf-file-btn:hover {
+  background: var(--color-primary-light);
+  text-shadow: 0 0px 10px var(--color-shadow-hover);
+  box-shadow: 0 4px 12px var(--color-shadow-hover);
+}
+
+.pdf-btn-clear {
+  padding: 0 16px;
+  height: 30px;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-btn-clear:hover {
+  background: var(--color-error);
+  border-color: var(--color-error);
+  color: var(--color-text-primary);
+}
+
+/* ========== 文件列表容器 ========== */
+.pdf-file-list-container {
+  border: 2px dashed var(--color-border);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--color-background-secondary);
+}
+
+.pdf-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.pdf-file-list-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: 14px;
+}
+
+.pdf-file-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--color-surface);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.pdf-file-item:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
+}
+
+.pdf-file-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.pdf-file-name {
+  flex: 1;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-file-size {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.pdf-file-remove {
+  display: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: var(--color-error);
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pdf-file-item:hover .pdf-file-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-file-remove:hover {
+  background: var(--color-error-hover);
+  transform: scale(1.1);
+}
+
+/* ========== 按钮样式 ========== */
+.pdf-btn {
+  padding: 0 8px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pdf-btn-primary {
+  background: var(--color-primary-light);
+  color: var(--color-text-primary);
+}
+
+.pdf-btn-primary:hover {
+  background: var(--color-primary-light);
+  box-shadow: 0 4px 12px var(--color-shadow-hover);
+  color: var(--color-text-primary);
+  text-shadow: 0 0px 10px var(--color-shadow-hover);
+}
+
+.pdf-btn-primary:active {
+  background: var(--color-primary-active);
+  color: var(--color-text-inverse);
+}
+
+.pdf-btn-primary:disabled {
+  background: var(--color-border-disabled);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+.pdf-btn-secondary {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-primary);
+}
+
+.pdf-btn-secondary:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
+}
+
+/* ========== 结果显示 ========== */
+.pdf-result {
+  background: var(--color-surface);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  transition: box-shadow var(--duration-300) var(--ease-out);
+}
+
+.pdf-result:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .pdf-result:hover {
+    box-shadow: 0 0px 16px rgba(151, 150, 150, 0.1);
+  }
+}
+
+.pdf-result-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-text-tertiary);
+}
+
+.pdf-placeholder-icon {
+  font-size: 48px;
+  opacity: 0.5;
+  user-select: none;
+}
+
+.pdf-result-placeholder p {
+  font-size: 14px;
+}
+
+.pdf-result-success {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  background: var(--color-surface);
+  border-radius: 8px;
+}
+
+.pdf-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  /* Match history header spacing */
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pdf-result-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.pdf-result-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.pdf-result-icon {
+  /* Use a smaller icon to match history item rhythm */
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.pdf-result-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdf-result-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  user-select: none;
+}
+
+.pdf-result-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--color-background-secondary);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  min-height: 40px;
+  align-items: flex-start;
+}
+
+.pdf-result-details > div {
+  display: flex;
+  gap: 8px;
+  word-break: break-all;
+}
+
+.pdf-result-details strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  flex-shrink: 0;
+  min-width: 56px;
+  display: inline-block;
+}
+
+/* ========== PDF预览弹窗 ========== */
+.pdf-preview-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-preview-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.pdf-preview-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 1200px;
+  height: 90%;
+  max-height: 900px;
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pdf-preview-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.pdf-preview-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.pdf-preview-modal-icon {
+  font-size: 24px;
+}
+
+.pdf-preview-modal-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pdf-preview-modal-close:hover {
+  background: var(--color-error);
+  color: var(--color-text-inverse);
+}
+
+.pdf-preview-modal-body {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+  background: var(--color-background-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-preview-modal-body canvas {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== PDF预览容器 ========== */
+.pdf-preview-container {
+  width: 100%;
+  background: var(--color-background-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.pdf-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pdf-preview-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.pdf-preview-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.pdf-result-btn {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.pdf-preview-viewer {
+  padding: 16px;
+  min-height: 300px;
+  max-height: 600px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background-secondary);
+}
+
+.pdf-preview-viewer canvas {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-preview-iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  border-radius: 4px;
+}
+
+.pdf-preview-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--color-text-tertiary);
+}
+
+.pdf-preview-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pdf-preview-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.pdf-preview-info {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: var(--color-surface);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.pdf-path-code {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.pdf-path-clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pdf-path-clickable:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.pdf-result-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.pdf-error-icon {
+  font-size: 48px;
+}
+
+.pdf-error-message {
+  font-size: 14px;
+  color: var(--color-error);
+  text-align: center;
+}
+
+/* ========== 历史记录 ========== */
+.pdf-history {
+  background: var(--color-surface);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  transition: box-shadow var(--duration-300) var(--ease-out);
+}
+
+.pdf-history:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .pdf-history:hover {
+    box-shadow: 0 0px 16px rgba(151, 150, 150, 0.1);
+  }
+}
+
+.pdf-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pdf-history-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  user-select: none;
+}
+
+.pdf-history-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.pdf-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.pdf-history-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-text-tertiary);
+  font-size: 14px;
+}
+
+.pdf-history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 0 12px;
+  background: var(--color-surface);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.pdf-history-item:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
+}
+
+.pdf-history-item span {
+  user-select: none;
+}
+
+.pdf-history-operation {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  padding: 4px 10px;
+  border-right: 1px solid var(--color-border);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pdf-history-filename {
+  flex: 1;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.pdf-history-filename-clickable {
+  cursor: pointer;
+  transition: text-decoration 0.2s ease;
+}
+
+.pdf-history-filename-clickable:hover {
+  text-decoration: underline;
+  color: var(--color-primary);
+}
+
+.pdf-history-time {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pdf-history-download {
+  display: none;
+  height: 30px;
+  padding: 0 12px;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.pdf-history-item:hover .pdf-history-download {
+  display: flex;
+}
+
+.pdf-history-download:hover {
+  background: var(--color-primary-hover);
+}
+
+/* ========== 按钮加载状态 ========== */
+.pdf-btn-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.pdf-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: pdf-spin 0.6s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes pdf-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========== 滚动条样式 ========== */
+.pdf-tools-workspace::-webkit-scrollbar,
+.pdf-file-list::-webkit-scrollbar,
+.pdf-history-list::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.pdf-tools-workspace::-webkit-scrollbar-track,
+.pdf-file-list::-webkit-scrollbar-track,
+.pdf-history-list::-webkit-scrollbar-track {
+  background: var(--color-background-secondary);
+  border-radius: 4px;
+}
+
+.pdf-tools-workspace::-webkit-scrollbar-thumb,
+.pdf-file-list::-webkit-scrollbar-thumb,
+.pdf-history-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+.pdf-tools-workspace::-webkit-scrollbar-thumb:hover,
+.pdf-file-list::-webkit-scrollbar-thumb:hover,
+.pdf-history-list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
+}
+
+/* ========== 响应式设计 ========== */
+@media (max-width: 768px) {
+  .pdf-categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pdf-history-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .pdf-history-controls {
+    width: 100%;
+  }
+
+  .pdf-btn-secondary {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .pdf-categories {
+    grid-template-columns: 1fr;
+  }
+
+  .pdf-tools-workspace {
+    padding: 12px;
+  }
+
+  .pdf-form,
+  .pdf-result,
+  .pdf-history {
+    padding: 16px;
+  }
+}
