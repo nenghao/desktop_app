@@ -11,6 +11,7 @@ import { getGlobalEventBus, createNamespace } from '../../core/GlobalEventManage
 import { AgentUILoader } from '../../services/agent/AgentUILoader.js';
 import { FileUploadService } from '../../services/FileUploadService.js';
 import { API_CONFIG } from '../../services/api/api-config.js';
+import { AUTH_EVENTS } from '../../core/EventConstants.js';
 import '../../styles/views/agent-detail.css';
 import '../../styles/components/agent-info-sidebar.css'; // 导入智能体信息侧边栏样式
 
@@ -27,6 +28,9 @@ export class AgentDetail {
     // 使用传入的 eventBus 或回退到全局 eventBus
     this.eventBus = options.eventBus || getGlobalEventBus();
     this.agentEvents = createNamespace('agent-detail');
+
+    // 绑定登录事件处理函数（用于登录后重新加载智能体UI）
+    this.handleLoginSuccess = this.onLoginSuccess.bind(this);
   }
 
   /**
@@ -445,7 +449,8 @@ export class AgentDetail {
           statusBarManager: agentStatusBarManager,
           app: window.app,
           fileUpload: fileUploadService,  // 添加文件上传服务
-          userManager: window.app?.getService('userManager')  // 添加用户管理服务
+          userManager: window.app?.getService('userManager'),  // 添加用户管理服务
+          apiService: window.app?.getService('apiService')  // 添加API服务（支持自动Token刷新）
         },
 
         // 提供必要的工具函数
@@ -873,7 +878,77 @@ export class AgentDetail {
       this.showAgentInfoSidebar();
     });
 
+    // 监听登录成功事件，以便重新加载智能体UI（解决登录状态同步问题）
+    this.eventBus.on(AUTH_EVENTS.LOGIN_SUCCESS, this.handleLoginSuccess);
+
     // 注意：示例按钮和表单提交事件现在由 bundle.js 处理
+  }
+
+  /**
+   * 登录成功事件处理
+   * 当用户在智能体页面登录后，重新加载智能体UI以同步登录状态
+   */
+  onLoginSuccess(userData) {
+    console.log('🔐 检测到登录成功，准备重新加载智能体UI');
+    if (this.agentData && this.container && !this.isDestroyed) {
+      this.reloadAgentUI();
+    }
+  }
+
+  /**
+   * 重新加载智能体UI
+   * 用于登录状态变化后刷新智能体，使其能够正常调用API
+   */
+  async reloadAgentUI() {
+    try {
+      console.log('🔄 重新加载智能体UI:', this.agentId);
+
+      // 清理当前智能体的CSS
+      const styleId = `agent-ui-style-${this.agentId}`;
+      const existingStyle = document.getElementById(styleId);
+      if (existingStyle) {
+        existingStyle.remove();
+        console.log('🗑️ 已清理智能体CSS');
+      }
+
+      // 清理动态加载的 script 标签
+      const scriptId = `agent-bundle-${this.agentId}`;
+      const existingScript = document.getElementById(scriptId);
+      if (existingScript) {
+        existingScript.remove();
+        console.log('🗑️ 已清理智能体Script');
+      }
+
+      // 清理全局注册的 init 函数
+      if (window.__AGENT_INIT__ && window.__AGENT_INIT__[this.agentId]) {
+        delete window.__AGENT_INIT__[this.agentId];
+      }
+
+      // 获取主内容容器
+      const mainContentContainer = this.container.querySelector('#agent-main-content');
+      if (mainContentContainer) {
+        // 🔑 关键：清空容器内容，这会：
+        // 1. 移除所有子 DOM 元素
+        // 2. 解除通过 addEventListener 绑定到这些元素的事件监听器
+        // 3. 解除旧智能体实例对这些 DOM 元素的引用
+        // 4. 使旧实例可以被 JavaScript 垃圾回收器回收
+        mainContentContainer.innerHTML = '';
+        console.log('🗑️ 已清空智能体容器');
+
+        // 重新加载智能体UI（会创建新的实例）
+        await this.loadAndRenderAgentUI(this.agentData, mainContentContainer);
+        console.log('✅ 智能体UI重新加载完成');
+
+        if (window.notificationCenter) {
+          window.notificationCenter.success('登录成功，智能体已刷新');
+        }
+      }
+    } catch (error) {
+      console.error('❌ 重新加载智能体UI失败:', error);
+      if (window.notificationCenter) {
+        window.notificationCenter.error('智能体刷新失败: ' + error.message);
+      }
+    }
   }
 
   /**
@@ -1650,6 +1725,11 @@ export class AgentDetail {
     // 清理事件监听器
     if (this.agentEvents) {
       this.agentEvents.clear();
+    }
+
+    // 移除登录事件监听
+    if (this.eventBus && this.handleLoginSuccess) {
+      this.eventBus.off(AUTH_EVENTS.LOGIN_SUCCESS, this.handleLoginSuccess);
     }
 
     // 清理全局注册的智能体 init 函数（如果还存在的话，作为兜底清理）

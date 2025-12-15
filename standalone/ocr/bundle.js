@@ -1987,33 +1987,46 @@ const OCRApi = {
     try {
       console.log("调用后端 OCR 识别接口");
 
-      // 获取token
-      const token = BaseApi.getToken(context);
-      if (!token) {
-        throw new Error('未找到认证token，请先登录');
+      // 检查是否有 ApiService（支持自动 Token 刷新）
+      const apiService = context?.services?.apiService;
+
+      let result;
+      if (apiService) {
+        // 使用 ApiService（自动处理 Token 刷新）
+        console.log('[OCR API] 使用 ApiService 发送请求');
+        result = await apiService.post('/toolkit/ocr/recognize', params);
+      } else {
+        // 降级：使用原生 fetch（无 Token 自动刷新）
+        console.warn('[OCR API] ApiService 不可用，降级使用 fetch');
+
+        // 获取token
+        const token = BaseApi.getToken(context);
+        if (!token) {
+          throw new Error('未找到认证token，请先登录');
+        }
+
+        // 调用后端 OCR 接口
+        const apiBaseUrl = context?.apiConfig?.baseUrl || context?.config?.apiBaseUrl || 'https://api.baizesz.com';
+        const apiUrl = `${apiBaseUrl}/toolkit/ocr/recognize`;
+        console.log('🔍 [OCR API] 调用地址:', apiUrl);
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(params)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+
+        result = await response.json();
       }
 
-      // 调用后端 OCR 接口
-      // 从 context 获取 API 基础地址(支持 debug 和 release 环境)
-      const apiBaseUrl = context?.apiConfig?.baseUrl || context?.config?.apiBaseUrl || 'https://api.baizesz.com';
-      const apiUrl = `${apiBaseUrl}/toolkit/ocr/recognize`;
-      console.log('🔍 [OCR API] 调用地址:', apiUrl);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params)
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
-      }
-
-      const result = await response.json();
       return result;
 
     } catch (error) {

@@ -787,9 +787,6 @@
 
     /**
      * 调用翻译API
-     */
-    /**
-     * 调用翻译API
      * @param {string} text - 要翻译的文本
      * @param {string} sourceLang - 源语言
      * @param {string} targetLang - 目标语言
@@ -800,18 +797,8 @@
      */
     async callTranslateAPI(text, sourceLang, targetLang, engine, scene, fileName = null) {
       try {
-        // 创建 AbortController 用于超时控制
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), this.API_TIMEOUT);
-
-        // 构建请求头，包含授权令牌
-        const headers = {
-          'Content-Type': 'application/json'
-        };
-
-        // 添加授权令牌
-        const authToken = this.getAccessToken();
-        headers['Authorization'] = `Bearer ${authToken}`;
+        // 检查是否有 ApiService（支持自动 Token 刷新）
+        const apiService = this.services?.apiService;
 
         // 构建请求体
         const requestBody = {
@@ -829,24 +816,32 @@
           requestBody.file_name = fileName;
         }
 
-        const response = await fetch(`${this.API_BASE_URL}/toolkit/translate/`, {
-          method: 'POST',
-          headers: headers,
-          body: JSON.stringify(requestBody),
-          signal: controller.signal
-        });
+        let result;
+        if (apiService) {
+          // 使用 ApiService（自动处理 Token 刷新）
+          console.log('[AI Translator] 使用 ApiService 发送请求');
+          result = await apiService.post('/toolkit/translate/', requestBody);
+        } else {
+          // 降级：使用原生 fetch（无 Token 自动刷新）
+          console.warn('[AI Translator] ApiService 不可用，降级使用 fetch');
+          const authToken = this.getAccessToken();
+          const response = await fetch(`${this.API_BASE_URL}/toolkit/translate/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(requestBody)
+          });
 
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          // 401错误特殊处理，直接显示用户可看到的错误
-          if (response.status === 401) {
-            this.utils.notificationCenter.error('登录已失效，请重新登录。');
+          if (!response.ok) {
+            if (response.status === 401) {
+              this.utils.notificationCenter.error('登录已失效，请重新登录。');
+            }
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          result = await response.json();
         }
-
-        const result = await response.json();
 
         if (!result.success) {
           throw new Error(result.message || '翻译失败');
@@ -877,45 +872,45 @@
         // 读取文件并转换为base64
         const base64Content = await this.fileToBase64(file);
 
-        // 创建 AbortController 用于超时控制
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), this.API_TIMEOUT);
+        // 检查是否有 ApiService（支持自动 Token 刷新）
+        const apiService = this.services?.apiService;
 
-        // 构建请求头，包含授权令牌
-        const headers = {
-          'Content-Type': 'application/json'
+        const requestBody = {
+          type: 'document',
+          content: base64Content,
+          source_lang: sourceLang,
+          target_lang: targetLang,
+          engine: engine,
+          need_analysis: this.needAnalysis,
+          file_name: file.name
         };
 
-        // 添加授权令牌
-        const authToken = this.getAccessToken();
-        headers['Authorization'] = `Bearer ${authToken}`;
+        let result;
+        if (apiService) {
+          // 使用 ApiService（自动处理 Token 刷新）
+          console.log('[AI Translator] 使用 ApiService 发送文档翻译请求');
+          result = await apiService.post('/agent/translate/', requestBody);
+        } else {
+          // 降级：使用原生 fetch（无 Token 自动刷新）
+          console.warn('[AI Translator] ApiService 不可用，降级使用 fetch');
+          const authToken = this.getAccessToken();
+          const response = await fetch(`${this.API_BASE_URL}/agent/translate/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(requestBody)
+          });
 
-        const response = await fetch(`${this.API_BASE_URL}/agent/translate/`, {
-          method: 'POST',
-          headers: headers,
-          body: JSON.stringify({
-            type: 'document',
-            content: base64Content,
-            source_lang: sourceLang,
-            target_lang: targetLang,
-            engine: engine,
-            need_analysis: this.needAnalysis,
-            file_name: file.name
-          }),
-          signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          // 401错误特殊处理，直接显示用户可看到的错误
-          if (response.status === 401) {
-            this.utils.notificationCenter.error('登录已失效，请重新登录。');
+          if (!response.ok) {
+            if (response.status === 401) {
+              this.utils.notificationCenter.error('登录已失效，请重新登录。');
+            }
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          result = await response.json();
         }
-
-        const result = await response.json();
 
         if (!result.success) {
           throw new Error(result.message || '文档翻译失败');

@@ -2246,34 +2246,47 @@ const PDFApi = {
   async performOCR(params) {
     try {
       console.log("调用后端 OCR 识别接口");
-      
-      // 获取token
-      const token = this.getToken();
-      if (!token) {
-        throw new Error('未找到认证token，请先登录');
+
+      // 检查是否有 ApiService（支持自动 Token 刷新）
+      const apiService = this.context?.services?.apiService;
+
+      let result;
+      if (apiService) {
+        // 使用 ApiService（自动处理 Token 刷新）
+        console.log('[PDF Tools OCR] 使用 ApiService 发送请求');
+        result = await apiService.post('/toolkit/ocr/recognize', params);
+      } else {
+        // 降级：使用原生 fetch（无 Token 自动刷新）
+        console.warn('[PDF Tools OCR] ApiService 不可用，降级使用 fetch');
+
+        // 获取token
+        const token = this.getToken();
+        if (!token) {
+          throw new Error('未找到认证token，请先登录');
+        }
+
+        // 调用后端 OCR 接口
+        const apiBaseUrl = this.context?.apiConfig?.baseUrl || this.context?.config?.apiBaseUrl || 'https://api.baizesz.com';
+        const apiUrl = `${apiBaseUrl}/toolkit/ocr/recognize`;
+        console.log('🔍 [OCR API] 调用地址:', apiUrl);
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(params)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+
+        result = await response.json();
       }
 
-      // 调用后端 OCR 接口
-      // 从 context 获取 API 基础地址(支持 debug 和 release 环境)
-      const apiBaseUrl = this.context?.apiConfig?.baseUrl || this.context?.config?.apiBaseUrl || 'https://api.baizesz.com';
-      const apiUrl = `${apiBaseUrl}/toolkit/ocr/recognize`;
-      console.log('🔍 [OCR API] 调用地址:', apiUrl);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params)
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
-      }
-
-      const result = await response.json();
       return result;
 
     } catch (error) {
@@ -2288,7 +2301,7 @@ const PDFApi = {
    */
   getToken() {
     console.log("getToken:", this.context, this.context.services.app);
-    
+
     // 从 context 获取 token
     if (this.context && this.context.services && this.context.services.app) {
       const userManager = this.context.services.app.getService('userManager');
@@ -2318,11 +2331,11 @@ const PDFApi = {
       // 检查缓存是否有效（10分钟内）
       const now = Date.now();
       const cache = this._ocrConfigCache;
-      
+
       if (cache.data && cache.timestamp) {
         const elapsedTime = now - cache.timestamp;
         const remainingTime = cache.cacheDuration - elapsedTime;
-        
+
         if (elapsedTime < cache.cacheDuration) {
           return cache.data;
         }
@@ -2340,34 +2353,34 @@ const PDFApi = {
       const result = await response.json();
       if (result.success && result.data && result.data.source_languages) {
         const languages = result.data.source_languages;
-        
+
         // 更新缓存
         this._ocrConfigCache.data = languages;
         this._ocrConfigCache.timestamp = now;
-        
+
         console.log('✅ OCR 配置获取成功（翻译接口）:', languages.length, '种语言');
         console.log('💾 配置已缓存，有效期 10 分钟');
-        
+
         return languages;
       } else {
         throw new Error(result.message || '配置数据格式错误');
       }
     } catch (error) {
       console.warn('⚠️ 获取 OCR 配置失败，使用默认配置:', error.message);
-      
+
       // 如果有缓存数据（即使过期），优先使用缓存
       if (this._ocrConfigCache.data) {
         console.log('📦 使用过期缓存数据作为降级方案');
         return this._ocrConfigCache.data;
       }
-      
+
       // 返回默认配置
       const defaultLanguages = this.getDefaultOCRLanguages();
-      
+
       // 将默认配置也缓存起来
       this._ocrConfigCache.data = defaultLanguages;
       this._ocrConfigCache.timestamp = Date.now();
-      
+
       return defaultLanguages;
     }
   },
@@ -2388,18 +2401,18 @@ const PDFApi = {
   getOCRConfigCacheStatus() {
     const cache = this._ocrConfigCache;
     const now = Date.now();
-    
+
     if (!cache.data || !cache.timestamp) {
       return {
         hasCache: false,
         message: '无缓存'
       };
     }
-    
+
     const elapsedTime = now - cache.timestamp;
     const remainingTime = cache.cacheDuration - elapsedTime;
     const isValid = elapsedTime < cache.cacheDuration;
-    
+
     return {
       hasCache: true,
       isValid,
@@ -2408,7 +2421,7 @@ const PDFApi = {
       elapsedSeconds: Math.floor((elapsedTime / 1000) % 60),
       remainingMinutes: Math.floor(remainingTime / 1000 / 60),
       remainingSeconds: Math.floor((remainingTime / 1000) % 60),
-      message: isValid 
+      message: isValid
         ? `缓存有效，剩余 ${Math.floor(remainingTime / 1000 / 60)}分${Math.floor((remainingTime / 1000) % 60)}秒`
         : `缓存已过期 ${Math.floor(Math.abs(remainingTime) / 1000 / 60)}分${Math.floor((Math.abs(remainingTime) / 1000) % 60)}秒`
     };
