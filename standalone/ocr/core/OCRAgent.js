@@ -21,7 +21,7 @@ class OCRAgent {
     // OCR 配置
     this.ocrLanguages = []; // OCR 语言列表
     // 从 context 动态获取 API 基础地址（支持 debug 和 release 环境）
-    this.apiBaseUrl = context?.apiConfig?.baseUrl || context?.config?.apiBaseUrl || 'https://api.baizesz.com';
+    this.apiBaseUrl = (context?.apiConfig?.baseUrl || context?.config?.apiBaseUrl || 'https://api.baizesz.com').replace(/\/+$/, '');
     console.log('🔧 [OCR Agent] API 基础地址:', this.apiBaseUrl);
   }
 

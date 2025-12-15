@@ -39,7 +39,8 @@
 
       // API配置 - 从 context.apiConfig 获取
       const apiConfig = context.apiConfig || {};
-      this.API_BASE_URL = apiConfig.baseUrl || 'https://api.baizesz.com'; // 翻译API服务地址
+      // 去除可能的尾部斜杠，防止生成 // 双斜杠路径
+      this.API_BASE_URL = (apiConfig.baseUrl || 'https://api.baizesz.com').replace(/\/+$/, ''); // 翻译API服务地址
       this.API_TIMEOUT = apiConfig.timeout || 60000; // API超时时间
 
 

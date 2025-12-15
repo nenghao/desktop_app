@@ -140,7 +140,7 @@ const OCRApi = {
         }
 
         // 调用后端 OCR 接口
-        const apiBaseUrl = context?.apiConfig?.baseUrl || context?.config?.apiBaseUrl || 'https://api.baizesz.com';
+        const apiBaseUrl = (context?.apiConfig?.baseUrl || context?.config?.apiBaseUrl || 'https://api.baizesz.com').replace(/\/+$/, '');
         const apiUrl = `${apiBaseUrl}/toolkit/ocr/recognize`;
         console.log('🔍 [OCR API] 调用地址:', apiUrl);
 

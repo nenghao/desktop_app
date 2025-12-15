@@ -400,7 +400,7 @@ const PDFApi = {
         }
 
         // 调用后端 OCR 接口
-        const apiBaseUrl = this.context?.apiConfig?.baseUrl || this.context?.config?.apiBaseUrl || 'https://api.baizesz.com';
+        const apiBaseUrl = (this.context?.apiConfig?.baseUrl || this.context?.config?.apiBaseUrl || 'https://api.baizesz.com').replace(/\/+$/, '');
         const apiUrl = `${apiBaseUrl}/toolkit/ocr/recognize`;
         console.log('🔍 [OCR API] 调用地址:', apiUrl);
 
