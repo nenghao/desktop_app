@@ -2254,7 +2254,7 @@ const PDFApi = {
       if (apiService) {
         // 使用 ApiService（自动处理 Token 刷新）
         console.log('[PDF Tools OCR] 使用 ApiService 发送请求');
-        result = await apiService.post('/toolkit/ocr/recognize', params);
+        result = await apiService.post('toolkit/ocr/recognize', params);
       } else {
         // 降级：使用原生 fetch（无 Token 自动刷新）
         console.warn('[PDF Tools OCR] ApiService 不可用，降级使用 fetch');
