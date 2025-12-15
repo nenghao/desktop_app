@@ -12,9 +12,9 @@
  * 检测是否在 Electron 环境
  */
 const isElectron = () => {
-  return typeof window !== 'undefined' && 
-         window.process?.type === 'renderer' ||
-         navigator.userAgent.toLowerCase().includes('electron');
+  return typeof window !== 'undefined' &&
+    window.process?.type === 'renderer' ||
+    navigator.userAgent.toLowerCase().includes('electron');
 };
 
 /**
@@ -23,9 +23,19 @@ const isElectron = () => {
  */
 const isDevelopment = () => {
   // 在 Electron 环境中，优先使用 preload 暴露的 isDev
-  if (typeof window !== 'undefined' && window.electronAPI && typeof window.electronAPI.isDev === 'boolean') {
+  // 添加额外的检查，确保 electronAPI 完全初始化
+  if (typeof window !== 'undefined' &&
+    window.electronAPI &&
+    typeof window.electronAPI.isDev === 'boolean') {
     return window.electronAPI.isDev;
   }
+
+  // Electron环境但electronAPI未初始化：默认为生产环境以使用正确的URL
+  if (isElectron()) {
+    console.warn('⚠️ [api-config] electronAPI.isDev 未初始化，假定为生产环境');
+    return false;
+  }
+
   // Web 环境：使用 MODE 判断而不是 DEV
   return import.meta.env.MODE === 'development';
 };
@@ -34,18 +44,23 @@ const isDevelopment = () => {
  * 获取API基础URL
  */
 const getApiBaseURL = () => {
+  const isDev = isDevelopment();
+  const isElectronEnv = isElectron();
+
   // Electron 环境
-  if (isElectron()) {
+  if (isElectronEnv) {
     // Electron 开发环境：使用本地开发服务器
-    if (isDevelopment()) {
+    if (isDev) {
+      console.log('📡 [api-config] Electron 开发环境，使用本地服务器');
       return 'http://192.168.0.103:10089';
     }
     // Electron 生产环境（打包后）：使用线上地址
+    console.log('📡 [api-config] Electron 生产环境，使用线上地址');
     return 'https://api.baizesz.com/';
   }
 
   // Web 环境
-  if (isDevelopment()) {
+  if (isDev) {
     // Web 开发环境：使用 /api 前缀，由 Vite 代理处理
     return '/api/';
   } else {
@@ -120,7 +135,7 @@ export function setBaseURL(baseURL) {
  */
 export function printApiConfig() {
   const isElectronEnv = isElectron();
-  
+
   console.log('');
   console.log('========================================');
   console.log('📡 API 配置信息');
@@ -138,7 +153,7 @@ export function printApiConfig() {
   console.log(`timeout: ${API_CONFIG.timeout}ms`);
   console.log('----------------------------------------');
   console.log('请求流程:');
-  
+
   if (isElectronEnv && isDevelopment()) {
     console.log('  Electron 开发 → http://192.168.0.103:10089/xxx');
   } else if (isElectronEnv && !isDevelopment()) {

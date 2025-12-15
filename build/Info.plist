@@ -6,5 +6,7 @@
     <string>奇境探索</string>
     <key>CFBundleName</key>
     <string>奇境探索</string>
+    <key>CFBundleExecutable</key>
+    <string>Questech</string>
 </dict>
 </plist>

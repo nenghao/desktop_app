@@ -87,6 +87,13 @@ export class CommonApiService extends ApiService {
       return response;
     } catch (error) {
       console.error("❌ [CommonApiService.getDashboardData] 获取Dashboard数据失败:", error);
+
+      // 如果是网络初始化错误，可能是API配置问题
+      if (error.message && error.message.includes('Failed to fetch')) {
+        console.error('❌ [CommonApiService] 网络初始化失败，可能是API配置问题');
+        console.error('   请检查 api-config.js 中的 baseURL 配置');
+      }
+
       // 如果请求失败且有缓存，返回缓存数据
       if (this.cache.aigcContent.data) {
         console.warn('⚠️ [CommonApiService] 请求失败，返回缓存的Dashboard数据');
