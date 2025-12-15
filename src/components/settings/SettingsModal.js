@@ -194,9 +194,11 @@ export class SettingsModal extends BaseComponent {
         return;
       }
 
-      // 处理底部链接点击
-      if (target.classList.contains('footer-link')) {
-        this.handleFooterLinkClick(e);
+      // 处理底部链接点击（需要用 closest 因为 SVG 子元素也可能是 target）
+      const footerLink = target.closest('.footer-link');
+      if (footerLink) {
+        e.preventDefault();
+        this.handleFooterLinkClick(footerLink);
         return;
       }
 
@@ -258,11 +260,11 @@ export class SettingsModal extends BaseComponent {
 
   /**
    * 处理底部链接点击
+   * @param {HTMLElement} linkElement - 点击的链接元素
    */
-  handleFooterLinkClick(e) {
-    e.preventDefault();
-    const action = e.currentTarget.dataset.action;
-    const url = e.currentTarget.dataset.url;
+  handleFooterLinkClick(linkElement) {
+    const action = linkElement.dataset.action;
+    const url = linkElement.dataset.url;
 
     // 定义窗口标题
     const titles = {
