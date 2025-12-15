@@ -206,7 +206,7 @@ export class LoginModal {
           </form>
 
           <div class="login-footer">
-            <p>「登录」代表同意《<a href="https://www.baizesz.com/page/document/agreement.html" target="_blank" class="link">用户协议</a>》《<a href="https://www.baizesz.com/page/document/private.html" target="_blank" class="link">隐私政策</a>》</p>
+            <p>「登录」代表同意《<a href="#" class="link footer-doc-link" data-action="user-agreement" data-url="https://www.baizesz.com/user/agreement">用户协议</a>》《<a href="#" class="link footer-doc-link" data-action="privacy-policy" data-url="https://www.baizesz.com/user/private">隐私政策</a>》</p>
             <p class="auto-register">未注册的手机号将自动注册</p>
           </div>
         </div>
@@ -285,6 +285,15 @@ export class LoginModal {
         e.target.value = e.target.value.replace(/\D/g, '');
       });
     }
+
+    // 底部文档链接（用户协议、隐私政策）
+    const footerDocLinks = modalBody.querySelectorAll('.footer-doc-link');
+    footerDocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.handleDocLinkClick(link);
+      });
+    });
   }
 
   /**
@@ -535,6 +544,44 @@ export class LoginModal {
   handleForgotPassword() {
     // TODO: 实现忘记密码功能
     this.showError('忘记密码功能暂未开放，请使用验证码登录');
+  }
+
+  /**
+   * 处理文档链接点击（用户协议、隐私政策）
+   * @param {HTMLElement} linkElement - 点击的链接元素
+   */
+  handleDocLinkClick(linkElement) {
+    const action = linkElement.dataset.action;
+    const url = linkElement.dataset.url;
+
+    // 定义窗口标题
+    const titles = {
+      'user-agreement': '用户协议',
+      'privacy-policy': '隐私政策'
+    };
+
+    // 如果有URL，尝试打开
+    if (url) {
+      // 优先使用 Electron API 打开独立窗口
+      if (window.electronAPI && window.electronAPI.createDocumentWindow) {
+        window.electronAPI.createDocumentWindow({
+          title: titles[action] || '查看详情',
+          url: url,
+          width: 900,
+          height: 700
+        }).then((windowId) => {
+          console.log('✅ LoginModal: 文档窗口创建成功', windowId);
+        }).catch((error) => {
+          console.error('❌ LoginModal: 文档窗口创建失败', error);
+          // 降级到浏览器打开
+          window.open(url, '_blank', 'noopener,noreferrer');
+        });
+      } else {
+        console.log('🌐 LoginModal: Electron API 不可用，使用浏览器打开');
+        // Web环境下在新标签页打开
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    }
   }
 
   /**
