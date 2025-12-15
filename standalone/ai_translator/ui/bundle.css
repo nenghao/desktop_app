@@ -276,6 +276,7 @@
   padding: 0 12px;
   border-bottom: 1px solid var(--color-divider);
   gap: 12px;
+  white-space: nowrap;
 }
 
 .trans-io-title-group {
@@ -432,6 +433,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-width: 33px;
 }
 
 .trans-btn-primary {
@@ -492,7 +494,6 @@
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
   font-size: 14px;
-  min-width: auto;
   height: 28px;
   display: inline-flex;
   align-items: center;
