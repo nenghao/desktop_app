@@ -1,7 +1,7 @@
 {
   "name": "questech",
   "productName": "奇境探索",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "奇境探索 - AI智能体",
   "main": "electron/main.js",
   "homepage": "./",
@@ -127,6 +127,7 @@
     },
     "win": {
       "icon": "src/assets/icons/app_icon.ico",
+      "executableName": "Questech",
       "artifactName": "${name}_${platform}_${arch}_${version}.${ext}",
       "target": [
         {
@@ -147,6 +148,7 @@
     },
     "linux": {
       "icon": "src/assets/icons/AppIcon.png",
+      "executableName": "questech",
       "artifactName": "${name}_${platform}_${arch}_${version}.${ext}",
       "target": [
         {
@@ -161,6 +163,7 @@
     "appx": {
       "applicationId": "com.baizesz.seek",
       "artifactName": "${name}_${platform}_${arch}_${version}.${ext}",
+      "displayName": "奇境探索",
       "identityName": "53D5FAF4.449826F304142",
       "publisher": "CN=111BA3F5-8A55-4E46-A95B-9D22A5E1D33E",
       "publisherDisplayName": "奇境探索",
